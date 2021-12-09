@@ -1,0 +1,147 @@
+﻿@model IEnumerable<TalentHunt.Models.production>
+@using TalentHunt.Models
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Dasho - Bootstrap 4 Admin Template</title>
+    <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 11]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Dasho Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
+    <meta name="keywords" content="admin templates, bootstrap admin templates, bootstrap 4, dashboard, dashboard templets, sass admin templets, html admin templates, responsive, bootstrap admin templates free download,premium bootstrap admin templates, Dasho, Dasho bootstrap admin template">
+    <meta name="author" content="Phoenixcoded" />
+
+    <!-- Favicon icon -->
+    <link rel="icon" href="~/assets/images/favicon.svg" type="image/x-icon">
+    <!-- fontawesome icon -->
+    <link rel="stylesheet" href="~/assets/fonts/fontawesome/css/fontawesome-all.min.css">
+    <!-- animation css -->
+    <link rel="stylesheet" href="~/assets/plugins/animation/css/animate.min.css">
+
+    <!-- vendor css -->
+    <link rel="stylesheet" href="~/assets/css/style.css">
+
+</head>
+<body>
+    @{
+        Html.RenderPartial("_Navbar");
+    }
+
+    <div class="pcoded-main-container-2">
+        <div class="pcoded-wrapper">
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="card user-card user-card-2 shape-right">
+                                        <div class="card-header border-0 p-2 pb-0">
+                                            <div class="cover-img-block">
+                                                <img src="~/assets/images/user/cover.jpg" alt="" class="img-fluid">
+                                                <div class="overlay"></div>
+                                                <div class="change-cover">
+                                                    <div class="dropdown">
+                                                        <a href="#" class="drp-icon dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon feather icon-camera"></i></a>
+                                                        <div class="dropdown-menu">
+                                                            <a class="dropdown-item" href="#"><i class="feather icon-upload-cloud mr-2"></i>upload new</a>
+                                                            <a class="dropdown-item" href="#"><i class="feather icon-image mr-2"></i>from photos</a>
+                                                            <a class="dropdown-item" href="#"><i class="feather icon-film mr-2"></i> upload video</a>
+                                                            <a class="dropdown-item" href="#"><i class="feather icon-trash-2 mr-2"></i>remove</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body pt-0">
+                                            <div class="user-about-block">
+                                                <div class="row align-items-center">
+                                                    <div class="col">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-auto col pr-0">
+                                                                <div class="change-profile">
+                                                                    <div class="dropdown">
+                                                                        <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                            <div class="profile-dp">
+                                                                                <img class="img-radius img-fluid wid-100" src="@Url.Content(Session["pimage"].ToString())" alt="User image">
+                                                                                <div class="overlay">
+                                                                                    <span>change</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                        <div class="dropdown-menu">
+                                                                            <a class="dropdown-item" href="#"><i class="feather icon-upload-cloud mr-2"></i>upload new</a>
+                                                                            <a class="dropdown-item" href="#"><i class="feather icon-image mr-2"></i>from photos</a>
+                                                                            <a class="dropdown-item" href="#"><i class="feather icon-shield mr-2"></i>Protact</a>
+                                                                            <a class="dropdown-item" href="#"><i class="feather icon-trash-2 mr-2"></i>remove</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col">
+                                                                <h6 class="mb-1">@Session["pname"]</h6>
+                                                                <p class="mb-0">
+                                                                    @foreach (var plist in (IEnumerable<production>)TempData["pdata"])
+                                                                    {
+                                                                        @plist.phead
+                                                                    }
+                                                                </p>
+                                                            </div>
+                                                        </div>
+
+                                                        @foreach (var plist in (IEnumerable<production>)TempData["pdata"])
+                                                        {
+                                                            @plist.description
+                                                        }
+                                                        <br /><br />
+                                                        <div>
+                                                            @Html.ActionLink("Add Event", "Create", "ProductionEvent", new { id = Session["pid"] }, new { @class = "btn btn-outline-primary" })
+                                                        </div>
+
+                                                        <hr style="color:darkblue" />
+
+                                                        <div>
+                                                            <p style="color:black; font-size:large" class="mb-1">INFO</p>
+
+
+                                                            <div class="mb-0">
+                                                                @foreach (var plists in (IEnumerable<production>)TempData["pdata"])
+                                                                {
+                                                                    <p>Address : @plists.address</p>
+                                                                    <p>Contact : @plists.contactno</p>
+                                                                    <p>E-mail : @plists.email</p>
+                                                                }
+                                                             </div>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/assets/js/vendor-all.min.js"></script>
+    <script src="~/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/assets/js/pcoded.min.js"></script>
+</body>
+</html>

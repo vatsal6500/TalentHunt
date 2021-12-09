@@ -1,0 +1,154 @@
+
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+
+
+ADMIN
+
+	
+
+
+PLAN
+public int planid { get; set; }
+
+        [Required(ErrorMessage ="*")]
+        [DisplayName("Plan Type")]
+        [StringLength(15, MinimumLength = 2, ErrorMessage = "Invalid Talent")]
+        [RegularExpression(@"^[a-zA-Z ]*$", ErrorMessage = "Invalid Plan Type")]
+        public string plantype { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [DisplayName("Duration")]
+        [RegularExpression(@"^[a-zA-Z0-9 ]*$", ErrorMessage = "Invalid Duration")]
+        public string duration { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [DisplayName("Price")]
+        [Range(500,5000,ErrorMessage ="Price not in range")]
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "Invalid Price")]
+        public int price { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [DisplayName("Description")]
+        [StringLength(500, MinimumLength = 20, ErrorMessage = "Description is Short!  Add More")]
+        [RegularExpression(@"^[a-zA-Z0-9.!@#$%&* ]*$", ErrorMessage = "Invalid Description")]
+        [DataType(DataType.MultilineText)]
+        public string description { get; set; }
+
+        [DisplayName("Benifits")]
+        [StringLength(500, MinimumLength = 20, ErrorMessage = "it's Short. Add more")]
+        [RegularExpression(@"^[a-zA-Z0-9. ]*$", ErrorMessage = "Invalid Benifits ")]
+        [DataType(DataType.MultilineText)]
+        public string benefits { get; set; }
+
+
+PRODUCTION
+using System.Web;
+public HttpPostedFileBase ImageFile { get; set; }
+
+TALENT
+public int tid { get; set; }
+
+        [Required(ErrorMessage ="*")]
+        [DisplayName("Talents")]
+        [StringLength(20,MinimumLength =2,ErrorMessage ="Invalid Talent")]
+        [RegularExpression(@"^[a-zA-z ]*$", ErrorMessage ="Invalid Talent")]
+        public string ttype { get; set; }
+
+
+USER
+
+[Required(ErrorMessage ="*")]
+        [DisplayName("User Name")]
+        [DataType(DataType.Text)]
+        public string username { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [DisplayName("Password")]
+        [DataType(DataType.Password)]
+        public string password { get; set; }
+
+        public HttpPostedFileBase ImageFile { get; set; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+dark place
+all girls are the same
+robbery
+legends
+denial
+stay high
+reminds me of you
+my fault
+empty
+wishing well
+righteous
+can't die
+lucid dreams
+let her leave
+scared of love
+used to
+734
+hemotions
+
+come and go
+hate the other side
+bad boy
+real shit
+out my way
+fine china
+the bees knees
+armed and dangerous
+man of the year
+black and white
+big
+
+hear me calling
+hard work plays off
+i'll be fine
+desire
+lean wit me
+hurt me
+shorty
+she's the one
+blood on my jeans
+feeling
+campfire freestyle
+life's a mess
+smile
+up up and away

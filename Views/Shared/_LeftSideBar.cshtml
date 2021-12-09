@@ -1,0 +1,48 @@
+﻿<div class="left-side-bar">
+    <div class="brand-logo">
+        <a href="#">
+            <img src="~/vendors/images/logoadmin.png" alt="" class="light-logo" />
+        </a>
+        <div class="close-sidebar" data-toggle="left-sidebar-close">
+            <i class="ion-close-round"></i>
+        </div>
+    </div>
+    <div class="menu-block customscroll">
+        <div class="sidebar-menu">
+            <ul id="accordion-menu">
+                <li>
+                    <a href="/AdminLogin/Dashboard" class="dropdown-toggle no-arrow">
+                        <span class="micon dw dw-house-1"></span><span class="mtext">Home</span>
+                    </a>
+                </li>
+                <li class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon dw dw-user"></span><span class="mtext">Admin</span>
+                    </a>
+                    <ul class="submenu">
+                        <li>@Html.ActionLink("Add Admin", "Create", "Admin", new { @area = "" }, new { @class = "" })</li>
+                        <li>@Html.ActionLink("Show Admin", "Index", "Admin", new { @area = "" }, new { @class = "" })</li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon dw dw-edit2"></span><span class="mtext">Talent</span>
+                    </a>
+                    <ul class="submenu">
+                        <li>@Html.ActionLink("Add Talent", "Create", "Talents", new { @area = "" }, new { @class = "" })</li>
+                        <li>@Html.ActionLink("Show Talents", "Index", "Talents", new { @area = "" }, new { @class = "" })</li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon dw dw-padlock1"></span><span class="mtext">Plans</span>
+                    </a>
+                    <ul class="submenu">
+                        <li>@Html.ActionLink("Add Plan", "Create", "plans", new { @area = "" }, new { @class = "" })</li>
+                        <li>@Html.ActionLink("Show Plan", "Index", "plans", new { @area = "" }, new { @class = "" })</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

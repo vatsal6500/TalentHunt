@@ -1,0 +1,41 @@
+﻿<header class="navbar pcoded-header navbar-expand-lg navbar-light headerpos-relative">
+
+    
+    <div class="collapse navbar-collapse">
+        <div class="brand-logo mx-3">
+            <img src="~/vendors/images/logo1.png" alt="" height="80" width="145">
+        </div>
+
+        @{
+            if (Session["uid"] != null)
+            {
+                <p class="noti-head m-b-5 mx-4 mb-0">@Html.ActionLink("Profile", "Index", "User")</p>
+                <p class="noti-head m-b-5 mx-4 mb-0">@Html.ActionLink("Events", "Index", "ProductionEvent")</p>
+                <p class="noti-head m-b-5 mx-4 mb-0">@Html.ActionLink("Productions", "ProductionView", "Production")</p>
+                <p class="noti-head m-b-5 mx-4 mb-0">@Html.ActionLink("Biddings", "Index", "UserApply")</p> }
+            if (Session["pid"] != null)
+            {
+                <p class="noti-head m-b-5 mx-4 mb-0">@Html.ActionLink("Profile", "Index", "Production")</p>
+                <p class="noti-head m-b-5 mx-4 mb-0">@Html.ActionLink("Events", "Index", "ProductionEvent")</p>
+                <p class="noti-head m-b-5 mx-4 mb-0">@Html.ActionLink("Talents", "UserView", "User")</p>
+                <p class="noti-head m-b-5 mx-4 mb-0">@Html.ActionLink("Biddings", "Index", "UserApply")</p> 
+            }
+        }
+        <ul class="navbar-nav ml-auto">
+            <li>
+                <div class="dropdown drp-user">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="icon feather icon-settings"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right profile-notification">
+                        <ul class="pro-body">
+                            <li><a href="#!" class="dropdown-item"><i class="feather icon-user"></i> Profile</a></li>
+                            <li><a href="@Url.Action("Logout","User")" class="dropdown-item"><i class="feather icon-power text-danger"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</header>

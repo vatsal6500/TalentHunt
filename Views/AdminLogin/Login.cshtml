@@ -1,0 +1,80 @@
+﻿@model TalentHunt.ModelView.adminlogin
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Admin | Login</title>
+    <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 11]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Dasho Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
+    <meta name="keywords" content="admin templates, bootstrap admin templates, bootstrap 4, dashboard, dashboard templets, sass admin templets, html admin templates, responsive, bootstrap admin templates free download,premium bootstrap admin templates, Dasho, Dasho bootstrap admin template">
+    <meta name="author" content="Phoenixcoded" />
+
+    <!-- Favicon icon -->
+    <link rel="icon" href="~/assets/images/favicon.svg" type="image/x-icon">
+    <!-- fontawesome icon -->
+    <link rel="stylesheet" href="~/assets/fonts/fontawesome/css/fontawesome-all.min.css">
+    <!-- animation css -->
+    <link rel="stylesheet" href="~/assets/plugins/animation/css/animate.min.css">
+
+    <!-- vendor css -->
+    <link rel="stylesheet" href="~/assets/css/style.css">
+
+
+</head>
+<body>
+<!-- [ signin-img ] start -->
+<div class="auth-wrapper aut-bg-img-side cotainer-fiuid align-items-stretch">
+    <div class="row align-items-center w-100 align-items-stretch bg-white">
+        <div class="d-none d-lg-flex col-md-8 aut-bg-img d-md-flex justify-content-center">
+
+        </div>
+        <div class="col-md-4 align-items-stret h-100 ad-flex justify-content-center">
+            <div class=" auth-content">
+                <img src="~/vendors/images/logo1.png" height="40" width="145" alt="" class="img-fluid mb-4">
+                <h4 class="mb-3 f-w-400">Login into your account</h4>
+                @using (Html.BeginForm(FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group mb-3">
+                        <label class="form-label">Enter User Name</label>
+                        @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control form-control-lg", @value = ViewBag.username, @placeholder = "Enter UserName" } })
+                        @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Enter Password</label>
+                        @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control form-control-lg", @value = ViewBag.password, @placeholder = "*************" } })
+                        @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+                    </div>
+                    <span id="clearC" class="text-danger" onkeypress="clearData()">@ViewBag.errmsg</span>
+                    <div class="form-group mt-2">
+                        <div class="checkbox checkbox-primary d-inlin">
+                            <input type="checkbox" name="RememberMe" id="RememberMe" value="RememberMe">
+                            <label for="RememberMe" class="cr">Save Credentials</label>
+                        </div>
+                    </div>
+                    <input type="submit" value="Login" class="btn btn-primary mb-4" />
+                }
+                <p class="mb-2 text-muted">Forgot password? <a href="auth-reset-password.html" class="f-w-400">Reset</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/assets/js/vendor-all.min.js"></script>
+<script src="~/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
