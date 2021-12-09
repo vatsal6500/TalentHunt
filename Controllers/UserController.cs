@@ -191,6 +191,51 @@ namespace TalentHunt.Controllers
             }
         }
 
+        public ActionResult ShortView(int? id, user users, talent talents, userprofile userprofiles, image images)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            if (Session["aid"] != null)
+            {
+                String output = "";
+
+                int usrid = Convert.ToInt32(id);
+                var result = db.userprofiles.Where(p => p.userid.Equals(usrid));
+
+                var elists = db.images.Where(p => p.userid.Equals(usrid));
+                TempData["piclists"] = elists;
+
+                var videolists = db.videos.Where(p => p.userid.Equals(usrid));
+                TempData["videolists"] = videolists;
+
+
+                foreach (userprofile u in result)
+                {
+                    var tlists = db.talents.Where(p => p.tid.Equals(u.tid)).SingleOrDefault();
+
+                    output += "<h5 style='color:indianred'>" + tlists.ttype.ToString() + "</h5>";
+                    output += "<p class='mb-0'>Experience : " + u.experience + " years</p>";
+                    output += "<p class='mb-0'>Portfolio : " + u.portfolio;
+                    output += "</p><br/>";
+                }
+                TempData["tlist"] = output;
+
+                user user = db.users.Find(id);
+                if (user == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(user);
+            }
+            else
+            {
+                return RedirectToAction("AdminLogin", "Admin");
+            }
+
+        }
+
         public ActionResult Login()
         {
             return View();

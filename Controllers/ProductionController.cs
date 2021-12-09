@@ -33,6 +33,28 @@ namespace TalentHunt.Controllers
             
         }
 
+        public ActionResult PrShortView(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            if (Session["aid"] != null)
+            {
+                production production = db.productions.Find(id);
+                if (production == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(production);
+            }
+            else
+            {
+                return RedirectToAction("AdminLogin", "Admin");
+            }
+
+        }
+
         public ActionResult ProductionView()
         {
             return View(db.productions.ToList());

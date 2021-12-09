@@ -1921,6 +1921,8 @@
     <Content Include="Views\Production\ProductionList.cshtml" />
     <Content Include="Views\ProductionEvent\EventView.cshtml" />
     <Content Include="Views\UserApply\BidView.cshtml" />
+    <Content Include="Views\User\ShortView.cshtml" />
+    <Content Include="Views\Production\PrShortView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
