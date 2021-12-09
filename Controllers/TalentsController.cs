@@ -42,8 +42,8 @@ namespace TalentHunt.Controllers
                 {
                     return View(db.talents.ToList());
                 }
-                List<talent> talent = db.talents.Where(p => p.ttype == Search || Search == null).ToList();
-                if(talent.Count() == 0)
+                List<talent> talent = db.talents.Where(p => p.ttype.Contains(Search) || Search == null).ToList();
+                if (talent.Count() == 0)
                 {
                     TempData["tNotFound"] = "Talent Not Found";
                 }
@@ -188,7 +188,14 @@ namespace TalentHunt.Controllers
                 if (talent != null)
                 {
                     db.talents.Remove(talent);
-                    db.SaveChanges();
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch(Exception e)
+                    {
+                        TempData["talenterr"] = "Talent cannot be deleted becasue users are available with this telents";
+                    }
                     return RedirectToAction("Index");
                 }
                 else

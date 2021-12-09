@@ -37,7 +37,6 @@ namespace TalentHunt.ModelView
 
         [Required(ErrorMessage = "*")]
         [DisplayName("Password")]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,15}$", ErrorMessage = "Invalid password format")]
         [DataType(DataType.Password)]
         public string password { get; set; }
 
