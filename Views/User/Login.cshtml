@@ -123,7 +123,7 @@
                         <div class="login-title">
                             <h2 class="text-center text-primary">Login to Talent Hunt</h2>
                         </div>
-                        @using (Html.BeginForm("Login","User",FormMethod.Post))
+                        @using (Html.BeginForm("Login", "User", FormMethod.Post))
                         {
                             @Html.AntiForgeryToken()
                             <div class="select-role">
@@ -144,12 +144,12 @@
                             </div>
                             @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
                             <div class="input-group custom">
-                                @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control", placeholder="Enter UserName", @value = ViewBag.uUsername } })
+                                @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter UserName", @value = ViewBag.uUsername } })
                                 <div class="input-group-append custom">
                                     <span class="input-group-text"><i class="icon-copy dw dw-user1"></i></span>
                                 </div>
                             </div>
-                            @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger"})
+                            @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
                             <div class="input-group custom">
                                 @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Password", @value = ViewBag.uPassword } })
                                 <div class="input-group-append custom">
