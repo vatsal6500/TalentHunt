@@ -62,7 +62,7 @@ namespace TalentHunt.Controllers
                 userprofilev.userid = uid;
 
                 userprofile userprofile = new userprofile();
-                CloneObjects.CopyPropertiesTo(userprofilev, userprofile);
+                AutoMapper.Mapper.Map(userprofilev, userprofile);
 
                 db.userprofiles.Add(userprofile);
                 db.SaveChanges();
@@ -82,13 +82,15 @@ namespace TalentHunt.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             userprofile userprofile = db.userprofiles.Find(id);
+            userprofilev userprofilev = new userprofilev();
+            AutoMapper.Mapper.Map(userprofile, userprofilev);
             if (userprofile == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.tid = new SelectList(db.talents, "tid", "ttype", userprofile.tid);
-            ViewBag.userid = new SelectList(db.users, "userid", "fname", userprofile.userid);
-            return View(userprofile);
+            ViewBag.tid = new SelectList(db.talents, "tid", "ttype", userprofilev.tid);
+            ViewBag.userid = new SelectList(db.users, "userid", "fname", userprofilev.userid);
+            return View(userprofilev);
         }
 
         // POST: UserProfile/Edit/5
@@ -96,17 +98,20 @@ namespace TalentHunt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "upid,userid,tid,experience,portfolio")] userprofile userprofile)
+        public ActionResult Edit([Bind(Include = "upid,userid,tid,experience,portfolio")] userprofilev userprofilev)
         {
             if (ModelState.IsValid)
             {
+                userprofile userprofile = new userprofile();
+                AutoMapper.Mapper.Map(userprofilev, userprofile);
+
                 db.Entry(userprofile).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.tid = new SelectList(db.talents, "tid", "ttype", userprofile.tid);
-            ViewBag.userid = new SelectList(db.users, "userid", "fname", userprofile.userid);
-            return View(userprofile);
+            ViewBag.tid = new SelectList(db.talents, "tid", "ttype", userprofilev.tid);
+            ViewBag.userid = new SelectList(db.users, "userid", "fname", userprofilev.userid);
+            return View(userprofilev);
         }
 
         // GET: UserProfile/Delete/5

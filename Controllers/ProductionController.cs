@@ -165,8 +165,8 @@ namespace TalentHunt.Controllers
                     subproduction subproduction = new subproduction();
                     production production = new production();
 
-                    CloneObjects.CopyPropertiesTo(subproductionv, subproduction);
-                    CloneObjects.CopyPropertiesTo(productionv, production);
+                    AutoMapper.Mapper.Map(subproductionv, subproduction);
+                    AutoMapper.Mapper.Map(productionv, production);
 
                     db.subproductions.Add(subproduction);
                     db.productions.Add(production);
@@ -197,6 +197,8 @@ namespace TalentHunt.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             production production = db.productions.Find(id);
+            productionv productionv = new productionv();
+            AutoMapper.Mapper.Map(production, productionv);
             if (production == null)
             {
                 return HttpNotFound();
@@ -209,15 +211,17 @@ namespace TalentHunt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "pid,pname,pimage,phead,address,contactno,email,username,password,description")] production production)
+        public ActionResult Edit([Bind(Include = "pid,pname,pimage,phead,address,contactno,email,username,password,description")] productionv productionv)
         {
             if (ModelState.IsValid)
             {
+                production production = new production();
+                AutoMapper.Mapper.Map(productionv,production);
                 db.Entry(production).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(production);
+            return View(productionv);
         }
 
         // GET: Production/Delete/5

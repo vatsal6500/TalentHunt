@@ -270,7 +270,7 @@ namespace TalentHunt.Controllers
                     userv.ImageFile.SaveAs(fileName);
 
                     user user = new user();
-                    CloneObjects.CopyPropertiesTo(userv, user);
+                    AutoMapper.Mapper.Map(userv, user);
 
                     db.users.Add(user);
                     db.SaveChanges();
@@ -292,6 +292,8 @@ namespace TalentHunt.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             user user = db.users.Find(id);
+            userv userv = new userv();
+            AutoMapper.Mapper.Map(user, userv);
             if (user == null)
             {
                 return HttpNotFound();
@@ -304,15 +306,18 @@ namespace TalentHunt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "userid,fname,lname,gender,age,address,city,state,pincode,photo,email,username,password")] user user)
+        public ActionResult Edit([Bind(Include = "userid,fname,lname,gender,age,address,city,state,pincode,photo,email,username,password")] userv userv)
         {
             if (ModelState.IsValid)
             {
+                user user = new user();
+                AutoMapper.Mapper.Map(userv,user);
+
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(user);
+            return View(userv);
         }
 
         // GET: User/Delete/5

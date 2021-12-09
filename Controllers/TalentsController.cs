@@ -106,7 +106,7 @@ namespace TalentHunt.Controllers
                     if(talent.Count() == 0)
                     {
                         talent Talent = new talent();
-                        CloneObjects.CopyPropertiesTo(talentv, talent);
+                        AutoMapper.Mapper.Map(talentv, talent);
 
                         db.talents.Add(Talent);
                         db.SaveChanges();
@@ -133,11 +133,15 @@ namespace TalentHunt.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
                 talent talent = db.talents.Find(id);
+
+                talentv talentv = new talentv();
+                AutoMapper.Mapper.Map(talent, talentv);
+
                 if (talent == null)
                 {
                     return HttpNotFound();
                 }
-                return View(talent);
+                return View(talentv);
             }
             else
             {
@@ -157,7 +161,7 @@ namespace TalentHunt.Controllers
                 if (ModelState.IsValid)
                 {
                     talent talent = new talent();
-                    CloneObjects.CopyPropertiesTo(talentv, talentv);
+                    AutoMapper.Mapper.Map(talentv, talent);
 
                     db.Entry(talent).State = EntityState.Modified;
                     db.SaveChanges();

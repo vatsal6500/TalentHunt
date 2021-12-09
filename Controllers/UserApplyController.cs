@@ -88,7 +88,7 @@ namespace TalentHunt.Controllers
                 userapplyv.userid = uid;
 
                 userapply userapply = new userapply();
-                CloneObjects.CopyPropertiesTo(userapplyv, userapply);
+                AutoMapper.Mapper.Map(userapplyv, userapply);
 
                 db.userapplies.Add(userapply);
                 db.SaveChanges();
@@ -109,6 +109,10 @@ namespace TalentHunt.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             userapply userapply = db.userapplies.Find(id);
+
+            userapplyv userapplyv = new userapplyv();
+            AutoMapper.Mapper.Map(userapply, userapplyv);
+
             if (userapply == null)
             {
                 return HttpNotFound();
@@ -124,18 +128,20 @@ namespace TalentHunt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "uaid,pid,peid,userid,appdate,expay,message")] userapply userapply)
+        public ActionResult Edit([Bind(Include = "uaid,pid,peid,userid,appdate,expay,message")] userapplyv userapplyv)
         {
             if (ModelState.IsValid)
             {
+                userapply userapply = new userapply();
+                AutoMapper.Mapper.Map(userapplyv,userapply);
                 db.Entry(userapply).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.pid = new SelectList(db.productions, "pid", "pname", userapply.pid);
-            ViewBag.peid = new SelectList(db.productionevents, "peid", "ename", userapply.peid);
-            ViewBag.userid = new SelectList(db.users, "userid", "fname", userapply.userid);
-            return View(userapply);
+            ViewBag.pid = new SelectList(db.productions, "pid", "pname", userapplyv.pid);
+            ViewBag.peid = new SelectList(db.productionevents, "peid", "ename", userapplyv.peid);
+            ViewBag.userid = new SelectList(db.users, "userid", "fname", userapplyv.userid);
+            return View(userapplyv);
         }
 
         // GET: UserApply/Delete/5

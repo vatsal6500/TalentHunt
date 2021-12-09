@@ -90,7 +90,7 @@ namespace TalentHunt.Controllers
                             imagev.userid = uid;
 
                             image image = new image();
-                            CloneObjects.CopyPropertiesTo(imagev, image);
+                            AutoMapper.Mapper.Map(imagev,image);
 
                             db.images.Add(image);
                             db.SaveChanges();
@@ -122,13 +122,15 @@ namespace TalentHunt.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             image image = db.images.Find(id);
+            imagev imagev = new imagev();
+            AutoMapper.Mapper.Map(image,imagev);
             if (image == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.tid = new SelectList(db.talents, "tid", "ttype", image.tid);
-            ViewBag.userid = new SelectList(db.users, "userid", "fname", image.userid);
-            return View(image);
+            ViewBag.tid = new SelectList(db.talents, "tid", "ttype", imagev.tid);
+            ViewBag.userid = new SelectList(db.users, "userid", "fname", imagev.userid);
+            return View(imagev);
         }
 
         // POST: Images/Edit/5
@@ -136,17 +138,19 @@ namespace TalentHunt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "iid,userid,tid,image1,caption")] image image)
+        public ActionResult Edit([Bind(Include = "iid,userid,tid,image1,caption")] imagev imagev)
         {
             if (ModelState.IsValid)
             {
+                image image = new image();
+                AutoMapper.Mapper.Map(imagev,image);
                 db.Entry(image).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.tid = new SelectList(db.talents, "tid", "ttype", image.tid);
-            ViewBag.userid = new SelectList(db.users, "userid", "fname", image.userid);
-            return View(image);
+            ViewBag.tid = new SelectList(db.talents, "tid", "ttype", imagev.tid);
+            ViewBag.userid = new SelectList(db.users, "userid", "fname", imagev.userid);
+            return View(imagev);
         }
 
         // GET: Images/Delete/5

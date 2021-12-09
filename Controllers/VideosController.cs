@@ -90,7 +90,7 @@ namespace TalentHunt.Controllers
                             videov.userid = uid;
 
                             video video = new video();
-                            CloneObjects.CopyPropertiesTo(videov, video);
+                            AutoMapper.Mapper.Map(videov, video);
 
                             db.videos.Add(video);
                             db.SaveChanges();
@@ -122,13 +122,15 @@ namespace TalentHunt.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             video video = db.videos.Find(id);
+            videov videov = new videov();
+            AutoMapper.Mapper.Map(video,videov);
             if (video == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.tid = new SelectList(db.talents, "tid", "ttype", video.tid);
-            ViewBag.userid = new SelectList(db.users, "userid", "fname", video.userid);
-            return View(video);
+            ViewBag.tid = new SelectList(db.talents, "tid", "ttype", videov.tid);
+            ViewBag.userid = new SelectList(db.users, "userid", "fname", videov.userid);
+            return View(videov);
         }
 
         // POST: Videos/Edit/5
@@ -136,17 +138,20 @@ namespace TalentHunt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "vid,userid,tid,video1,caption")] video video)
+        public ActionResult Edit([Bind(Include = "vid,userid,tid,video1,caption")] videov videov)
         {
             if (ModelState.IsValid)
             {
+                video video = new video();
+                AutoMapper.Mapper.Map(videov, video);
+
                 db.Entry(video).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.tid = new SelectList(db.talents, "tid", "ttype", video.tid);
-            ViewBag.userid = new SelectList(db.users, "userid", "fname", video.userid);
-            return View(video);
+            ViewBag.tid = new SelectList(db.talents, "tid", "ttype", videov.tid);
+            ViewBag.userid = new SelectList(db.users, "userid", "fname", videov.userid);
+            return View(videov);
         }
 
         // GET: Videos/Delete/5

@@ -122,7 +122,6 @@ namespace TalentHunt.Controllers
                 {
                     plan plan = new plan();
                     AutoMapper.Mapper.Map(planv, plan);
-                    //CloneObjects.CopyPropertiesTo(planv, plan);
 
                     db.plans.Add(plan);
                     db.SaveChanges();

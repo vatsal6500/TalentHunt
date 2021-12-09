@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using TalentHunt.Models;
+using TalentHunt.ModelView;
 
 namespace TalentHunt.Controllers
 {
@@ -73,13 +74,17 @@ namespace TalentHunt.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             subproduction subproduction = db.subproductions.Find(id);
+
+            subproductionv subproductionv = new subproductionv();
+            AutoMapper.Mapper.Map(subproduction,subproductionv);
+
             if (subproduction == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.planid = new SelectList(db.plans, "planid", "plantype", subproduction.planid);
-            ViewBag.pid = new SelectList(db.productions, "pid", "pname", subproduction.pid);
-            return View(subproduction);
+            ViewBag.planid = new SelectList(db.plans, "planid", "plantype", subproductionv.planid);
+            ViewBag.pid = new SelectList(db.productions, "pid", "pname", subproductionv.pid);
+            return View(subproductionv);
         }
 
         // POST: SubProductions/Edit/5
@@ -87,17 +92,20 @@ namespace TalentHunt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "spid,planid,pid,startdate,enddate")] subproduction subproduction)
+        public ActionResult Edit([Bind(Include = "spid,planid,pid,startdate,enddate")] subproductionv subproductionv)
         {
             if (ModelState.IsValid)
             {
+                subproduction subproduction = new subproduction();
+                AutoMapper.Mapper.Map(subproductionv,subproduction);
+
                 db.Entry(subproduction).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.planid = new SelectList(db.plans, "planid", "plantype", subproduction.planid);
-            ViewBag.pid = new SelectList(db.productions, "pid", "pname", subproduction.pid);
-            return View(subproduction);
+            ViewBag.planid = new SelectList(db.plans, "planid", "plantype", subproductionv.planid);
+            ViewBag.pid = new SelectList(db.productions, "pid", "pname", subproductionv.pid);
+            return View(subproductionv);
         }
 
         // GET: SubProductions/Delete/5

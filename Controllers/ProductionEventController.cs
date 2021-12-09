@@ -216,7 +216,7 @@ namespace TalentHunt.Controllers
                     productioneventv.pid = pid;
 
                     productionevent productionevent = new productionevent();
-                    CloneObjects.CopyPropertiesTo(productioneventv, productionevent);
+                    AutoMapper.Mapper.Map(productioneventv, productionevent);
 
                     db.productionevents.Add(productionevent);
                     db.SaveChanges();
@@ -240,12 +240,14 @@ namespace TalentHunt.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             productionevent productionevent = db.productionevents.Find(id);
+            productioneventv productioneventv = new productioneventv();
+            AutoMapper.Mapper.Map(productionevent,productioneventv);
             if (productionevent == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.pid = new SelectList(db.productions, "pid", "pname", productionevent.pid);
-            return View(productionevent);
+            ViewBag.pid = new SelectList(db.productions, "pid", "pname", productioneventv.pid);
+            return View(productioneventv);
         }
 
         // POST: ProductionEvent/Edit/5
@@ -253,16 +255,17 @@ namespace TalentHunt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "peid,pid,ename,etype,emanager,startdate,enddate,evenu,evisitors,appdeadline,description,image")] productionevent productionevent)
+        public ActionResult Edit([Bind(Include = "peid,pid,ename,etype,emanager,startdate,enddate,evenu,evisitors,appdeadline,description,image")] productioneventv productioneventv)
         {
             if (ModelState.IsValid)
             {
+                productionevent productionevent = new productionevent();
                 db.Entry(productionevent).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.pid = new SelectList(db.productions, "pid", "pname", productionevent.pid);
-            return View(productionevent);
+            ViewBag.pid = new SelectList(db.productions, "pid", "pname", productioneventv.pid);
+            return View(productioneventv);
         }
 
         // GET: ProductionEvent/Delete/5

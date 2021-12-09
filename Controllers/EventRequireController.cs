@@ -60,7 +60,7 @@ namespace TalentHunt.Controllers
                 eventrequirev.peid = peid;
 
                 eventrequire eventrequire = new eventrequire();
-                CloneObjects.CopyPropertiesTo(eventrequirev, eventrequire);
+                AutoMapper.Mapper.Map(eventrequirev, eventrequire);
 
                 db.eventrequires.Add(eventrequire);
                 db.SaveChanges();
@@ -81,14 +81,16 @@ namespace TalentHunt.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             eventrequire eventrequire = db.eventrequires.Find(id);
+            eventrequirev eventrequirev = new eventrequirev();
+            AutoMapper.Mapper.Map(eventrequire, eventrequirev);
             if (eventrequire == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.pid = new SelectList(db.productions, "pid", "pname", eventrequire.pid);
-            ViewBag.peid = new SelectList(db.productionevents, "peid", "ename", eventrequire.peid);
-            ViewBag.tid = new SelectList(db.talents, "tid", "ttype", eventrequire.tid);
-            return View(eventrequire);
+            ViewBag.pid = new SelectList(db.productions, "pid", "pname", eventrequirev.pid);
+            ViewBag.peid = new SelectList(db.productionevents, "peid", "ename", eventrequirev.peid);
+            ViewBag.tid = new SelectList(db.talents, "tid", "ttype", eventrequirev.tid);
+            return View(eventrequirev);
         }
 
         // POST: EventRequire/Edit/5
@@ -96,18 +98,20 @@ namespace TalentHunt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "erid,pid,peid,tid,agerange,gender,payrange")] eventrequire eventrequire)
+        public ActionResult Edit([Bind(Include = "erid,pid,peid,tid,agerange,gender,payrange")] eventrequirev eventrequirev)
         {
             if (ModelState.IsValid)
             {
+                eventrequire eventrequire = new eventrequire();
+                AutoMapper.Mapper.Map(eventrequirev, eventrequire);
                 db.Entry(eventrequire).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.pid = new SelectList(db.productions, "pid", "pname", eventrequire.pid);
-            ViewBag.peid = new SelectList(db.productionevents, "peid", "ename", eventrequire.peid);
-            ViewBag.tid = new SelectList(db.talents, "tid", "ttype", eventrequire.tid);
-            return View(eventrequire);
+            ViewBag.pid = new SelectList(db.productions, "pid", "pname", eventrequirev.pid);
+            ViewBag.peid = new SelectList(db.productionevents, "peid", "ename", eventrequirev.peid);
+            ViewBag.tid = new SelectList(db.talents, "tid", "ttype", eventrequirev.tid);
+            return View(eventrequirev);
         }
 
         // GET: EventRequire/Delete/5

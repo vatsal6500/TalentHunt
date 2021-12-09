@@ -113,12 +113,17 @@ namespace TalentHunt.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
+                
                 admin admin = db.admins.Find(id);
+                
+                adminv adminv = new adminv();
+                AutoMapper.Mapper.Map(admin,adminv);
+
                 if (admin == null)
                 {
                     return HttpNotFound();
                 }
-                return View(admin);
+                return View(adminv);
             }
             else
             {
@@ -138,7 +143,7 @@ namespace TalentHunt.Controllers
                 if (ModelState.IsValid)
                 {
                     admin admin = new admin();
-                    CloneObjects.CopyPropertiesTo(adminv,admin);
+                    AutoMapper.Mapper.Map(adminv,admin);
                     db.Entry(admin).State = EntityState.Modified;
                     db.SaveChanges();
                     return RedirectToAction("Index");
