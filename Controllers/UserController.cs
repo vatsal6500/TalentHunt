@@ -291,7 +291,7 @@ namespace TalentHunt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "userid,fname,lname,gender,age,address,city,state,pincode,photo,email,username,password,cpassword,ImageFile")] userv userv)
+        public ActionResult Create([Bind(Include = "userid,fname,lname,gender,age,address,city,state,pincode,photo,email,username,password,cpassword,ImageFile,active")] userv userv)
         {
             if (ModelState.IsValid)
             {
@@ -307,6 +307,7 @@ namespace TalentHunt.Controllers
                     userv.photo = "~/Images/User/" + fileName;
                     fileName = Path.Combine(Server.MapPath("~/Images/User/"), fileName);
                     userv.ImageFile.SaveAs(fileName);
+                    userv.status = "active";
 
                     user user = new user();
                     AutoMapper.Mapper.Map(userv, user);

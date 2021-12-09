@@ -86,6 +86,46 @@ namespace TalentHunt.Controllers
             }
         }
 
+        public ActionResult ProductionList()
+        {
+            if (Session["aid"] != null)
+            {
+                return View(db.productions.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Login", "AdminLogin");
+            }
+
+        }
+        [HttpPost]
+        public ActionResult ProductionList(string Search)
+        {
+            if (Session["aid"] != null)
+            {
+                if (Search == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                if (Search.ToLower() == "all" || Search == "")
+                {
+                    return View(db.productions.ToList());
+                }
+                List<production> productions = db.productions.Where(p => p.pname.Contains(Search) || Search == null).ToList();
+                if (productions.Count() == 0)
+                {
+                    TempData["NotFound"] = "Data Not Found";
+                }
+
+                return View(productions.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Login", "AdminLogin");
+            }
+        }
+
+
         // GET: Production/Details/5
         public ActionResult Details(int? id)
         {
@@ -138,7 +178,7 @@ namespace TalentHunt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "pid,pname,pimage,phead,address,contactno,email,username,password,cpassword,description,ImageFile")] productionv productionv,subproductionv subproductionv,int planid)
+        public ActionResult Create([Bind(Include = "pid,pname,pimage,phead,address,contactno,email,username,password,cpassword,description,ImageFile,status")] productionv productionv,subproductionv subproductionv,int planid)
         {
             if (ModelState.IsValid)
             {
@@ -154,6 +194,7 @@ namespace TalentHunt.Controllers
                     productionv.pimage = "~/Images/Production/" + fileName;
                     fileName = Path.Combine(Server.MapPath("~/Images/Production/"), fileName);
                     productionv.ImageFile.SaveAs(fileName);
+                    productionv.status = "active";
 
                     int Duration = Convert.ToInt32(db.plans.Where(x => x.planid == planid).SingleOrDefault()?.duration);
 

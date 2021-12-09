@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TalentHunt.Models.user>
+﻿@model IEnumerable<TalentHunt.Models.productionevent>
 
 @{ 
     ViewBag.Title = "Index";
@@ -58,7 +58,7 @@
                 <div class="pd-20 card-box mb-30">
                     <div class="clearfix mb-20">
                         <div class="pull-left">
-                            <h4 class="text-blue h4"> Talented Users <span class="text-black-50 mx-3">(Total - @count)</span> </h4>
+                            <h4 class="text-blue h4"> Events <span class="text-black-50 mx-3">(Total - @count)</span> </h4>
                         </div>
 
                         @using (Html.BeginForm(FormMethod.Post))
@@ -74,15 +74,13 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">Profile Pic</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Gender</th>
-                                <th scope="col">Age</th>
-                                <th scope="col">State</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Status</th>
+                                <th scope="col">Event Pic</th>
+                                <th scope="col">Event Name</th>
+                                <th scope="col">Production</th>
+                                <th scope="col">Start Date</th>
+                                <th scope="col">End Date</th>
+                                <th scope="col">Venue</th>
                                 <th scope="col">Action</th>
-                                <th scope="col">View</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -91,29 +89,14 @@
                             {
                                 <tr>
                                     <td>
-                                        <img src="@Url.Content(item.photo)" style="border-radius:30%" height="100" width="100" />
+                                        <img src="@Url.Content(item.image)" style="border-radius:30%" height="100" width="100" />
                                     </td>
-                                    <td>@Html.DisplayFor(modelItem => item.fname) @Html.DisplayFor(modelItem => item.lname) </td>
-                                    <td>@Html.DisplayFor(modelItem => item.gender)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.age)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.state)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.email)</td>
-                                    @if (item.status.Equals("active"))
-                                    {
-                                        <td>
-                                            <div class="icon" data-color="#09cc06"><i class="icon-copy fa fa-circle" aria-hidden="true"></i></div>
-                                        </td>
-                                        <td>@Html.ActionLink("Block", "", "", new { @class = "btn btn-outline-danger" })</td>
-                                    }
-                                    @if (item.status.Equals("blocked"))
-                                    {
-                                        <td>
-                                            <div class="icon" data-color="#ff5b5b"><i class="icon-copy fa fa-circle" aria-hidden="true"></i></div>
-                                        </td>
-                                        <td>@Html.ActionLink("Approve", "", "", new { @class = "btn btn-outline-success" })</td>
-                                    }
-
-                                    <td>@Html.ActionLink("View Profile", "ShortView", "User", new { id = item.userid }, new { @area = "" })</td>
+                                    <td>@Html.DisplayFor(modelItem => item.ename)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.production.pname)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.startdate)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.enddate)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.evenu)</td>
+                                    <td>@Html.ActionLink("Remove", "", "", new { @class = "btn btn-outline-danger" })</td>
                                 </tr>
                             }
                         </tbody>

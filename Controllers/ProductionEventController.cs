@@ -131,6 +131,45 @@ namespace TalentHunt.Controllers
             }
         }
 
+        public ActionResult EventView()
+        {
+            if (Session["aid"] != null)
+            {
+                return View(db.productionevents.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Login", "AdminLogin");
+            }
+
+        }
+        [HttpPost]
+        public ActionResult EventView(string Search)
+        {
+            if (Session["aid"] != null)
+            {
+                if (Search == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                if (Search.ToLower() == "all" || Search == "")
+                {
+                    return View(db.productionevents.ToList());
+                }
+                List<productionevent> events = db.productionevents.Where(p => p.ename.Contains(Search) || Search == null).ToList();
+                if (events.Count() == 0)
+                {
+                    TempData["NotFound"] = "Data Not Found";
+                }
+
+                return View(events.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Login", "AdminLogin");
+            }
+        }
+
         // GET: ProductionEvent/Details/5
         public ActionResult Details(int? id)
         {

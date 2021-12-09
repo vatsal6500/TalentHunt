@@ -1918,6 +1918,9 @@
     <Content Include="Views\Production\ProductionView.cshtml" />
     <Content Include="Views\User\UserView.cshtml" />
     <Content Include="Views\User\UserList.cshtml" />
+    <Content Include="Views\Production\ProductionList.cshtml" />
+    <Content Include="Views\ProductionEvent\EventView.cshtml" />
+    <Content Include="Views\UserApply\BidView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

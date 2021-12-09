@@ -45,6 +45,45 @@ namespace TalentHunt.Controllers
             return View(userapplies.ToList());
         }
 
+        public ActionResult BidView()
+        {
+            if (Session["aid"] != null)
+            {
+                return View(db.userapplies.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Login", "AdminLogin");
+            }
+
+        }
+        [HttpPost]
+        public ActionResult BidView(string Search)
+        {
+            if (Session["aid"] != null)
+            {
+                if (Search == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                if (Search.ToLower() == "all" || Search == "")
+                {
+                    return View(db.userapplies.ToList());
+                }
+                List<userapply> bids = db.userapplies.Where(p => p.productionevent.ename.Contains(Search) || Search == null).ToList();
+                if (bids.Count() == 0)
+                {
+                    TempData["NotFound"] = "Data Not Found";
+                }
+
+                return View(bids.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Login", "AdminLogin");
+            }
+        }
+
         // GET: UserApply/Details/5
         public ActionResult Details(int? id)
         {
@@ -75,7 +114,7 @@ namespace TalentHunt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "uaid,pid,peid,userid,appdate,expay,message")] userapplyv userapplyv, int eid)
+        public ActionResult Create([Bind(Include = "uaid,pid,peid,userid,appdate,expay,message,status")] userapplyv userapplyv, int eid)
         {
             if (ModelState.IsValid)
             {
@@ -86,6 +125,7 @@ namespace TalentHunt.Controllers
                 userapplyv.pid = result.pid;
                 userapplyv.peid = eid;
                 userapplyv.userid = uid;
+                userapplyv.status = "applied";
 
                 userapply userapply = new userapply();
                 AutoMapper.Mapper.Map(userapplyv, userapply);
