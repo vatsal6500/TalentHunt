@@ -245,45 +245,66 @@ namespace TalentHunt.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(login login,string options)
         {
-
-            if (options=="user")
+            try
             {
-                user usr = db.users.Where(p => p.username.Equals(login.username) && p.password.Equals(login.password)).FirstOrDefault();
-                if (usr != null)
+                if (options == "user")
                 {
-                    Session["uid"] = usr.userid.ToString();
-                    Session["photo"] = usr.photo.ToString();
-                    Session["uname"] = usr.fname.ToString() + " " + usr.lname.ToString();
-                    TempData["gender"] = usr.gender;
-                    TempData["age"] = usr.age;
-                    return RedirectToAction("Index");
+                    user usr = db.users.Where(p => p.username.Equals(login.username) && p.password.Equals(login.password)).FirstOrDefault();
+                    if (usr != null)
+                    {
+                        if (usr.status == "active")
+                        {
+                            Session["uid"] = usr.userid.ToString();
+                            Session["photo"] = usr.photo.ToString();
+                            Session["uname"] = usr.fname.ToString() + " " + usr.lname.ToString();
+                            TempData["gender"] = usr.gender;
+                            TempData["age"] = usr.age;
+                            return RedirectToAction("Index");
+                        }
+                        else
+                        {
+                            ViewBag.err = "You are banned from using TalentHunt";
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.err = "Invalid User Credentials";
+                        TempData["register"] = "<div class='font-16 weight-600 pt-10 pb-10 text-center' data-color='#707373'>OR</div><div class='input-group mb-0'><a class='btn btn-outline-primary btn-lg btn-block' href='/User/Create'>Register To Create User Account</a></div>";
+                    }
+                }
+                else if (options == "production")
+                {
+                    production pro = db.productions.Where(p => p.username.Equals(login.username) && p.password.Equals(login.password)).FirstOrDefault();
+                    if (pro != null)
+                    {
+                        if (pro.status == "active")
+                        {
+                            Session["pid"] = pro.pid.ToString();
+                            Session["pimage"] = pro.pimage.ToString();
+                            Session["pname"] = pro.pname.ToString();
+                            return RedirectToAction("Index", "Production");
+                        }
+                        else
+                        {
+                            ViewBag.err = "You are banned from using Talent hunt";
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.err = "Invalid Production Credentials";
+                        TempData["register"] = "<div class='font-16 weight-600 pt-10 pb-10 text-center' data-color='#707373'>OR</div><div class='input-group mb-0'><a class='btn btn-outline-primary btn-lg btn-block' href='/Production/Create'>Register To Create Production Account</a></div>";
+                    }
                 }
                 else
                 {
-                    ViewBag.err = "Invalid User Credentials";
-                    TempData["register"] = "<div class='font-16 weight-600 pt-10 pb-10 text-center' data-color='#707373'>OR</div><div class='input-group mb-0'><a class='btn btn-outline-primary btn-lg btn-block' href='/User/Create'>Register To Create User Account</a></div>";
+                    ViewBag.select = "Select User or Production";
                 }
             }
-            else if(options=="production")
+            catch(Exception ex)
             {
-                production pro = db.productions.Where(p => p.username.Equals(login.username) && p.password.Equals(login.password)).FirstOrDefault();
-                if(pro != null)
-                {
-                    Session["pid"] = pro.pid.ToString();
-                    Session["pimage"] = pro.pimage.ToString();
-                    Session["pname"] = pro.pname.ToString();
-                    return RedirectToAction("Index", "Production");
-                }
-                else
-                {
-                    ViewBag.err = "Invalid Production Credentials";
-                    TempData["register"] = "<div class='font-16 weight-600 pt-10 pb-10 text-center' data-color='#707373'>OR</div><div class='input-group mb-0'><a class='btn btn-outline-primary btn-lg btn-block' href='/Production/Create'>Register To Create Production Account</a></div>";
-                }
+                ViewBag.err = "There is Some problem Try after somr time";
             }
-            else
-            {
-                ViewBag.select = "Select User or Production";
-            }
+            
             return View();
         }
 
