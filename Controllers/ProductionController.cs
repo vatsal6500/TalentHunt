@@ -153,23 +153,65 @@ namespace TalentHunt.Controllers
         {
             if (id == null)
             {
+
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            int pid = Convert.ToInt32(id);
-            var result = db.productionevents.Where(p => p.pid.Equals(pid));
-            if(result.Count() == 0)
+            if (id != null)
             {
-                TempData["Notfound"] = "No Events from this Production";
-            }
-            TempData["events"] = result;
+                string pname = "";
+                int pid = Convert.ToInt32(id);
+                var result = db.productionevents.Where(p => p.peid.Equals(pid));
+                var reqs = db.eventrequires.Where(p => p.peid.Equals(pid));
+                TempData["reqs"] = reqs;
 
-            production production = db.productions.Find(id);
-            if (production == null)
+                if (Session["uid"] != null)
+                {
+                    var userbids = db.userapplies.Where(x => x.peid.Equals(pid));
+                    if (userbids.Count() == 0)
+                    {
+                        TempData["NotFoundUserBids"] = "No one has bid on this event";
+                    }
+                    TempData["bids"] = userbids;
+                }
+
+                var selects = db.userselects.Where(x => x.peid.Equals(pid));
+                if (selects.Count() == 0)
+                {
+                    TempData["selected"] = "No";
+                }
+                else
+                {
+                    TempData["selected"] = "Yes";
+                    TempData["userselected"] = selects;
+                }
+
+                if (Session["pid"] != null)
+                {
+                    int prid = Convert.ToInt32(HttpContext.Session["pid"]);
+                    var bids = db.userapplies.Where(x => x.pid.Equals(prid) && x.peid.Equals(pid));
+                    if (bids.Count() == 0)
+                    {
+                        TempData["NotFound"] = "No one has bid on this event";
+                    }
+                    TempData["pdata"] = bids;
+
+
+                }
+
+                foreach (productionevent pe in result)
+                {
+                    var pdata = db.productions.Where(p => p.pid.Equals(pe.pid)).SingleOrDefault();
+                    pname += pdata.pname.ToString();
+                }
+
+                TempData["name"] = pname;
+            }
+            productionevent productionevent = db.productionevents.Find(id);
+            if (productionevent == null)
             {
                 return HttpNotFound();
             }
-            return View(production);
+            return View(productionevent);
         }
 
         // GET: Production/Create

@@ -146,6 +146,7 @@
     <Compile Include="Controllers\UserApplyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
+    <Compile Include="Controllers\UserSelectController.cs" />
     <Compile Include="Controllers\VideosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1923,6 +1924,11 @@
     <Content Include="Views\UserApply\BidView.cshtml" />
     <Content Include="Views\User\ShortView.cshtml" />
     <Content Include="Views\Production\PrShortView.cshtml" />
+    <Content Include="Views\UserSelect\Create.cshtml" />
+    <Content Include="Views\UserSelect\Delete.cshtml" />
+    <Content Include="Views\UserSelect\Details.cshtml" />
+    <Content Include="Views\UserSelect\Edit.cshtml" />
+    <Content Include="Views\UserSelect\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
