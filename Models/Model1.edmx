@@ -64,6 +64,7 @@
           <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="description" Type="varchar(max)" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="productionevent">
           <Key>
@@ -136,6 +137,7 @@
           <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="userapply">
           <Key>
@@ -148,6 +150,7 @@
           <Property Name="appdate" Type="date" Nullable="false" />
           <Property Name="expay" Type="int" Nullable="false" />
           <Property Name="message" Type="varchar(max)" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="userprofile">
           <Key>
@@ -606,6 +609,7 @@
           <NavigationProperty Name="subproductions" Relationship="Self.FK_subproduction_production" FromRole="production" ToRole="subproduction" />
           <NavigationProperty Name="subusers" Relationship="Self.FK_subuser_production" FromRole="production" ToRole="subuser" />
           <NavigationProperty Name="userapplies" Relationship="Self.FK_userapply_production" FromRole="production" ToRole="userapply" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="productionevent">
           <Key>
@@ -699,6 +703,7 @@
           <NavigationProperty Name="userprofiles" Relationship="Self.FK_userprofile_user" FromRole="user" ToRole="userprofile" />
           <NavigationProperty Name="userselects" Relationship="Self.FK_userselect_user" FromRole="user" ToRole="userselect" />
           <NavigationProperty Name="videos" Relationship="Self.FK_videos_user" FromRole="user" ToRole="videos" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="userapply">
           <Key>
@@ -714,6 +719,7 @@
           <NavigationProperty Name="production" Relationship="Self.FK_userapply_production" FromRole="userapply" ToRole="production" />
           <NavigationProperty Name="productionevent" Relationship="Self.FK_userapply_productionevent" FromRole="userapply" ToRole="productionevent" />
           <NavigationProperty Name="user" Relationship="Self.FK_userapply_user" FromRole="userapply" ToRole="user" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="userprofile">
           <Key>
@@ -1161,6 +1167,7 @@
           <EntitySetMapping Name="productions">
             <EntityTypeMapping TypeName="huntdbModel.production">
               <MappingFragment StoreEntitySet="production">
+                <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="pid" ColumnName="pid" />
                 <ScalarProperty Name="pname" ColumnName="pname" />
                 <ScalarProperty Name="pimage" ColumnName="pimage" />
@@ -1236,6 +1243,7 @@
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="huntdbModel.user">
               <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="userid" ColumnName="userid" />
                 <ScalarProperty Name="fname" ColumnName="fname" />
                 <ScalarProperty Name="lname" ColumnName="lname" />
@@ -1255,6 +1263,7 @@
           <EntitySetMapping Name="userapplies">
             <EntityTypeMapping TypeName="huntdbModel.userapply">
               <MappingFragment StoreEntitySet="userapply">
+                <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="uaid" ColumnName="uaid" />
                 <ScalarProperty Name="pid" ColumnName="pid" />
                 <ScalarProperty Name="peid" ColumnName="peid" />

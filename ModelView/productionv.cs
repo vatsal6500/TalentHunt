@@ -65,5 +65,7 @@ namespace TalentHunt.ModelView
 
         public HttpPostedFileBase ImageFile { get; set; }
 
+        public string status { get; set; }
+
     }
 }

@@ -11,19 +11,17 @@ namespace TalentHunt.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class userapply
     {
         public int uaid { get; set; }
         public int pid { get; set; }
         public int peid { get; set; }
         public int userid { get; set; }
-
-        [DataType(DataType.Date)]
-        public DateTime appdate { get; set; }
+        public System.DateTime appdate { get; set; }
         public int expay { get; set; }
         public string message { get; set; }
+        public string status { get; set; }
     
         public virtual production production { get; set; }
         public virtual productionevent productionevent { get; set; }

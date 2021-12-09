@@ -9,6 +9,9 @@
 
 namespace TalentHunt.Models
 {
+    using System;
+    using System.Collections.Generic;
+    
     public partial class video
     {
         public int vid { get; set; }
@@ -16,7 +19,7 @@ namespace TalentHunt.Models
         public int tid { get; set; }
         public string video1 { get; set; }
         public string caption { get; set; }
-
+    
         public virtual talent talent { get; set; }
         public virtual user user { get; set; }
     }

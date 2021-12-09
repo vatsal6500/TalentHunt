@@ -11,8 +11,7 @@ namespace TalentHunt.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.Web;
-
+    
     public partial class production
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -35,9 +34,8 @@ namespace TalentHunt.Models
         public string username { get; set; }
         public string password { get; set; }
         public string description { get; set; }
-
-        public HttpPostedFileBase ImageFile { get; set; }
-
+        public string status { get; set; }
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<eventrequire> eventrequires { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

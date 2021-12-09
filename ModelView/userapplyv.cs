@@ -25,5 +25,7 @@ namespace TalentHunt.ModelView
         [DataType(DataType.MultilineText)]
         public string message { get; set; }
 
+        public string status { get; set; }
+
     }
 }

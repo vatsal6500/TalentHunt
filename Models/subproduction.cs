@@ -10,14 +10,15 @@
 namespace TalentHunt.Models
 {
     using System;
-
+    using System.Collections.Generic;
+    
     public partial class subproduction
     {
         public int spid { get; set; }
         public int planid { get; set; }
         public int pid { get; set; }
-        public DateTime startdate { get; set; }
-        public DateTime enddate { get; set; }
+        public System.DateTime startdate { get; set; }
+        public System.DateTime enddate { get; set; }
     
         public virtual plan plan { get; set; }
         public virtual production production { get; set; }

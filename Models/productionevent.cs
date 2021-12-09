@@ -11,8 +11,7 @@ namespace TalentHunt.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.Web;
-
+    
     public partial class productionevent
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -29,16 +28,14 @@ namespace TalentHunt.Models
         public string ename { get; set; }
         public string etype { get; set; }
         public string emanager { get; set; }
-        public DateTime startdate { get; set; }
-        public DateTime enddate { get; set; }
+        public System.DateTime startdate { get; set; }
+        public System.DateTime enddate { get; set; }
         public string evenu { get; set; }
         public int evisitors { get; set; }
-        public DateTime appdeadline { get; set; }
+        public System.DateTime appdeadline { get; set; }
         public string description { get; set; }
         public string image { get; set; }
-
-        public HttpPostedFileBase ImageFile { get; set; }
-
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<eventrequire> eventrequires { get; set; }
         public virtual production production { get; set; }

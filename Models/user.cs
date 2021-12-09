@@ -9,8 +9,9 @@
 
 namespace TalentHunt.Models
 {
+    using System;
     using System.Collections.Generic;
-
+    
     public partial class user
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -37,8 +38,8 @@ namespace TalentHunt.Models
         public string email { get; set; }
         public string username { get; set; }
         public string password { get; set; }
-
-
+        public string status { get; set; }
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<image> images { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

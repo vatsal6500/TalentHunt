@@ -1917,6 +1917,7 @@
     <Content Include="Views\UserApply\Index.cshtml" />
     <Content Include="Views\Production\ProductionView.cshtml" />
     <Content Include="Views\User\UserView.cshtml" />
+    <Content Include="Views\User\UserList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -11,8 +11,7 @@ namespace TalentHunt.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.Web;
-
+    
     public partial class image
     {
         public int iid { get; set; }
@@ -20,7 +19,7 @@ namespace TalentHunt.Models
         public int tid { get; set; }
         public string image1 { get; set; }
         public string caption { get; set; }
-
+    
         public virtual talent talent { get; set; }
         public virtual user user { get; set; }
     }

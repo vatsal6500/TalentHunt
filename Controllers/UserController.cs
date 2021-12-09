@@ -152,6 +152,45 @@ namespace TalentHunt.Controllers
             }
         }
 
+        public ActionResult UserList()
+        {
+            if (Session["aid"] != null)
+            {
+                return View(db.users.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Login", "AdminLogin");
+            }
+
+        }
+        [HttpPost]
+        public ActionResult UserList(string Search)
+        {
+            if (Session["aid"] != null)
+            {
+                if (Search == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                if (Search.ToLower() == "all" || Search == "")
+                {
+                    return View(db.users.ToList());
+                }
+                List<user> users = db.users.Where(p => p.fname.Contains(Search) || Search == null).ToList();
+                if (users.Count() == 0)
+                {
+                    TempData["NotFound"] = "Data Not Found";
+                }
+
+                return View(users.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Login", "AdminLogin");
+            }
+        }
+
         public ActionResult Login()
         {
             return View();

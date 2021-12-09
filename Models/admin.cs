@@ -11,8 +11,7 @@ namespace TalentHunt.Models
 {
     using System;
     using System.Collections.Generic;
-    using TalentHunt.ModelView;
-
+    
     public partial class admin
     {
         public int aid { get; set; }
@@ -22,6 +21,5 @@ namespace TalentHunt.Models
         public string email { get; set; }
         public string username { get; set; }
         public string password { get; set; }
-
     }
 }

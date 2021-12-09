@@ -8,7 +8,10 @@
 //------------------------------------------------------------------------------
 
 namespace TalentHunt.Models
-{   
+{
+    using System;
+    using System.Collections.Generic;
+    
     public partial class userselect
     {
         public int usid { get; set; }
