@@ -99,6 +99,9 @@
                                                                         <th>
                                                                             Message
                                                                         </th>
+                                                                        <th>
+                                                                            Status
+                                                                        </th>
                                                                     </tr>
 
                                                                     @if (TempData["NotFound"] != null)
@@ -125,6 +128,16 @@
                                                                             </td>
                                                                             <td>
                                                                                 @Html.DisplayFor(modelItem => pdata.message)
+                                                                            </td>
+                                                                            <td>
+                                                                                @if (pdata.status.Equals("selected"))
+                                                                                {
+                                                                                    <p class="text-success">@Html.DisplayFor(modelItem => pdata.status)</p>
+                                                                                }
+                                                                                @if (pdata.status.Equals("applied"))
+                                                                                {
+                                                                                    <p class="text-warning">@Html.DisplayFor(modelItem => pdata.status)</p>
+                                                                                }
                                                                             </td>
                                                                         </tr>
                                                                     }

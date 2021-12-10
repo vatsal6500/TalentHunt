@@ -188,12 +188,36 @@ namespace TalentHunt.Controllers
 
                 if (Session["uid"] != null)
                 {
+                    int uid = Convert.ToInt32(HttpContext.Session["uid"]);
                     var userbids = db.userapplies.Where(x => x.peid.Equals(pid));
                     if (userbids.Count() == 0)
                     {
                         TempData["NotFoundUserBids"] = "No one has bid on this event";
                     }
                     TempData["bids"] = userbids;
+
+                    var applybid = db.userapplies.Where(x => x.peid.Equals(pid) && x.userid.Equals(uid));
+                    TempData["status"] = applybid;
+                    if (applybid.Count() == 0)
+                    {
+                        TempData["bidded"] = "No";
+                    }
+                    else
+                    {
+                        TempData["bidded"] = "Yes";
+                    }
+                }
+
+                var selects = db.userselects.Where(x => x.peid.Equals(pid));
+                TempData["userselected"] = selects;
+                if (selects.Count() == 0)
+                {
+                    TempData["selected"] = "No";
+                }
+                else
+                {
+                    TempData["selected"] = "Yes";
+
                 }
 
                 if (Session["pid"] != null)
@@ -205,6 +229,8 @@ namespace TalentHunt.Controllers
                         TempData["NotFound"] = "No one has bid on this event";
                     }
                     TempData["pdata"] = bids;
+
+
                 }
 
                 foreach (productionevent pe in result)

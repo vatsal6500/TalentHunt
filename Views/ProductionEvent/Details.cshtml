@@ -44,16 +44,13 @@
 
 <body class="">
 
-    @{ Html.RenderPartial("_Navbar"); }
+    @{ 
+        Html.RenderPartial("_Navbar"); 
+    }
     <!-- [ Main Content ] start -->
-    <div class="pcoded-main-container2">
-        <div class="pcoded-wrapper">
-            <div class="pcoded-content">
-                <div class="pcoded-inner-content">
-                    <div class="main-body">
-                        <div class="page-wrapper">
+
                             <!-- [ Main Content ] start -->
-                            <div class="row">
+                            <div class="main-container-2">
                                 <div class="col-sm-12">
                                     <div class="card user-card user-card-2 shape-right">
                                         <div class="card-header border-0 p-2 pb-0">
@@ -151,23 +148,234 @@
                                                                     <th>Payment Range</th>
                                                                     <td>@Html.DisplayFor(modelItem => reqs.payrange)</td>
                                                                 </tr>
-}
+                                                            }
                                                         </table>
-                                                        @{ 
-                                                            if (Session["uid"] != null)
+                                                        @if (Session["uid"] != null)
+                                                        {
+                                                            if (TempData["bidded"].Equals("Yes"))
+                                                            {
+                                                                foreach (var apply in (IEnumerable<userapply>)TempData["status"])
+                                                                {
+                                                                    if (apply.status.Equals("applied"))
+                                                                    {
+                                                                        <center>
+                                                                            @Html.ActionLink("Modify Your Bid", "Edit", "UserApply", new { id = Model.peid }, new { @class = "btn btn-primary" })
+                                                                        </center> 
+                                                                    }
+                                                                    if (apply.status.Equals("selected"))
+                                                                    {
+                                                                        <center>
+                                                                            <p style="color:green;font-size:30px">Congrats ! You are selected !</p>
+                                                                        </center> 
+                                                                    }
+                                                                }
+                                                            }
+                                                            if (TempData["bidded"].Equals("No"))
                                                             {
                                                                 <center>
                                                                     @Html.ActionLink("Apply", "Create", "UserApply", new { id = Model.peid }, new { @class = "btn btn-primary" })
-                                                                </center> 
-                                                            } 
+                                                                </center>
+                                                            }
                                                         }
-
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        
+
+
+    <div class="main-container-2">
+        <div class="col-sm-12">
+            <div class="card user-card user-card-2 shape-right">
+
+                @if (TempData["selected"].Equals("Yes"))
+                {
+                    <div class="card-header border-0 p-2 pb-0">
+                        <div class="clearfix mb-1">
+                            <div class="pull-left">
+                                <h4 class="text-blue h4 mx-3 my-3">Selected Expert</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <br /><br />
+                    <div class="card-body pt-0">
+                        <div class="user-about-block">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <div class="col align-items-center my-3">
+                                    </div>
+
+                                    <table class="table">
+                                        <tr>
+                                            <th>
+                                                Event Name
+                                            </th>
+                                            <th>
+                                                User Name
+                                            </th>
+                                            <th>
+                                                Gender
+                                            </th>
+                                            <th>
+                                                Age
+                                            </th>
+                                            <th>
+                                                FinalPay
+                                            </th>
+                                            @if (Session["pid"] != null)
+                                            {
+                                                <th>
+                                                    Action
+                                                </th>
+                                            }
+                                        </tr>
+                                         @foreach (var pdata in (IEnumerable<userselect>)TempData["userselected"])
+                                         {
+                                             <tr>
+                                                 <td style="color:indianred">
+                                                     @Html.DisplayFor(modelItem => pdata.productionevent.ename)
+                                                 </td>
+                                                 <td>
+                                                     <a href="@Url.Action("Details","User",new { id = pdata.userid})">@Html.DisplayFor(modelItem => pdata.user.fname)</a>
+                                                 </td>
+                                                 <td>
+                                                     @Html.DisplayFor(modelItem => pdata.user.gender)
+                                                 </td>
+                                                 <td>
+                                                     @Html.DisplayFor(modelItem => pdata.user.age)
+                                                 </td>
+                                                 <td>
+                                                     @Html.DisplayFor(modelItem => pdata.finalpay)
+                                                 </td>
+                                                 <td>
+                                                     @if (Session["pid"] != null)
+                                                     {
+                                                         @Html.ActionLink("Remove","","",new { id = pdata.userid}, new { @class = "btn btn-outline-danger"})
+                                                     }
+                                                 </td>
+                                             </tr>
+                                         }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+                <div class="card-header border-0 p-2 pb-0">
+                    <div class="clearfix mb-1">
+                        <div class="pull-left">
+                            <h4 class="text-blue h4 mx-3 my-3">Biddings on this event</h4>
+                        </div>
+                    </div>
+                </div>
+                <br /><br />
+                <div class="card-body pt-0">
+                    <div class="user-about-block">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <div class="col align-items-center my-3">
+                                </div>
+
+                                <table class="table">
+                                    <tr>
+                                        <th>
+                                            Event Name
+                                        </th>
+                                        <th>
+                                            User Name
+                                        </th>
+                                        <th>
+                                            Application Date
+                                        </th>
+                                        <th>
+                                            Expected Payment
+                                        </th>
+                                        <th>
+                                            Message
+                                        </th>
+                                        @if (TempData["selected"].Equals("No") && Session["pid"] != null)
+                                        {
+                                            <th>
+                                                Action
+                                            </th>
+                                        }
+                                    </tr>
+
+                                    @if (Session["uid"] != null && TempData["NotFoundUserBids"] != null)
+                                    {
+                                        <tr>
+                                            <td style="color:indianred" colspan="5"><center>@TempData["NotFoundUserBids"]</center></td>
+                                        </tr>
+                                    }
+                                    @if (Session["pid"] != null && TempData["NotFound"] != null)
+                                    {
+                                        <tr>
+                                            <td style="color:indianred" colspan="5"><center>@TempData["NotFound"]</center></td>
+                                        </tr>
+                                    }
+
+
+                                    @if (@Session["pid"] != null)
+                                    {
+                                        foreach (var pdata in (IEnumerable<userapply>)TempData["pdata"])
+                                        {
+
+                                            <tr>
+                                                <td style="color:indianred">
+                                                    @Html.DisplayFor(modelItem => pdata.productionevent.ename)
+                                                </td>
+                                                <td>
+                                                    <a href="@Url.Action("Details","User",new { id = pdata.userid})">@Html.DisplayFor(modelItem => pdata.user.fname)</a>
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => pdata.appdate)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => pdata.expay)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => pdata.message)
+                                                </td>
+                                                @if (TempData["selected"].Equals("No"))
+                                                {
+                                                    <td>
+                                                        @Html.ActionLink("Select", "Create", "UserSelect", new { uid = pdata.user.userid, eid = pdata.productionevent.peid, pay = pdata.expay }, new { @class = "btn btn-outline-success" })
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                    }
+
+                                    @if (@Session["uid"] != null)
+                                    {
+                                        foreach (var pdata in (IEnumerable<userapply>)TempData["bids"])
+                                        {
+
+                                            <tr>
+                                                <td style="color:indianred">
+                                                    @Html.DisplayFor(modelItem => pdata.productionevent.ename)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => pdata.user.fname)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => pdata.appdate)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => pdata.expay)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => pdata.message)
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -176,128 +384,6 @@
         </div>
     </div>
 
-
-    <div class="pcoded-main-container2">
-        <div class="pcoded-wrapper">
-            <div class="pcoded-content">
-                <div class="pcoded-inner-content">
-                    <div class="main-body">
-                        <div class="page-wrapper">
-                            <!-- [ Main Content ] start -->
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="card user-card user-card-2 shape-right">
-                                        <div class="card-header border-0 p-2 pb-0">
-                                            <div class="clearfix mb-1">
-                                                <div class="pull-left">
-                                                    <h4 class="text-blue h4 mx-3 my-3">Biddings on this event</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br /><br />
-                                        <div class="card-body pt-0">
-                                            <div class="user-about-block">
-                                                <div class="row align-items-center">
-                                                    <div class="col">
-                                                        <div class="col align-items-center my-3">
-                                                        </div>
-
-                                                        <table class="table">
-                                                            <tr>
-                                                                <th>
-                                                                    Event Name
-                                                                </th>
-                                                                <th>
-                                                                    User Name
-                                                                </th>
-                                                                <th>
-                                                                    Application Date
-                                                                </th>
-                                                                <th>
-                                                                    Expected Payment
-                                                                </th>
-                                                                <th>
-                                                                    Message
-                                                                </th>
-                                                            </tr>
-
-                                                            @if (Session["uid"] != null && TempData["NotFoundUserBids"] != null)
-                                                            {
-                                                                <tr>
-                                                                    <td style="color:indianred" colspan="5"><center>@TempData["NotFoundUserBids"]</center></td>
-                                                                </tr>
-                                                            }
-                                                            @if (Session["pid"] != null && TempData["NotFound"] != null)
-                                                            {
-                                                                <tr>
-                                                                    <td style="color:indianred" colspan="5"><center>@TempData["NotFound"]</center></td>
-                                                                </tr>
-                                                            }
-                                                            @if (@Session["pid"] != null)
-                                                            {
-                                                                foreach (var pdata in (IEnumerable<userapply>)TempData["pdata"])
-                                                                {
-
-                                                                    <tr>
-                                                                        <td style="color:indianred">
-                                                                            @Html.DisplayFor(modelItem => pdata.productionevent.ename)
-                                                                        </td>
-                                                                        <td>
-                                                                            @Html.DisplayFor(modelItem => pdata.user.fname)
-                                                                        </td>
-                                                                        <td>
-                                                                            @Html.DisplayFor(modelItem => pdata.appdate)
-                                                                        </td>
-                                                                        <td>
-                                                                            @Html.DisplayFor(modelItem => pdata.expay)
-                                                                        </td>
-                                                                        <td>
-                                                                            @Html.DisplayFor(modelItem => pdata.message)
-                                                                        </td>
-                                                                    </tr>
-                                                                }
-                                                            }
-
-                                                            @if (@Session["uid"] != null)
-                                                            {
-                                                                foreach (var pdata in (IEnumerable<userapply>)TempData["bids"])
-                                                                {
-
-                                                                    <tr>
-                                                                        <td style="color:indianred">
-                                                                            @Html.DisplayFor(modelItem => pdata.productionevent.ename)
-                                                                        </td>
-                                                                        <td>
-                                                                            @Html.DisplayFor(modelItem => pdata.user.fname)
-                                                                        </td>
-                                                                        <td>
-                                                                            @Html.DisplayFor(modelItem => pdata.appdate)
-                                                                        </td>
-                                                                        <td>
-                                                                            @Html.DisplayFor(modelItem => pdata.expay)
-                                                                        </td>
-                                                                        <td>
-                                                                            @Html.DisplayFor(modelItem => pdata.message)
-                                                                        </td>
-                                                                    </tr>
-                                                                }
-                                                            }
-                                                        </table>
-
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Required Js -->
     <script src="~/assets/js/vendor-all.min.js"></script>
     <script src="~/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
