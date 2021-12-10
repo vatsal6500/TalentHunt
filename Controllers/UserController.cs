@@ -49,6 +49,7 @@ namespace TalentHunt.Controllers
                     List<user> userLnS = db.users.Where(p => p.lname.Contains(Search)).ToList();
                     if(userLnS.Count() == 0)
                     {
+                        TempData["uNotFound"] = "User Not Found";
                         //List<user>
                         //if()
                         //{
@@ -96,6 +97,8 @@ namespace TalentHunt.Controllers
                 var usr = db.users.Where(p => p.userid.Equals(usrid)).FirstOrDefault();
                 if (result != null)
                 {
+                    TempData["fname"] = usr.fname.ToString();
+                    TempData["lname"] = usr.lname.ToString();
                     TempData["mail"] = usr.email.ToString();
                     TempData["gender"] = usr.gender.ToString();
                     TempData["age"] = usr.age.ToString();
@@ -355,7 +358,6 @@ namespace TalentHunt.Controllers
             return View(userv);
         }
 
-        // GET: User/Edit/5
         public ActionResult EditStatus(int? id,string status)
         {
             if (id == null || status == null)
@@ -387,23 +389,56 @@ namespace TalentHunt.Controllers
             }
         }
 
+
+        // GET: User/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            user user = db.users.Find(id);
+            useredit useredit = new useredit();
+            AutoMapper.Mapper.Map(user, useredit);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(useredit);
+        }
+
+
         // POST: User/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "userid,fname,lname,gender,age,address,city,state,pincode,photo,email,username,password")] userv userv)
+        public ActionResult Edit([Bind(Include = "userid,fname,lname,gender,age,address,city,state,pincode,photo,email,username,password,status")] useredit useredit)
         {
             if (ModelState.IsValid)
             {
                 user user = new user();
-                AutoMapper.Mapper.Map(userv,user);
+
+                user.userid = useredit.userid;
+                user.fname = useredit.fname;
+                user.lname = useredit.lname;
+                user.gender = useredit.gender;
+                user.age = useredit.age;
+                user.address = useredit.address;
+                user.city = useredit.city;
+                user.state = useredit.state;
+                user.pincode = useredit.pincode;
+                user.photo = useredit.photo;
+                user.email = useredit.email;
+                user.username = useredit.username;
+                user.password = useredit.password;
+                user.status = useredit.status;
 
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(userv);
+            return View(useredit);
         }
 
         // GET: User/Delete/5

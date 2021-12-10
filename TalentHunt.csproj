@@ -224,6 +224,7 @@
     <Compile Include="ModelView\subuserv.cs" />
     <Compile Include="ModelView\userapplyv.cs" />
     <Compile Include="ModelView\login.cs" />
+    <Compile Include="ModelView\useredit.cs" />
     <Compile Include="ModelView\userselectv.cs" />
     <Compile Include="ModelView\videov.cs" />
     <Compile Include="ModelView\imagev.cs" />

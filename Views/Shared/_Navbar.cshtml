@@ -29,7 +29,14 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right profile-notification">
                         <ul class="pro-body">
-                            <li><a href="#!" class="dropdown-item"><i class="feather icon-user"></i> Profile</a></li>
+                            @if (Session["uid"] != null)
+                            {
+                                <li><a href="@Url.Action("Edit","User",new { id = Session["uid"]})" class="dropdown-item"><i class="feather icon-user"></i> Profile</a></li>
+                            }
+                            @if (Session["pid"] != null)
+                            {
+                                <li><a href="@Url.Action("Edit","Production",new { id = Session["pid"]})" class="dropdown-item"><i class="feather icon-user"></i> Profile</a></li>
+                            }
                             <li><a href="@Url.Action("Logout","User")" class="dropdown-item"><i class="feather icon-power text-danger"></i> Logout</a></li>
                         </ul>
                     </div>
