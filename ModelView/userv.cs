@@ -37,7 +37,6 @@ namespace TalentHunt.ModelView
 
         [Required(ErrorMessage = "*")]
         [DisplayName("Address")]
-        [RegularExpression(@"^[0-9A-Za-z -]*$",ErrorMessage = "No Specials Char")]
         [DataType(DataType.MultilineText)]
         public string address { get; set; }
 
