@@ -82,10 +82,9 @@ namespace TalentHunt.Controllers
         {
             if(Session["uid"] != null)
             {
-                String output = "";
-
                 int usrid = Convert.ToInt32(HttpContext.Session["uid"]);
                 var result = db.userprofiles.Where(p => p.userid.Equals(usrid));
+                TempData["tlist"] = result;
 
                 var elists = db.images.Where(p => p.userid.Equals(usrid));
                 TempData["piclists"] = elists;
@@ -93,16 +92,6 @@ namespace TalentHunt.Controllers
                 var videolists = db.videos.Where(p => p.userid.Equals(usrid));
                 TempData["videolists"] = videolists;
 
-                foreach (userprofile u in result)
-                {
-                    var tlists = db.talents.Where(p => p.tid.Equals(u.tid)).SingleOrDefault();
-
-                    output += "<h5 style='color:indianred'>" + tlists.ttype.ToString() + "</h5>";
-                    output += "<p class='mb-0'>Experience : " + u.experience + " years</p>";
-                    output += "<p class='mb-0'>Portfolio : " + u.portfolio;
-                    output += "</p><br/>";
-                }
-                TempData["tlist"] = output;
 
                 var usr = db.users.Where(p => p.userid.Equals(usrid)).FirstOrDefault();
                 if (result != null)
@@ -199,28 +188,16 @@ namespace TalentHunt.Controllers
             }
             if (Session["aid"] != null)
             {
-                String output = "";
-
                 int usrid = Convert.ToInt32(id);
                 var result = db.userprofiles.Where(p => p.userid.Equals(usrid));
+                TempData["tlist"] = result;
 
                 var elists = db.images.Where(p => p.userid.Equals(usrid));
                 TempData["piclists"] = elists;
 
                 var videolists = db.videos.Where(p => p.userid.Equals(usrid));
                 TempData["videolists"] = videolists;
-
-
-                foreach (userprofile u in result)
-                {
-                    var tlists = db.talents.Where(p => p.tid.Equals(u.tid)).SingleOrDefault();
-
-                    output += "<h5 style='color:indianred'>" + tlists.ttype.ToString() + "</h5>";
-                    output += "<p class='mb-0'>Experience : " + u.experience + " years</p>";
-                    output += "<p class='mb-0'>Portfolio : " + u.portfolio;
-                    output += "</p><br/>";
-                }
-                TempData["tlist"] = output;
+                
 
                 user user = db.users.Find(id);
                 if (user == null)
@@ -302,7 +279,7 @@ namespace TalentHunt.Controllers
             }
             catch(Exception ex)
             {
-                ViewBag.err = "There is Some problem Try after somr time";
+                ViewBag.err = "There is Some problem try after some time";
             }
             
             return View();
@@ -315,28 +292,16 @@ namespace TalentHunt.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            String output = "";
 
             int usrid = Convert.ToInt32(id);
             var result = db.userprofiles.Where(p => p.userid.Equals(usrid));
+            TempData["tlist"] = result;
 
             var elists = db.images.Where(p => p.userid.Equals(usrid));
             TempData["piclists"] = elists;
 
             var videolists = db.videos.Where(p => p.userid.Equals(usrid));
             TempData["videolists"] = videolists;
-
-
-            foreach (userprofile u in result)
-            {
-                var tlists = db.talents.Where(p => p.tid.Equals(u.tid)).SingleOrDefault();
-
-                output += "<h5 style='color:indianred'>" + tlists.ttype.ToString() + "</h5>";
-                output += "<p class='mb-0'>Experience : " + u.experience + " years</p>";
-                output += "<p class='mb-0'>Portfolio : " + u.portfolio;
-                output += "</p><br/>";
-            }
-            TempData["tlist"] = output;
 
             user user = db.users.Find(id);
             if (user == null)
@@ -391,20 +356,35 @@ namespace TalentHunt.Controllers
         }
 
         // GET: User/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult EditStatus(int? id,string status)
         {
-            if (id == null)
+            if (id == null || status == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("UserList","User");
             }
             user user = db.users.Find(id);
-            userv userv = new userv();
-            AutoMapper.Mapper.Map(user, userv);
             if (user == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("UserList", "User");
             }
-            return View(user);
+            if (status == "blocked")
+            {
+                user.status = status;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("UserList", "User");
+            }
+            else if (status == "active")
+            {
+                user.status = status;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("UserList", "User");
+            }
+            else
+            {
+                return RedirectToAction("UserList", "User");
+            }
         }
 
         // POST: User/Edit/5

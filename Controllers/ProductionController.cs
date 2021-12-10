@@ -295,32 +295,35 @@ namespace TalentHunt.Controllers
         }
 
         // GET: Production/Edit/5
-        public ActionResult Edit(int? id,string status)
+        public ActionResult EditStatus(int? id,string status)
         {
             if (id == null || status == null)
             {
                 return RedirectToAction("ProductionList","Production");
             }
             production production = db.productions.Find(id);
-            if(status == "blocked")
-            {
-                production.status = status;
-                db.Entry(production).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("ProductionList", "Production");
-            }
-            if(status == "active")
-            {
-                production.status = status;
-                db.Entry(production).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("ProductionList", "Production");
-            }
             if (production == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("ProductionList", "Production");
             }
-            return View(production);
+            if (status == "blocked")
+            {
+                production.status = status;
+                db.Entry(production).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("ProductionList", "Production");
+            }
+            else if (status == "active")
+            {
+                production.status = status;
+                db.Entry(production).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("ProductionList", "Production");
+            }
+            else
+            {
+                return RedirectToAction("ProductionList", "Production");
+            }
         }
 
         // POST: Production/Edit/5

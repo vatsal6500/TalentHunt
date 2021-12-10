@@ -108,7 +108,13 @@
 
                                                         <div>
                                                             <p style="color:black; font-size:large" class="mb-1">TALENTS</p><br />
-                                                            <p class="mb-0">@Html.Raw(TempData["tlist"])</p>
+                                                            @foreach (var pdata in (IEnumerable<userprofile>)TempData["tlist"])
+                                                            {
+                                                                <h5 style="color:indianred">@Html.DisplayFor(modelItem => pdata.talent.ttype)</h5>
+                                                                <p class="mb-0">Experience : @Html.DisplayFor(modelItem => pdata.experience) years</p>
+                                                                <p class="mb-0">Portfolio : @Html.DisplayFor(modelItem => pdata.portfolio)</p>
+                                                                <br />
+                                                             }
                                                         </div>
 
                                                         <hr style="color:darkblue" />
