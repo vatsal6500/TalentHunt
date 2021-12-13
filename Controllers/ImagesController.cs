@@ -156,28 +156,41 @@ namespace TalentHunt.Controllers
         // GET: Images/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if(Session["uid"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return RedirectToAction("Index","User");
+                }
+                image image = db.images.Find(id);
+
+                if (image != null)
+                {
+                    db.images.Remove(image);
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "User");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "User");
+                }
             }
-            image image = db.images.Find(id);
-            if (image == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login", "User");
             }
-            return View(image);
         }
 
         // POST: Images/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            image image = db.images.Find(id);
-            db.images.Remove(image);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    image image = db.images.Find(id);
+        //    db.images.Remove(image);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
         protected override void Dispose(bool disposing)
         {
