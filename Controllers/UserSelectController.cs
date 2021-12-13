@@ -50,6 +50,16 @@ namespace TalentHunt.Controllers
                 userselect userselect = new userselect();
                 AutoMapper.Mapper.Map(userselectv, userselect);
                 db.userselects.Add(userselect);
+
+                int peid = eid;
+                int userid = uid;
+
+                userapply userapply = db.userapplies.Where(p => p.peid.Equals(peid) && p.userid.Equals(userid)).SingleOrDefault();
+
+                userapply.status = "selected";
+
+                db.Entry(userapply).State = EntityState.Modified;
+
                 db.SaveChanges();
                 return RedirectToAction("Details", "ProductionEvent", new { id = eid });
             }

@@ -196,6 +196,13 @@ namespace TalentHunt.Controllers
                 userapply userapply = db.userapplies.Find(id);
                 if (userapply != null)
                 {
+                    userselect userselect = db.userselects.Where(p => p.peid.Equals(userapply.peid) && p.userid.Equals(userapply.userid)).SingleOrDefault();
+                    if(userselect == null)
+                    {
+                        return RedirectToAction("Index", "UserApply");
+                    }
+
+                    db.userselects.Remove(userselect);
                     db.userapplies.Remove(userapply);
                     db.SaveChanges();
 
