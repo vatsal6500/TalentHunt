@@ -83,26 +83,29 @@
                                                                 </div>
 
                                                                 <table class="table">
-                                                                    <tr>
-                                                                        <th>
-                                                                            Production
-                                                                        </th>
-                                                                        <th>
-                                                                            Event Name
-                                                                        </th>
-                                                                        <th>
-                                                                            Application Date
-                                                                        </th>
-                                                                        <th>
-                                                                            Expected Payment
-                                                                        </th>
-                                                                        <th>
-                                                                            Message
-                                                                        </th>
-                                                                        <th>
-                                                                            Status
-                                                                        </th>
-                                                                    </tr>
+                                                                        <tr>
+                                                                            <th>
+                                                                                Production
+                                                                            </th>
+                                                                            <th>
+                                                                                Event Name
+                                                                            </th>
+                                                                            <th>
+                                                                                Application Date
+                                                                            </th>
+                                                                            <th>
+                                                                                Expected Payment
+                                                                            </th>
+                                                                            <th>
+                                                                                Message
+                                                                            </th>
+                                                                            <th>
+                                                                                Status
+                                                                            </th>
+                                                                            <th>
+                                                                                Action
+                                                                            </th>
+                                                                        </tr>
 
                                                                     @if (TempData["NotFound"] != null)
                                                                     {
@@ -138,6 +141,9 @@
                                                                                 {
                                                                                     <p class="text-warning">@Html.DisplayFor(modelItem => pdata.status)</p>
                                                                                 }
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.ActionLink("Withdraw","Delete","UserApply",new { id = pdata.uaid },new { @class = "btn btn-outline-danger", onclick = $"return confirm('Are you sure you want to withdraw your {pdata.productionevent.ename} event Bid?')"})
                                                                             </td>
                                                                         </tr>
                                                                     }

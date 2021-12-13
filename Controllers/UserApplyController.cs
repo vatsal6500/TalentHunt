@@ -187,28 +187,41 @@ namespace TalentHunt.Controllers
         // GET: UserApply/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if(Session["uid"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return RedirectToAction("Index", "UserApply");
+                }
+                userapply userapply = db.userapplies.Find(id);
+                if (userapply != null)
+                {
+                    db.userapplies.Remove(userapply);
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index", "UserApply");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "UserApply");
+                }
             }
-            userapply userapply = db.userapplies.Find(id);
-            if (userapply == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login","User");
             }
-            return View(userapply);
         }
 
         // POST: UserApply/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            userapply userapply = db.userapplies.Find(id);
-            db.userapplies.Remove(userapply);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    userapply userapply = db.userapplies.Find(id);
+        //    db.userapplies.Remove(userapply);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
         protected override void Dispose(bool disposing)
         {

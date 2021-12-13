@@ -1911,7 +1911,6 @@
     <Content Include="Views\EventRequire\Edit.cshtml" />
     <Content Include="Views\EventRequire\Index.cshtml" />
     <Content Include="Views\UserApply\Create.cshtml" />
-    <Content Include="Views\UserApply\Delete.cshtml" />
     <Content Include="Views\UserApply\Details.cshtml" />
     <Content Include="Views\UserApply\Edit.cshtml" />
     <Content Include="Views\UserApply\Index.cshtml" />
