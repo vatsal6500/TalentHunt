@@ -182,7 +182,7 @@ namespace TalentHunt.Controllers
             {
                 if (id == null)
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    return RedirectToAction("Index");
                 }
                 talent talent = db.talents.Find(id);
                 if (talent != null)
@@ -194,13 +194,13 @@ namespace TalentHunt.Controllers
                     }
                     catch(Exception e)
                     {
-                        TempData["talenterr"] = "Talent cannot be deleted becasue users are available with this telents";
+                        TempData["talenterr"] = "Talent cannot be deleted becasue users are available with this talents";
                     }
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    return HttpNotFound();
+                    return RedirectToAction("Index");
                 }
             }
             else
