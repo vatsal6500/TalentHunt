@@ -97,7 +97,7 @@
                                     <td>@Html.DisplayFor(modelItem => item.startdate)</td>
                                     <td>@Html.DisplayFor(modelItem => item.enddate)</td>
                                     <td>@Html.DisplayFor(modelItem => item.evenu)</td>
-                                    <td>@Html.ActionLink("Remove", "Delete", "ProductionEvent",new { id = item.peid }, new { @class = "btn btn-outline-danger", onclick = "return confirm('Are you sure you want to delete Event?')" })</td>
+                                    <td>@Html.ActionLink("Remove", "Delete", "ProductionEvent",new { id = item.peid }, new { @class = "btn btn-outline-danger", onclick = $"return confirm('Are you sure you want to delete {item.ename}?')" })</td>
                                 </tr>
                             }
                         </tbody>

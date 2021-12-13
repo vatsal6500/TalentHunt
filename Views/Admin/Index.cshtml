@@ -89,7 +89,7 @@
                                     <td>@Html.DisplayFor(modelItem => item.username)</td>
                                     <td>
                                         @Html.ActionLink("Edit", "Edit", new { id = item.aid }) |
-                                        @Html.ActionLink("Delete", "Delete", new { id = item.aid })
+                                        @Html.ActionLink("Delete", "Delete", new { id = item.aid }, new { onclick = $"return confirm('Are you sure you want to delete {item.aname}? ')"})
                                     </td>
                                 </tr>
                             }

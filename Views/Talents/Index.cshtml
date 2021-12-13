@@ -95,7 +95,7 @@
                                     <td>@Html.DisplayFor(modelItem => item.ttype)</td>
                                     <td>
                                         @Html.ActionLink("Edit", "Edit", new { id = item.tid }) |
-                                        @Html.ActionLink("Delete", "Delete", new { id = item.tid }, new { onclick = "return confirm('Are you sure you want to delete?')"})
+                                        @Html.ActionLink("Delete", "Delete", new { id = item.tid }, new { onclick = $"return confirm('Are you sure you want to delete {item.ttype} talent?')"})
                                     </td>
                                 </tr>
                             }
