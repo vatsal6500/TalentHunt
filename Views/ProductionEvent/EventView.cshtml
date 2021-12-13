@@ -71,6 +71,7 @@
                             </div>
                         }
                     </div>
+                    <center class="text-danger">@TempData["deleteerr"]</center>
                     <table class="table">
                         <thead>
                             <tr>
@@ -96,7 +97,7 @@
                                     <td>@Html.DisplayFor(modelItem => item.startdate)</td>
                                     <td>@Html.DisplayFor(modelItem => item.enddate)</td>
                                     <td>@Html.DisplayFor(modelItem => item.evenu)</td>
-                                    <td>@Html.ActionLink("Remove", "", "", new { @class = "btn btn-outline-danger" })</td>
+                                    <td>@Html.ActionLink("Remove", "Delete", "ProductionEvent",new { id = item.peid }, new { @class = "btn btn-outline-danger", onclick = "return confirm('Are you sure you want to delete Event?')" })</td>
                                 </tr>
                             }
                         </tbody>

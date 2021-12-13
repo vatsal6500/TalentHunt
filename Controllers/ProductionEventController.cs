@@ -336,28 +336,47 @@ namespace TalentHunt.Controllers
         // GET: ProductionEvent/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if(Session["aid"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return RedirectToAction("EventView");
+                }
+                productionevent productionevent = db.productionevents.Find(id);
+                if (productionevent != null)
+                {
+                    db.productionevents.Remove(productionevent);
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        TempData["deleteerr"] = "Event cannot be deleted because bidders has applied on this event";
+                    }
+                    return RedirectToAction("EventView");
+                }
+                else
+                {
+                    return RedirectToAction("EventView");
+                }
             }
-            productionevent productionevent = db.productionevents.Find(id);
-            if (productionevent == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login","AdminLogin");
             }
-            return View(productionevent);
         }
 
-        // POST: ProductionEvent/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            productionevent productionevent = db.productionevents.Find(id);
-            db.productionevents.Remove(productionevent);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //// POST: ProductionEvent/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    productionevent productionevent = db.productionevents.Find(id);
+        //    db.productionevents.Remove(productionevent);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
         protected override void Dispose(bool disposing)
         {
