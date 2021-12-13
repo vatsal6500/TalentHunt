@@ -99,13 +99,15 @@
                                         <td>
                                             <div class="icon" data-color="#09cc06"><i class="icon-copy fa fa-circle" aria-hidden="true"></i></div>
                                         </td>
-                                        <td>@Html.ActionLink("Block", "EditStatus", "Production",new { id = item.pid, status = "blocked"}, new { @class = "btn btn-outline-danger" })</td>}
+                                        <td>@Html.ActionLink("Block", "EditStatus", "Production",new { id = item.pid, status = "blocked"}, new { @class = "btn btn-outline-danger", onclick = $"return confirm('Are you sure you want to Block {item.pname}?') " })</td>
+                                    }
                                     @if (item.status.Equals("blocked"))
                                     {
                                         <td>
                                             <div class="icon" data-color="#ff5b5b"><i class="icon-copy fa fa-circle" aria-hidden="true"></i></div>
                                         </td>
-                                        <td>@Html.ActionLink("Approve", "EditStatus", "Production",new { id =  item.pid, status = "active"}, new { @class = "btn btn-outline-success" })</td>}
+                                        <td>@Html.ActionLink("Approve", "EditStatus", "Production",new { id =  item.pid, status = "active"}, new { @class = "btn btn-outline-success", onclick = $"return confirm('Are you sure you want to Approve {item.pname}?') " })</td>
+                                    }
                                     <td>@Html.ActionLink("View Profile", "PrShortView", "Production", new { id = item.pid }, new { @area = "" })</td>
                                 </tr>
                             }
