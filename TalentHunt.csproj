@@ -1927,6 +1927,7 @@
     <Content Include="Views\UserSelect\Details.cshtml" />
     <Content Include="Views\UserSelect\Edit.cshtml" />
     <Content Include="Views\UserSelect\Index.cshtml" />
+    <Content Include="Views\AdminLogin\ResetPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

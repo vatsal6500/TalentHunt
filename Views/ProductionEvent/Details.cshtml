@@ -253,7 +253,7 @@
                                                  <td>
                                                      @if (Session["pid"] != null)
                                                      {
-                                                         @Html.ActionLink("Remove","","",new { id = pdata.userid}, new { @class = "btn btn-outline-danger"})
+                                                         @Html.ActionLink("Remove", "Delete", "UserSelect", new { id = pdata.userid, peid = pdata.productionevent.peid}, new { @class = "btn btn-outline-danger", onclick = $"return confirm('Are you sure want to remove {pdata.user.fname}?')"})
                                                      }
                                                  </td>
                                              </tr>

@@ -88,5 +88,12 @@ namespace TalentHunt.Controllers
                 return RedirectToAction("Dashboard");
             }
         }
+
+        public ActionResult ResetPassword(string email)
+        {
+            
+
+            return View();
+        }
     }
 }

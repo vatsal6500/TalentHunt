@@ -129,30 +129,50 @@ namespace TalentHunt.Controllers
         }
 
         // GET: UserSelect/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? id, int? peid)
         {
-            if (id == null)
+            if(Session["pid"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null || peid == null)
+                {
+                    return RedirectToAction("Details", "ProductionEvent", new { id = peid});
+                }
+                userselect userselect = db.userselects.Where(p => p.userid == id && p.peid == peid).FirstOrDefault();
+                if(userselect != null)
+                {
+                    userapply userapply = db.userapplies.Where(p => p.userid.Equals(userselect.userid) && p.peid.Equals(userselect.peid)).SingleOrDefault();
+                    if(userapply == null)
+                    {
+                        return RedirectToAction("Details", "ProductionEvent", new { id = peid });
+                    }
+                    userapply.status = "applied";
+                    db.Entry(userapply).State = EntityState.Modified;
+                    db.userselects.Remove(userselect);
+                    db.SaveChanges();
+                    return RedirectToAction("Details", "ProductionEvent", new { id = peid });
+                }
+                else 
+                {
+                    return RedirectToAction("Details", "ProductionEvent", new { id = peid });
+                }
             }
-            userselect userselect = db.userselects.Find(id);
-            if (userselect == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Login","User");
             }
-            return View(userselect);
+            
         }
 
-        // POST: UserSelect/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            userselect userselect = db.userselects.Find(id);
-            db.userselects.Remove(userselect);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //// POST: UserSelect/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    userselect userselect = db.userselects.Find(id);
+        //    db.userselects.Remove(userselect);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
         protected override void Dispose(bool disposing)
         {
