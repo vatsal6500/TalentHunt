@@ -107,8 +107,9 @@
 
                                                         <hr style="color:darkblue" />
 
-                                                        <div>
+                                                        <div class="">
                                                             <p style="color:black; font-size:large" class="mb-1">TALENTS</p>
+                                                            <hr />
                                                             @foreach (var pdata in (IEnumerable<userprofile>)TempData["tlist"])
                                                             {
                                                                 <h5 style="color:indianred">@Html.DisplayFor(modelItem => pdata.talent.ttype)</h5>
@@ -121,7 +122,8 @@
 
                                                         <hr style="color:darkblue" />
 
-                                                        <p style="color:black; font-size:large" class="mb-1">IMAGES</p><br />
+                                                        <p style="color:black; font-size:large" class="mb-1">IMAGES</p>
+                                                        <hr />
                                                         <br />
                                                         <div class="d-inline-flex">
 
@@ -145,6 +147,7 @@
                                                         <hr style="color:darkblue" />
 
                                                         <p style="color:black; font-size:large" class="mb-1">VIDEOS</p>
+                                                        <hr/>
                                                         <div class="d-inline-flex">
 
                                                             <br />

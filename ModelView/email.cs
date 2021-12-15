@@ -37,7 +37,8 @@ namespace TalentHunt.ModelView
             using (var mess = new MailMessage(senderEmail, receiverEmail)
             {
                 Subject = sub,
-                Body = body
+                Body = body,
+                IsBodyHtml = true
             })
             {
                 //mess.IsBodyHtml = true;
