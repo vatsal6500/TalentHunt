@@ -37,7 +37,7 @@
                             @if (Session["pid"] != null)
                             {
                                 <li><a href="@Url.Action("Edit","Production",new { id = Session["pid"]})" class="dropdown-item"><i class="feather icon-user"></i> Profile</a></li>
-                                <li><a href="@Url.Action("Reset","User",new { id = Session["pid"]})" class="dropdown-item"><i class="feather icon-rewind"></i> Reset Password</a></li>
+                                <li><a href="@Url.Action("Reset","Production",new { id = Session["pid"]})" class="dropdown-item"><i class="feather icon-rewind"></i> Reset Password</a></li>
                             }
                             <li><a href="@Url.Action("Logout","User")" class="dropdown-item"><i class="feather icon-power text-danger"></i> Logout</a></li>
                         </ul>

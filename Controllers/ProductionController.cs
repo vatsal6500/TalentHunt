@@ -344,6 +344,51 @@ namespace TalentHunt.Controllers
             return View(productionv);
         }
 
+
+        public ActionResult Reset(int? id)
+        {
+            if (Session["pid"] != null)
+            {
+                if (id == null)
+                {
+                    return RedirectToAction("Index", "Production");
+                }
+
+                ViewBag.pid = id;
+
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "User");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Reset(checkpass checkpass, int? pid)
+        {
+            if (pid == null)
+            {
+                return RedirectToAction("Reset", "Production");
+            }
+
+            if (ModelState.IsValid)
+            {
+                production production = db.productions.Where(p => p.pid == pid).FirstOrDefault();
+                if (production == null)
+                {
+                    return RedirectToAction("Reset", "Production");
+                }
+                production.password = checkpass.password;
+                db.Entry(production).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index", "Production");
+            }
+
+            return View(checkpass);
+        }
+
+
         // GET: Production/Delete/5
         public ActionResult Delete(int? id)
         {
