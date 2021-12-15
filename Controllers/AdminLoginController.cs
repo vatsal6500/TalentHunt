@@ -50,7 +50,7 @@ namespace TalentHunt.Controllers
                 if (adm != null)
                 {
                     Session["aid"] = adm.aid.ToString();
-                    //Session["username"] = adm.username.ToString();
+                    Session["adminemail"] = adm.email.ToString();
                     Session["name"] = adm.aname.ToString();
                     return RedirectToAction("Dashboard");
                 }
@@ -95,9 +95,12 @@ namespace TalentHunt.Controllers
 
         public ActionResult ResetPassword()
         {
-            if(TempData["adminemail"] == null)
+            if(Session["aid"] == null)
             {
-                return RedirectToAction("checkemail","AdminLogin");
+                if (TempData["adminemail"] == null)
+                {
+                    return RedirectToAction("check", "AdminLogin");
+                }
             }
 
             return View();
@@ -112,7 +115,14 @@ namespace TalentHunt.Controllers
                 admin.password = checkpass.password;
                 db.Entry(admin).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Login","AdminLogin");
+                if (Session["aid"] == null)
+                {
+                    return RedirectToAction("Login", "AdminLogin");
+                }
+                else
+                {
+                    return RedirectToAction("Dashboard", "AdminLogin");
+                }
             }
             return View();
         }

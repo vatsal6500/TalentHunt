@@ -20,6 +20,7 @@
                     <span class="user-name">@Session["name"]</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                    <a class="dropdown-item" href="@Url.Action("ResetPassword","AdminLogin")"><i class="dw dw-delete"></i> Reset Password</a>
                     <a class="dropdown-item" href="@Url.Action("Logout","AdminLogin")"><i class="dw dw-logout"></i> Log Out</a>
                 </div>
             </div>
