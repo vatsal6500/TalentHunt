@@ -1933,6 +1933,7 @@
     <Content Include="Views\UserSelect\Index.cshtml" />
     <Content Include="Views\AdminLogin\check.cshtml" />
     <Content Include="Views\AdminLogin\ResetPassword.cshtml" />
+    <Content Include="Views\User\Reset.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

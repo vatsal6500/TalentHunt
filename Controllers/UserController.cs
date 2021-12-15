@@ -441,6 +441,51 @@ namespace TalentHunt.Controllers
             return View(useredit);
         }
 
+
+        public ActionResult Reset(int? id)
+        {
+            if(Session["uid"] != null)
+            {
+                if (id == null)
+                {
+                    return RedirectToAction("Index", "User");
+                }
+
+                ViewBag.uid = id;
+
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login","User");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Reset(checkpass checkpass,int? uid)
+        {
+            if (uid == null)
+            {
+                return RedirectToAction("Reset", "User");
+            }
+
+            if (ModelState.IsValid)
+            {
+                user user = db.users.Where(p => p.userid == uid).FirstOrDefault();
+                if(user == null)
+                {
+                    return RedirectToAction("Reset", "User");
+                }
+                user.password = checkpass.password;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index","User");
+            }
+
+            return View(checkpass);
+        }
+
+
         // GET: User/Delete/5
         public ActionResult Delete(int? id)
         {
