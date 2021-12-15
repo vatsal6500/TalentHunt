@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data.Entity;
 using System.Web.Mvc;
 using TalentHunt.Models;
 using TalentHunt.ModelView;
@@ -11,6 +12,9 @@ namespace TalentHunt.Controllers
     public class AdminLoginController : Controller
     {
         huntdbEntities db = new huntdbEntities();
+        public static Random random = new Random();     
+        public static int otp = random.Next(100000, 999999);
+
         // GET: Admin
         public ActionResult Login()
         {
@@ -89,11 +93,86 @@ namespace TalentHunt.Controllers
             }
         }
 
-        public ActionResult ResetPassword(string email)
+        public ActionResult ResetPassword()
         {
-            
+            if(TempData["adminemail"] == null)
+            {
+                return RedirectToAction("checkemail","AdminLogin");
+            }
 
             return View();
         }
+
+        [HttpPost]
+        public ActionResult ResetPassword(checkpass checkpass, string email)
+        {
+            if(ModelState.IsValid)
+            {
+                admin admin = db.admins.Where(p => p.email.Equals(email)).FirstOrDefault();
+                admin.password = checkpass.password;
+                db.Entry(admin).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Login","AdminLogin");
+            }
+            return View();
+        }
+
+        public ActionResult check()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult check(emailcheck emailcheck)
+        {
+            if (ModelState.IsValid)
+            {
+
+                admin admin = db.admins.Where(p => p.email.Equals(emailcheck.email)).SingleOrDefault();
+                if (admin == null)
+                {
+                    TempData["emailerr"] = "Email invalid or not available";
+                    return RedirectToAction("check", "AdminLogin");
+                }
+                
+                string subject = "OTP";
+                string message = "One Time Password: " + otp + ". Don't share it with anyone.";
+
+                email email = new email(admin.email, subject, message);
+
+                if (email != null)
+                {
+                    TempData["otp"] = true;
+                }
+            }
+            TempData["email"] = emailcheck.email;
+            return View(emailcheck);
+        }
+
+        [HttpPost]
+        public ActionResult checkotp(int? eotp,emailcheck emailcheck)
+        {
+            if(eotp == null)
+            {
+                TempData["otp"] = true;
+                TempData["otperr"] = "*";
+                TempData["email"] = emailcheck.email;
+                return RedirectToAction("check","AdminLogin");
+            }
+
+            if (otp.Equals(eotp))
+            {
+                TempData["adminemail"] = emailcheck.email;
+                return RedirectToAction("ResetPassword","AdminLogin");
+            }
+            else
+            {
+                TempData["otp"] = true;
+                TempData["otperr"] = "InCorrect OTP";
+                return RedirectToAction("Check","AdminLogin");
+            }
+
+        }
+
     }
 }

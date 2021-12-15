@@ -214,12 +214,16 @@
     <Compile Include="ModelView\adminlogin.cs" />
     <Compile Include="ModelView\adminv.cs" />
     <Compile Include="ModelView\AutoMapperProfile.cs" />
+    <Compile Include="ModelView\checkpass.cs" />
     <Compile Include="ModelView\CloneObjects.cs" />
+    <Compile Include="ModelView\email.cs" />
+    <Compile Include="ModelView\emailcheck.cs" />
     <Compile Include="ModelView\eventrequirev.cs" />
     <Compile Include="ModelView\planv.cs" />
     <Compile Include="ModelView\productioneventv.cs" />
     <Compile Include="ModelView\productionv.cs" />
     <Compile Include="ModelView\ratingv.cs" />
+    <Compile Include="ModelView\reset.cs" />
     <Compile Include="ModelView\subproductionv.cs" />
     <Compile Include="ModelView\subuserv.cs" />
     <Compile Include="ModelView\userapplyv.cs" />
@@ -1927,6 +1931,7 @@
     <Content Include="Views\UserSelect\Details.cshtml" />
     <Content Include="Views\UserSelect\Edit.cshtml" />
     <Content Include="Views\UserSelect\Index.cshtml" />
+    <Content Include="Views\AdminLogin\check.cshtml" />
     <Content Include="Views\AdminLogin\ResetPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
