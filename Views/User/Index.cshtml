@@ -155,7 +155,7 @@
                                                                 @foreach (var videolists in (IEnumerable<video>)TempData["videolists"])
                                                                 {
                                                                     <div class="card d-inline-flex mx-2">
-                                                                        <video height="300" width="300" controls class="mx-2">
+                                                                        <video height="300" width="300" controls class="mx-2" >
                                                                             <source src="@Url.Content(videolists.video1)" type="audio/mp4" />
                                                                         </video><br />
                                                                         <center><p class="mx-2">@videolists.caption</p></center>
