@@ -17,6 +17,22 @@
           <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'huntdb.dbo.eventrate' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="eventrate">
+          <Key>
+            <PropertyRef Name="erid" />
+            <PropertyRef Name="peid" />
+            <PropertyRef Name="userid" />
+            <PropertyRef Name="rating" />
+            <PropertyRef Name="comment" />
+          </Key>
+          <Property Name="erid" Type="int" Nullable="false" />
+          <Property Name="peid" Type="int" Nullable="false" />
+          <Property Name="userid" Type="int" Nullable="false" />
+          <Property Name="rating" Type="float" Nullable="false" />
+          <Property Name="comment" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="eventrequire">
           <Key>
             <PropertyRef Name="erid" />
@@ -49,6 +65,8 @@
           <Property Name="price" Type="int" Nullable="false" />
           <Property Name="description" Type="varchar(max)" Nullable="false" />
           <Property Name="benefits" Type="varchar(max)" />
+          <Property Name="maxevents" Type="int" />
+          <Property Name="maxbids" Type="int" />
         </EntityType>
         <EntityType Name="production">
           <Key>
@@ -90,7 +108,7 @@
           <Property Name="rid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="userid" Type="int" Nullable="false" />
           <Property Name="peid" Type="int" Nullable="false" />
-          <Property Name="rating" Type="int" Nullable="false" />
+          <Property Name="rating" Type="float" Nullable="false" />
           <Property Name="comment" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="subproduction">
@@ -194,7 +212,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_eventrequire_productionevent">
-          <End Role="productionevent" Type="Self.productionevent" Multiplicity="1" />
+          <End Role="productionevent" Type="Self.productionevent" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="eventrequire" Type="Self.eventrequire" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="productionevent">
@@ -242,7 +262,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_productionevent_production">
-          <End Role="production" Type="Self.production" Multiplicity="1" />
+          <End Role="production" Type="Self.production" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="productionevent" Type="Self.productionevent" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="production">
@@ -254,7 +276,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ratings_productionevent">
-          <End Role="productionevent" Type="Self.productionevent" Multiplicity="1" />
+          <End Role="productionevent" Type="Self.productionevent" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ratings" Type="Self.ratings" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="productionevent">
@@ -338,7 +362,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_userapply_productionevent">
-          <End Role="productionevent" Type="Self.productionevent" Multiplicity="1" />
+          <End Role="productionevent" Type="Self.productionevent" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="userapply" Type="Self.userapply" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="productionevent">
@@ -386,7 +412,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_userselect_productionevent">
-          <End Role="productionevent" Type="Self.productionevent" Multiplicity="1" />
+          <End Role="productionevent" Type="Self.productionevent" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="userselect" Type="Self.userselect" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="productionevent">
@@ -449,6 +477,15 @@
           <EntitySet Name="userprofile" EntityType="Self.userprofile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="userselect" EntityType="Self.userselect" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="videos" EntityType="Self.videos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="eventrate" EntityType="Self.eventrate" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [eventrate].[erid] AS [erid], 
+    [eventrate].[peid] AS [peid], 
+    [eventrate].[userid] AS [userid], 
+    [eventrate].[rating] AS [rating], 
+    [eventrate].[comment] AS [comment]
+    FROM [dbo].[eventrate] AS [eventrate]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_eventrequire_production" Association="Self.FK_eventrequire_production">
             <End Role="production" EntitySet="production" />
             <End Role="eventrequire" EntitySet="eventrequire" />
@@ -589,6 +626,8 @@
           <Property Name="benefits" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="subproductions" Relationship="Self.FK_subproduction_plan" FromRole="plan" ToRole="subproduction" />
           <NavigationProperty Name="subusers" Relationship="Self.FK_subuser_plan" FromRole="plan" ToRole="subuser" />
+          <Property Name="maxevents" Type="Int32" />
+          <Property Name="maxbids" Type="Int32" />
         </EntityType>
         <EntityType Name="production">
           <Key>
@@ -628,22 +667,10 @@
           <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="eventrequires" Relationship="Self.FK_eventrequire_productionevent" FromRole="productionevent" ToRole="eventrequire" />
           <NavigationProperty Name="production" Relationship="Self.FK_productionevent_production" FromRole="productionevent" ToRole="production" />
-          <NavigationProperty Name="ratings" Relationship="Self.FK_ratings_productionevent" FromRole="productionevent" ToRole="ratings" />
           <NavigationProperty Name="userapplies" Relationship="Self.FK_userapply_productionevent" FromRole="productionevent" ToRole="userapply" />
           <NavigationProperty Name="userselects" Relationship="Self.FK_userselect_productionevent" FromRole="productionevent" ToRole="userselect" />
           <Property Name="image" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="rating">
-          <Key>
-            <PropertyRef Name="rid" />
-          </Key>
-          <Property Name="rid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="userid" Type="Int32" Nullable="false" />
-          <Property Name="peid" Type="Int32" Nullable="false" />
-          <Property Name="rating1" Type="Int32" Nullable="false" />
-          <Property Name="comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="productionevent" Relationship="Self.FK_ratings_productionevent" FromRole="ratings" ToRole="productionevent" />
-          <NavigationProperty Name="user" Relationship="Self.FK_ratings_user" FromRole="ratings" ToRole="user" />
+          <NavigationProperty Name="ratings" Relationship="huntdbModel.FK_ratings_productionevent" FromRole="productionevent" ToRole="rating" />
         </EntityType>
         <EntityType Name="subproduction">
           <Key>
@@ -698,12 +725,12 @@
           <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="images" Relationship="Self.FK_images_user" FromRole="user" ToRole="images" />
-          <NavigationProperty Name="ratings" Relationship="Self.FK_ratings_user" FromRole="user" ToRole="ratings" />
           <NavigationProperty Name="userapplies" Relationship="Self.FK_userapply_user" FromRole="user" ToRole="userapply" />
           <NavigationProperty Name="userprofiles" Relationship="Self.FK_userprofile_user" FromRole="user" ToRole="userprofile" />
           <NavigationProperty Name="userselects" Relationship="Self.FK_userselect_user" FromRole="user" ToRole="userselect" />
           <NavigationProperty Name="videos" Relationship="Self.FK_videos_user" FromRole="user" ToRole="videos" />
           <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ratings" Relationship="huntdbModel.FK_ratings_user" FromRole="user" ToRole="rating" />
         </EntityType>
         <EntityType Name="userapply">
           <Key>
@@ -888,18 +915,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ratings_productionevent">
-          <End Role="productionevent" Type="Self.productionevent" Multiplicity="1" />
-          <End Role="ratings" Type="Self.rating" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="productionevent">
-              <PropertyRef Name="peid" />
-            </Principal>
-            <Dependent Role="ratings">
-              <PropertyRef Name="peid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_userapply_productionevent">
           <End Role="productionevent" Type="Self.productionevent" Multiplicity="1" />
           <End Role="userapply" Type="Self.userapply" Multiplicity="*" />
@@ -921,18 +936,6 @@
             </Principal>
             <Dependent Role="userselect">
               <PropertyRef Name="peid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ratings_user">
-          <End Role="user" Type="Self.user" Multiplicity="1" />
-          <End Role="ratings" Type="Self.rating" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="user">
-              <PropertyRef Name="userid" />
-            </Principal>
-            <Dependent Role="ratings">
-              <PropertyRef Name="userid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1015,7 +1018,6 @@
           <EntitySet Name="plans" EntityType="Self.plan" />
           <EntitySet Name="productions" EntityType="Self.production" />
           <EntitySet Name="productionevents" EntityType="Self.productionevent" />
-          <EntitySet Name="ratings" EntityType="Self.rating" />
           <EntitySet Name="subproductions" EntityType="Self.subproduction" />
           <EntitySet Name="subusers" EntityType="Self.subuser" />
           <EntitySet Name="talents" EntityType="Self.talent" />
@@ -1068,10 +1070,6 @@
             <End Role="production" EntitySet="productions" />
             <End Role="userapply" EntitySet="userapplies" />
           </AssociationSet>
-          <AssociationSet Name="FK_ratings_productionevent" Association="Self.FK_ratings_productionevent">
-            <End Role="productionevent" EntitySet="productionevents" />
-            <End Role="ratings" EntitySet="ratings" />
-          </AssociationSet>
           <AssociationSet Name="FK_userapply_productionevent" Association="Self.FK_userapply_productionevent">
             <End Role="productionevent" EntitySet="productionevents" />
             <End Role="userapply" EntitySet="userapplies" />
@@ -1079,10 +1077,6 @@
           <AssociationSet Name="FK_userselect_productionevent" Association="Self.FK_userselect_productionevent">
             <End Role="productionevent" EntitySet="productionevents" />
             <End Role="userselect" EntitySet="userselects" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ratings_user" Association="Self.FK_ratings_user">
-            <End Role="user" EntitySet="users" />
-            <End Role="ratings" EntitySet="ratings" />
           </AssociationSet>
           <AssociationSet Name="FK_userprofile_talent" Association="Self.FK_userprofile_talent">
             <End Role="talent" EntitySet="talents" />
@@ -1108,7 +1102,69 @@
             <End Role="user" EntitySet="users" />
             <End Role="videos" EntitySet="videos" />
           </AssociationSet>
+          <EntitySet Name="eventrates" EntityType="huntdbModel.eventrate" />
+          <EntitySet Name="ratings" EntityType="huntdbModel.rating" />
+          <AssociationSet Name="FK_ratings_productionevent" Association="huntdbModel.FK_ratings_productionevent">
+            <End Role="productionevent" EntitySet="productionevents" />
+            <End Role="rating" EntitySet="ratings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ratings_user" Association="huntdbModel.FK_ratings_user">
+            <End Role="user" EntitySet="users" />
+            <End Role="rating" EntitySet="ratings" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="eventrate">
+          <Key>
+            <PropertyRef Name="erid" />
+            <PropertyRef Name="peid" />
+            <PropertyRef Name="userid" />
+            <PropertyRef Name="rating" />
+            <PropertyRef Name="comment" />
+          </Key>
+          <Property Name="erid" Type="Int32" Nullable="false" />
+          <Property Name="peid" Type="Int32" Nullable="false" />
+          <Property Name="userid" Type="Int32" Nullable="false" />
+          <Property Name="rating" Type="Double" Nullable="false" />
+          <Property Name="comment" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="rating">
+          <Key>
+            <PropertyRef Name="rid" />
+          </Key>
+          <Property Name="rid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userid" Type="Int32" Nullable="false" />
+          <Property Name="peid" Type="Int32" Nullable="false" />
+          <Property Name="rating1" Type="Double" Nullable="false" />
+          <Property Name="comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="productionevent" Relationship="huntdbModel.FK_ratings_productionevent" FromRole="rating" ToRole="productionevent" />
+          <NavigationProperty Name="user" Relationship="huntdbModel.FK_ratings_user" FromRole="rating" ToRole="user" />
+        </EntityType>
+        <Association Name="FK_ratings_productionevent">
+          <End Type="huntdbModel.productionevent" Role="productionevent" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="huntdbModel.rating" Role="rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productionevent">
+              <PropertyRef Name="peid" />
+            </Principal>
+            <Dependent Role="rating">
+              <PropertyRef Name="peid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ratings_user">
+          <End Type="huntdbModel.user" Role="user" Multiplicity="1" />
+          <End Type="huntdbModel.rating" Role="rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="rating">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1155,6 +1211,8 @@
           <EntitySetMapping Name="plans">
             <EntityTypeMapping TypeName="huntdbModel.plan">
               <MappingFragment StoreEntitySet="plan">
+                <ScalarProperty Name="maxbids" ColumnName="maxbids" />
+                <ScalarProperty Name="maxevents" ColumnName="maxevents" />
                 <ScalarProperty Name="planid" ColumnName="planid" />
                 <ScalarProperty Name="plantype" ColumnName="plantype" />
                 <ScalarProperty Name="duration" ColumnName="duration" />
@@ -1196,17 +1254,6 @@
                 <ScalarProperty Name="evisitors" ColumnName="evisitors" />
                 <ScalarProperty Name="appdeadline" ColumnName="appdeadline" />
                 <ScalarProperty Name="description" ColumnName="description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ratings">
-            <EntityTypeMapping TypeName="huntdbModel.rating">
-              <MappingFragment StoreEntitySet="ratings">
-                <ScalarProperty Name="rid" ColumnName="rid" />
-                <ScalarProperty Name="userid" ColumnName="userid" />
-                <ScalarProperty Name="peid" ColumnName="peid" />
-                <ScalarProperty Name="rating1" ColumnName="rating" />
-                <ScalarProperty Name="comment" ColumnName="comment" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1303,6 +1350,28 @@
                 <ScalarProperty Name="tid" ColumnName="tid" />
                 <ScalarProperty Name="video1" ColumnName="video" />
                 <ScalarProperty Name="caption" ColumnName="caption" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="eventrates">
+            <EntityTypeMapping TypeName="huntdbModel.eventrate">
+              <MappingFragment StoreEntitySet="eventrate">
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="rating" ColumnName="rating" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="peid" ColumnName="peid" />
+                <ScalarProperty Name="erid" ColumnName="erid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ratings">
+            <EntityTypeMapping TypeName="huntdbModel.rating">
+              <MappingFragment StoreEntitySet="ratings">
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="rating1" ColumnName="rating" />
+                <ScalarProperty Name="peid" ColumnName="peid" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="rid" ColumnName="rid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

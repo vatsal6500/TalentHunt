@@ -12,15 +12,12 @@ namespace TalentHunt.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class rating
+    public partial class eventrate
     {
-        public int rid { get; set; }
-        public int userid { get; set; }
+        public int erid { get; set; }
         public int peid { get; set; }
-        public double rating1 { get; set; }
+        public int userid { get; set; }
+        public double rating { get; set; }
         public string comment { get; set; }
-    
-        public virtual productionevent productionevent { get; set; }
-        public virtual user user { get; set; }
     }
 }

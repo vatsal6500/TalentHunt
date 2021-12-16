@@ -27,6 +27,8 @@ namespace TalentHunt.Models
         public int price { get; set; }
         public string description { get; set; }
         public string benefits { get; set; }
+        public Nullable<int> maxevents { get; set; }
+        public Nullable<int> maxbids { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<subproduction> subproductions { get; set; }

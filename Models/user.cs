@@ -18,11 +18,11 @@ namespace TalentHunt.Models
         public user()
         {
             this.images = new HashSet<image>();
-            this.ratings = new HashSet<rating>();
             this.userapplies = new HashSet<userapply>();
             this.userprofiles = new HashSet<userprofile>();
             this.userselects = new HashSet<userselect>();
             this.videos = new HashSet<video>();
+            this.ratings = new HashSet<rating>();
         }
     
         public int userid { get; set; }
@@ -43,8 +43,6 @@ namespace TalentHunt.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<image> images { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<rating> ratings { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<userapply> userapplies { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<userprofile> userprofiles { get; set; }
@@ -52,5 +50,7 @@ namespace TalentHunt.Models
         public virtual ICollection<userselect> userselects { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<video> videos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<rating> ratings { get; set; }
     }
 }

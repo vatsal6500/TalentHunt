@@ -361,9 +361,35 @@ namespace TalentHunt.Controllers
                     return RedirectToAction("EventView");
                 }
             }
+            else if(Session["pid"] != null)
+            {
+                if(id == null)
+                {
+                    return RedirectToAction("Index","ProductionEvent");
+                }
+                productionevent productionevent = db.productionevents.Find(id);
+                if(productionevent == null)
+                {
+                    return RedirectToAction("Index", "ProductionEvent");
+                }
+                db.productionevents.Remove(productionevent);
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch(Exception ex)
+                {
+                    TempData["fkerr"] = $"fk error {ex.Message}";
+                }
+                return RedirectToAction("Index","ProductionEvent");
+            }
+            else if(Session["pid"] == null)
+            {
+                return RedirectToAction("Login","User");
+            }
             else
             {
-                return RedirectToAction("Login","AdminLogin");
+                return RedirectToAction("Login", "AdminLogin");
             }
         }
 

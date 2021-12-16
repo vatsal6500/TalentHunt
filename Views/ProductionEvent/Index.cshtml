@@ -76,6 +76,7 @@
                     <br /><br />
                     <center>
                         <p style="color:indianred">@TempData["NotFoundp"]</p>
+                        <p style="color:indianred">@TempData["fkerr"]</p>
                     </center>
                     @foreach (var plists in (IEnumerable<productionevent>)TempData["pdata"])
                     {
@@ -89,6 +90,7 @@
                                 <p class="card-text">@Html.DisplayFor(modelItem => plists.description)</p>
                             </div>
                             @Html.ActionLink("View More", "Details", "ProductionEvent", new { id = plists.peid }, new { @class = "btn btn-outline-primary my-3 mx-2" })
+                            @Html.ActionLink("Remove", "Delete", "ProductionEvent", new { id = plists.peid }, new { @class = "btn btn-outline-danger my-3 mx-2", onclick = $"return confirm('Are you sure you want to remove {plists.ename} event?')" })
                         </div>
                     }
                 </center>
