@@ -18,9 +18,9 @@ namespace TalentHunt.Models
         public productionevent()
         {
             this.eventrequires = new HashSet<eventrequire>();
+            this.ratings = new HashSet<rating>();
             this.userapplies = new HashSet<userapply>();
             this.userselects = new HashSet<userselect>();
-            this.ratings = new HashSet<rating>();
         }
     
         public int peid { get; set; }
@@ -40,10 +40,10 @@ namespace TalentHunt.Models
         public virtual ICollection<eventrequire> eventrequires { get; set; }
         public virtual production production { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<rating> ratings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<userapply> userapplies { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<userselect> userselects { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<rating> ratings { get; set; }
     }
 }

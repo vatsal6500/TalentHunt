@@ -18,10 +18,10 @@ namespace TalentHunt.Models
         public production()
         {
             this.eventrequires = new HashSet<eventrequire>();
-            this.productionevents = new HashSet<productionevent>();
             this.subproductions = new HashSet<subproduction>();
             this.subusers = new HashSet<subuser>();
             this.userapplies = new HashSet<userapply>();
+            this.productionevents = new HashSet<productionevent>();
         }
     
         public int pid { get; set; }
@@ -39,12 +39,12 @@ namespace TalentHunt.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<eventrequire> eventrequires { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<productionevent> productionevents { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<subproduction> subproductions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<subuser> subusers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<userapply> userapplies { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<productionevent> productionevents { get; set; }
     }
 }

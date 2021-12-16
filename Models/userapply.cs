@@ -24,7 +24,7 @@ namespace TalentHunt.Models
         public string status { get; set; }
     
         public virtual production production { get; set; }
-        public virtual productionevent productionevent { get; set; }
         public virtual user user { get; set; }
+        public virtual productionevent productionevent { get; set; }
     }
 }

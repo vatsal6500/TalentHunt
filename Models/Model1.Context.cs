@@ -30,7 +30,6 @@ namespace TalentHunt.Models
         public virtual DbSet<image> images { get; set; }
         public virtual DbSet<plan> plans { get; set; }
         public virtual DbSet<production> productions { get; set; }
-        public virtual DbSet<productionevent> productionevents { get; set; }
         public virtual DbSet<subproduction> subproductions { get; set; }
         public virtual DbSet<subuser> subusers { get; set; }
         public virtual DbSet<talent> talents { get; set; }
@@ -41,5 +40,6 @@ namespace TalentHunt.Models
         public virtual DbSet<video> videos { get; set; }
         public virtual DbSet<eventrate> eventrates { get; set; }
         public virtual DbSet<rating> ratings { get; set; }
+        public virtual DbSet<productionevent> productionevents { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace TalentHunt.Models
         public int userid { get; set; }
         public int finalpay { get; set; }
     
-        public virtual productionevent productionevent { get; set; }
         public virtual user user { get; set; }
+        public virtual productionevent productionevent { get; set; }
     }
 }

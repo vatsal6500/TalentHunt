@@ -20,7 +20,7 @@ namespace TalentHunt.Models
         public double rating1 { get; set; }
         public string comment { get; set; }
     
-        public virtual productionevent productionevent { get; set; }
         public virtual user user { get; set; }
+        public virtual productionevent productionevent { get; set; }
     }
 }

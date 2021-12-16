@@ -23,7 +23,7 @@ namespace TalentHunt.Models
         public string payrange { get; set; }
     
         public virtual production production { get; set; }
-        public virtual productionevent productionevent { get; set; }
         public virtual talent talent { get; set; }
+        public virtual productionevent productionevent { get; set; }
     }
 }
