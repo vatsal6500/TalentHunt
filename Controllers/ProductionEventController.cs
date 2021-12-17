@@ -393,6 +393,57 @@ namespace TalentHunt.Controllers
             }
         }
 
+        public ActionResult RequestUser(int? uid,int? pid)
+        {
+            if(uid == null)
+            {
+                RedirectToAction("UserView","User");
+            }
+            if(pid == null)
+            {
+                return RedirectToAction("Details","User",new { id = uid});
+            }
+            var eventList = db.productionevents.Where(p => p.pid == pid);
+            TempData["EventList"] = eventList;
+            ViewBag.uid = uid;
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult RequestUser(productionevent productionevent,string ename,int? uid)
+        {
+            if (uid == null)
+            {
+                RedirectToAction("UserView", "User");
+            }
+            if (productionevent.description == null && ename == null)
+            {
+                return RedirectToAction("Details","User",new { id = uid});
+            }
+            int pid = Convert.ToInt32(HttpContext.Session["pid"]);
+            string fname = db.users.Where(p => p.userid == uid).SingleOrDefault().fname;
+            string lname = db.users.Where(p => p.userid == uid).SingleOrDefault().lname;
+            string uemail = db.users.Where(p => p.userid == uid).SingleOrDefault().email;
+            string pname = db.productions.Where(p => p.pid == pid).FirstOrDefault().pname;
+            
+            string subject = $"Bidding request from {pname} Production";
+
+            string msg = $"<u>{fname} {lname}</u> we want you to bid on our {ename} Event.<br/> We think you will be more suitable to host this event. <br/><br/> {productionevent.description} ";
+
+            email email = new email(uemail, subject, msg);
+
+            if (email != null)
+            {
+                TempData["true"] = true;
+                //TempData["sent"] = "Your Email Sent";
+                return RedirectToAction("Details","USer",new { id = uid});
+            }
+
+            return View();
+        }
+
+
         //// POST: ProductionEvent/Delete/5
         //[HttpPost, ActionName("Delete")]
         //[ValidateAntiForgeryToken]

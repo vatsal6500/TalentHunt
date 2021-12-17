@@ -17,17 +17,11 @@
           <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'huntdb.dbo.eventrate' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="eventrate">
           <Key>
             <PropertyRef Name="erid" />
-            <PropertyRef Name="peid" />
-            <PropertyRef Name="userid" />
-            <PropertyRef Name="rating" />
-            <PropertyRef Name="comment" />
           </Key>
-          <Property Name="erid" Type="int" Nullable="false" />
+          <Property Name="erid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="peid" Type="int" Nullable="false" />
           <Property Name="userid" Type="int" Nullable="false" />
           <Property Name="rating" Type="float" Nullable="false" />
@@ -199,6 +193,30 @@ warning 6002: The table/view 'huntdb.dbo.eventrate' does not have a primary key 
           <Property Name="video" Type="varchar(max)" Nullable="false" />
           <Property Name="caption" Type="varchar(max)" />
         </EntityType>
+        <Association Name="FK_eventrate_productionevent">
+          <End Role="productionevent" Type="Self.productionevent" Multiplicity="1" />
+          <End Role="eventrate" Type="Self.eventrate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productionevent">
+              <PropertyRef Name="peid" />
+            </Principal>
+            <Dependent Role="eventrate">
+              <PropertyRef Name="peid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_eventrate_user">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="eventrate" Type="Self.eventrate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="eventrate">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_eventrequire_production">
           <End Role="production" Type="Self.production" Multiplicity="1" />
           <End Role="eventrequire" Type="Self.eventrequire" Multiplicity="*" />
@@ -463,6 +481,7 @@ warning 6002: The table/view 'huntdb.dbo.eventrate' does not have a primary key 
         </Association>
         <EntityContainer Name="huntdbModelStoreContainer">
           <EntitySet Name="admin" EntityType="Self.admin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="eventrate" EntityType="Self.eventrate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="eventrequire" EntityType="Self.eventrequire" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="images" EntityType="Self.images" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="plan" EntityType="Self.plan" Schema="dbo" store:Type="Tables" />
@@ -477,15 +496,14 @@ warning 6002: The table/view 'huntdb.dbo.eventrate' does not have a primary key 
           <EntitySet Name="userprofile" EntityType="Self.userprofile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="userselect" EntityType="Self.userselect" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="videos" EntityType="Self.videos" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="eventrate" EntityType="Self.eventrate" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [eventrate].[erid] AS [erid], 
-    [eventrate].[peid] AS [peid], 
-    [eventrate].[userid] AS [userid], 
-    [eventrate].[rating] AS [rating], 
-    [eventrate].[comment] AS [comment]
-    FROM [dbo].[eventrate] AS [eventrate]</DefiningQuery>
-          </EntitySet>
+          <AssociationSet Name="FK_eventrate_productionevent" Association="Self.FK_eventrate_productionevent">
+            <End Role="productionevent" EntitySet="productionevent" />
+            <End Role="eventrate" EntitySet="eventrate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_eventrate_user" Association="Self.FK_eventrate_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="eventrate" EntitySet="eventrate" />
+          </AssociationSet>
           <AssociationSet Name="FK_eventrequire_production" Association="Self.FK_eventrequire_production">
             <End Role="production" EntitySet="production" />
             <End Role="eventrequire" EntitySet="eventrequire" />
@@ -709,6 +727,7 @@ warning 6002: The table/view 'huntdb.dbo.eventrate' does not have a primary key 
           <NavigationProperty Name="videos" Relationship="Self.FK_videos_user" FromRole="user" ToRole="videos" />
           <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ratings" Relationship="huntdbModel.FK_ratings_user" FromRole="user" ToRole="rating" />
+          <NavigationProperty Name="eventrates" Relationship="huntdbModel.FK_eventrate_user" FromRole="user" ToRole="eventrate" />
         </EntityType>
         <EntityType Name="userapply">
           <Key>
@@ -1015,7 +1034,6 @@ warning 6002: The table/view 'huntdb.dbo.eventrate' does not have a primary key 
             <End Role="user" EntitySet="users" />
             <End Role="videos" EntitySet="videos" />
           </AssociationSet>
-          <EntitySet Name="eventrates" EntityType="huntdbModel.eventrate" />
           <EntitySet Name="ratings" EntityType="huntdbModel.rating" />
           <AssociationSet Name="FK_ratings_user" Association="huntdbModel.FK_ratings_user">
             <End Role="user" EntitySet="users" />
@@ -1042,21 +1060,16 @@ warning 6002: The table/view 'huntdb.dbo.eventrate' does not have a primary key 
             <End Role="productionevent" EntitySet="productionevents" />
             <End Role="userselect" EntitySet="userselects" />
           </AssociationSet>
+          <EntitySet Name="eventrates" EntityType="huntdbModel.eventrate" />
+          <AssociationSet Name="FK_eventrate_productionevent" Association="huntdbModel.FK_eventrate_productionevent">
+            <End Role="productionevent" EntitySet="productionevents" />
+            <End Role="eventrate" EntitySet="eventrates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_eventrate_user" Association="huntdbModel.FK_eventrate_user">
+            <End Role="user" EntitySet="users" />
+            <End Role="eventrate" EntitySet="eventrates" />
+          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="eventrate">
-          <Key>
-            <PropertyRef Name="erid" />
-            <PropertyRef Name="peid" />
-            <PropertyRef Name="userid" />
-            <PropertyRef Name="rating" />
-            <PropertyRef Name="comment" />
-          </Key>
-          <Property Name="erid" Type="Int32" Nullable="false" />
-          <Property Name="peid" Type="Int32" Nullable="false" />
-          <Property Name="userid" Type="Int32" Nullable="false" />
-          <Property Name="rating" Type="Double" Nullable="false" />
-          <Property Name="comment" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="rating">
           <Key>
             <PropertyRef Name="rid" />
@@ -1102,6 +1115,7 @@ warning 6002: The table/view 'huntdb.dbo.eventrate' does not have a primary key 
           <NavigationProperty Name="ratings" Relationship="huntdbModel.FK_ratings_productionevent" FromRole="productionevent" ToRole="rating" />
           <NavigationProperty Name="userapplies" Relationship="huntdbModel.FK_userapply_productionevent" FromRole="productionevent" ToRole="userapply" />
           <NavigationProperty Name="userselects" Relationship="huntdbModel.FK_userselect_productionevent" FromRole="productionevent" ToRole="userselect" />
+          <NavigationProperty Name="eventrates" Relationship="huntdbModel.FK_eventrate_productionevent" FromRole="productionevent" ToRole="eventrate" />
         </EntityType>
         <Association Name="FK_eventrequire_productionevent">
           <End Type="huntdbModel.productionevent" Role="productionevent" Multiplicity="1">
@@ -1170,6 +1184,42 @@ warning 6002: The table/view 'huntdb.dbo.eventrate' does not have a primary key 
             </Principal>
             <Dependent Role="userselect">
               <PropertyRef Name="peid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="eventrate">
+          <Key>
+            <PropertyRef Name="erid" />
+          </Key>
+          <Property Name="erid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="peid" Type="Int32" Nullable="false" />
+          <Property Name="userid" Type="Int32" Nullable="false" />
+          <Property Name="rating" Type="Double" Nullable="false" />
+          <Property Name="comment" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="productionevent" Relationship="huntdbModel.FK_eventrate_productionevent" FromRole="eventrate" ToRole="productionevent" />
+          <NavigationProperty Name="user" Relationship="huntdbModel.FK_eventrate_user" FromRole="eventrate" ToRole="user" />
+        </EntityType>
+        <Association Name="FK_eventrate_productionevent">
+          <End Type="huntdbModel.productionevent" Role="productionevent" Multiplicity="1" />
+          <End Type="huntdbModel.eventrate" Role="eventrate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productionevent">
+              <PropertyRef Name="peid" />
+            </Principal>
+            <Dependent Role="eventrate">
+              <PropertyRef Name="peid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_eventrate_user">
+          <End Type="huntdbModel.user" Role="user" Multiplicity="1" />
+          <End Type="huntdbModel.eventrate" Role="eventrate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="eventrate">
+              <PropertyRef Name="userid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1343,17 +1393,6 @@ warning 6002: The table/view 'huntdb.dbo.eventrate' does not have a primary key 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="eventrates">
-            <EntityTypeMapping TypeName="huntdbModel.eventrate">
-              <MappingFragment StoreEntitySet="eventrate">
-                <ScalarProperty Name="comment" ColumnName="comment" />
-                <ScalarProperty Name="rating" ColumnName="rating" />
-                <ScalarProperty Name="userid" ColumnName="userid" />
-                <ScalarProperty Name="peid" ColumnName="peid" />
-                <ScalarProperty Name="erid" ColumnName="erid" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ratings">
             <EntityTypeMapping TypeName="huntdbModel.rating">
               <MappingFragment StoreEntitySet="ratings">
@@ -1380,6 +1419,17 @@ warning 6002: The table/view 'huntdb.dbo.eventrate' does not have a primary key 
                 <ScalarProperty Name="ename" ColumnName="ename" />
                 <ScalarProperty Name="pid" ColumnName="pid" />
                 <ScalarProperty Name="peid" ColumnName="peid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="eventrates">
+            <EntityTypeMapping TypeName="huntdbModel.eventrate">
+              <MappingFragment StoreEntitySet="eventrate">
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="rating" ColumnName="rating" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="peid" ColumnName="peid" />
+                <ScalarProperty Name="erid" ColumnName="erid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

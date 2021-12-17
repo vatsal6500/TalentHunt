@@ -306,6 +306,9 @@ namespace TalentHunt.Controllers
             var videolists = db.videos.Where(p => p.userid.Equals(usrid));
             TempData["videolists"] = videolists;
 
+            //int id = db.productionevents.
+            
+
             user user = db.users.Find(id);
             if (user == null)
             {

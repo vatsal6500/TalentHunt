@@ -21,6 +21,7 @@ namespace TalentHunt.Models
             this.ratings = new HashSet<rating>();
             this.userapplies = new HashSet<userapply>();
             this.userselects = new HashSet<userselect>();
+            this.eventrates = new HashSet<eventrate>();
         }
     
         public int peid { get; set; }
@@ -45,5 +46,7 @@ namespace TalentHunt.Models
         public virtual ICollection<userapply> userapplies { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<userselect> userselects { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<eventrate> eventrates { get; set; }
     }
 }

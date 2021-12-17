@@ -85,6 +85,16 @@
                                                 </p>
                                             </div>
                                         </div>
+                                        @if (Session["pid"] != null)
+                                        {
+                                            <div>
+                                                @Html.ActionLink("Request","RequestUser","ProductionEvent",new { uid = Model.userid, pid = Session["pid"] }, new { @class = "btn btn-outline-dark mx-4"})
+                                                @if(TempData["true"] != null)
+                                                {
+                                                    <span class="text-success">E-mail sent</span>
+                                                }   
+                                            </div>
+                                        }
                                         <br />
                                         <div class="card-body pt-0">
                                             <div class="user-about-block">

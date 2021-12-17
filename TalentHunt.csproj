@@ -1937,6 +1937,7 @@
     <Content Include="Views\AdminLogin\ResetPassword.cshtml" />
     <Content Include="Views\User\Reset.cshtml" />
     <Content Include="Views\Production\Reset.cshtml" />
+    <Content Include="Views\ProductionEvent\RequestUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
