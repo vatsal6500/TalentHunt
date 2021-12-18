@@ -243,7 +243,7 @@ namespace TalentHunt.Controllers
                         }
                         else
                         {
-                            ViewBag.err = "You are banned from using TalentHunt";
+                            ViewBag.err = "You are banned from using TalentHunt or email not verified";
                         }
                     }
                     else
@@ -344,13 +344,27 @@ namespace TalentHunt.Controllers
                     userv.photo = "~/Images/User/" + fileName;
                     fileName = Path.Combine(Server.MapPath("~/Images/User/"), fileName);
                     userv.ImageFile.SaveAs(fileName);
-                    userv.status = "active";
+                    userv.status = "blocked";
 
                     user user = new user();
                     AutoMapper.Mapper.Map(userv, user);
 
                     db.users.Add(user);
                     db.SaveChanges();
+
+                    TempData["ucre"] = true;
+
+                    //string FilePath = "E:\\TalentHunt\\EmailTemplates\\index1.html";
+                    //StreamReader str = new StreamReader(FilePath);
+                    //String MailText = str.ReadToEnd();
+                    //str.Close();
+
+                    int id = user.userid;
+
+                    string MailText = $"<a href = 'https://localhost:44327/User/Activite/{id}'>Active Email</a>";
+
+                    email email = new email(user.email, "Verify Email", MailText);
+                    
                     return RedirectToAction("Index");
                 }
                 else
@@ -359,6 +373,27 @@ namespace TalentHunt.Controllers
                 }
             }
             return View(userv);
+        }
+
+        [Route("/activeuser")]
+        public ActionResult Activite(int? id)
+        {
+            if(id == null)
+            {
+                return RedirectToAction("Login","User");
+            }
+
+            user user = db.users.Find(id);
+            
+            if(user.status == "blocked")
+            {
+                user.status = "active";
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            TempData["everi"] = true;
+            return RedirectToAction("Login","User");
         }
 
         public ActionResult EditStatus(int? id,string status)

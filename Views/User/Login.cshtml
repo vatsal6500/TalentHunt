@@ -189,5 +189,19 @@
     <script src="~/vendors/scripts/script.min.js"></script>
     <script src="~/vendors/scripts/process.js"></script>
     <script src="~/vendors/scripts/layout-settings.js"></script>
+
+    @if (TempData["ucre"] != null)
+    {
+        <script>
+            alert('Account Created. Email Verification Left.');
+        </script>
+    }
+
+    @if (TempData["everi"] != null)
+    {
+        <script>
+            alert('Account Verified');
+        </script>
+    }
 </body>
 </html>

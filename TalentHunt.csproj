@@ -1277,6 +1277,8 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="EmailTemplates\index.html" />
+    <None Include="EmailTemplates\index1.cshtml" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -1347,6 +1349,7 @@
     <Content Include="assets\fonts\ionicons28b5.eot" />
     <Content Include="assets\fonts\ionicons28b5.ttf" />
     <Content Include="assets\fonts\ionicons28b5.woff" />
+    <Content Include="EmailTemplates\ViewPage1.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
@@ -1938,6 +1941,7 @@
     <Content Include="Views\User\Reset.cshtml" />
     <Content Include="Views\Production\Reset.cshtml" />
     <Content Include="Views\ProductionEvent\RequestUser.cshtml" />
+    <Content Include="Views\User\Activite.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
