@@ -375,7 +375,7 @@ namespace TalentHunt.Controllers
             return View(userv);
         }
 
-        [Route("/activeuser")]
+        
         public ActionResult Activite(int? id)
         {
             if(id == null)
