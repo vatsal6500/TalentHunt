@@ -169,10 +169,39 @@ namespace TalentHunt.Controllers
                 {
                     return View(db.users.ToList());
                 }
+
                 List<user> users = db.users.Where(p => p.fname.Contains(Search) || Search == null).ToList();
                 if (users.Count() == 0)
                 {
-                    TempData["NotFound"] = "Data Not Found";
+                    List<user> gender = db.users.Where(p => p.gender.Equals(Search)).ToList();
+                    if(gender.Count() == 0)
+                    {
+                        try
+                        {
+                            int s = Convert.ToInt32(Search);
+                            List<user> ages = db.users.Where(p => p.age <= s).ToList();
+                            if (ages.Count() == 0)
+                            {
+                                TempData["NotFound"] = "User Not Found";
+                            }
+                            else
+                            {
+                                return View(ages.ToList());
+                            }
+                        }
+                        catch
+                        {
+                            TempData["NotFound"] = "User Not Found";
+                        }
+                    }
+                    else
+                    {
+                        return View(gender.ToList());
+                    }
+                }
+                else
+                {
+                    return View(users.ToList());
                 }
 
                 return View(users.ToList());
