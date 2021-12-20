@@ -106,7 +106,7 @@ namespace TalentHunt.Controllers
                     if(talent.Count() == 0)
                     {
                         talent Talent = new talent();
-                        AutoMapper.Mapper.Map(talentv, talent);
+                        AutoMapper.Mapper.Map(talentv, Talent);
 
                         db.talents.Add(Talent);
                         db.SaveChanges();

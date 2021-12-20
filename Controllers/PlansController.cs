@@ -51,7 +51,8 @@ namespace TalentHunt.Controllers
                 List<plan> planTS = db.plans.Where(p => p.plantype.Contains(Search)).ToList();
                 if (planTS.Count() == 0)
                 {
-                    List<plan> planLnS = db.plans.Where(p => p.price.ToString().Contains(Search)).ToList();
+                    int s = Convert.ToInt32(Search);
+                    List<plan> planLnS = db.plans.Where(p => p.price <= s).ToList();
                     if (planLnS.Count() == 0)
                     {
                         TempData["pNotFound"] = "Plan Not Found";
@@ -114,7 +115,7 @@ namespace TalentHunt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "planid,plantype,duration,price,description,benefits")] planv planv)
+        public ActionResult Create([Bind(Include = "planid,plantype,duration,price,maxevents,maxbids,description,benefits")] planv planv)
         {
             if (Session["aid"] != null)
             {
@@ -167,7 +168,7 @@ namespace TalentHunt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "planid,plantype,duration,price,description,benefits")] planv planv)
+        public ActionResult Edit([Bind(Include = "planid,plantype,duration,price,maxevents,maxbids,description,benefits")] planv planv)
         {
             if (Session["aid"] != null)
             {
@@ -201,7 +202,14 @@ namespace TalentHunt.Controllers
                 if (plan != null)
                 {
                     db.plans.Remove(plan);
-                    db.SaveChanges();
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        TempData["planerr"] = "Plan cannot be deleted because users are subscribed to this plan";
+                    }
                     return RedirectToAction("Index");
                 }
                 else

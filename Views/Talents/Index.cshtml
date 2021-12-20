@@ -80,7 +80,6 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
                                 <th scope="col">Talents</th>
                                 <th scope="col">Actions</th>
                             </tr>
@@ -91,7 +90,6 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>@Html.DisplayFor(modelItem => item.tid)</td>
                                     <td>@Html.DisplayFor(modelItem => item.ttype)</td>
                                     <td>
                                         @Html.ActionLink("Edit", "Edit", new { id = item.tid }) |

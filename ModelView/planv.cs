@@ -28,6 +28,18 @@ namespace TalentHunt.ModelView
         public int price { get; set; }
 
         [Required(ErrorMessage = "*")]
+        [DisplayName("Max Events")]
+        [DataType(DataType.Text)]
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "Invalid Duration")]
+        public int maxevents { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [DisplayName("Max Bids")]
+        [DataType(DataType.Text)]
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "Invalid Duration")]
+        public int maxbids { get; set; }
+
+        [Required(ErrorMessage = "*")]
         [DisplayName("Description")]
         [DataType(DataType.MultilineText)]
         public string description { get; set; }

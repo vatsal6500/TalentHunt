@@ -76,10 +76,11 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
                                 <th scope="col">Plan Type</th>
                                 <th scope="col">Duration</th>
                                 <th scope="col">Price</th>
+                                <th scope="col">Max Events</th>
+                                <th scope="col">Max Bids</th>
                                 <th scope="col">Description</th>
                                 <th scope="col">Benefits</th>
                                 <th scope="col">Actions</th>
@@ -87,20 +88,23 @@
                         </thead>
                         <tbody>
                             <span class="text-danger">@TempData["pNotFound"]</span>
+                            <span class="text-danger">@TempData["planerr"]</span>
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>@Html.DisplayFor(modelItem => item.planid)</td>
                                     <td>@Html.DisplayFor(modelItem => item.plantype)</td>
                                     <td>@Html.DisplayFor(modelItem => item.duration)</td>
                                     <td>@Html.DisplayFor(modelItem => item.price)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.maxevents)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.maxbids)</td>
                                     <td>@Html.DisplayFor(modelItem => item.description)</td>
                                     <td>@Html.DisplayFor(modelItem => item.benefits)</td>
                                     <td>
                                         @Html.ActionLink("Edit", "Edit", new { id = item.planid }) |
-                                        @Html.ActionLink("Delete", "Delete", new { id = item.planid }, new { onclick = $"return confirm('Are you sure you want to delete {item.plantype} plan?')"})
+                                        @Html.ActionLink("Delete", "Delete", new { id = item.planid }, new { onclick = $"return confirm('Are you sure you want to delete {item.plantype} plan?')" })
                                     </td>
-                                </tr>}
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
