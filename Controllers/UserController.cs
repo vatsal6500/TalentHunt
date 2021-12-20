@@ -332,45 +332,67 @@ namespace TalentHunt.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (userv.ImageFile == null)
+                user email = db.users.Where(p => p.email.Equals(userv.email)).FirstOrDefault();
+                user username = db.users.Where(p => p.username.Equals(userv.username)).FirstOrDefault();
+                if(email.email != null && username.username != null)
                 {
-                    ViewBag.emptyerr = "*";
+                    ViewBag.uemail = "email already registered";
+                    ViewBag.uuname = "username already registered";
                 }
-                else if (userv.ImageFile.ContentType == "image/jpeg" || userv.ImageFile.ContentType == "image/png" || userv.ImageFile.ContentType == "image/jpg")
+                else if (email.email != null)
                 {
-                    string fileName = Path.GetFileNameWithoutExtension(userv.ImageFile.FileName);
-                    string extension = Path.GetExtension(userv.ImageFile.FileName);
-                    fileName = fileName + extension;
-                    userv.photo = "~/Images/User/" + fileName;
-                    fileName = Path.Combine(Server.MapPath("~/Images/User/"), fileName);
-                    userv.ImageFile.SaveAs(fileName);
-                    userv.status = "blocked";
-
-                    user user = new user();
-                    AutoMapper.Mapper.Map(userv, user);
-
-                    db.users.Add(user);
-                    db.SaveChanges();
-
-                    TempData["ucre"] = true;
-
-                    //string FilePath = "E:\\TalentHunt\\EmailTemplates\\index1.html";
-                    //StreamReader str = new StreamReader(FilePath);
-                    //String MailText = str.ReadToEnd();
-                    //str.Close();
-
-                    int id = user.userid;
-
-                    string MailText = $"<a href = 'https://localhost:44327/User/Activite/{id}'>Active Email</a>";
-
-                    email email = new email(user.email, "Verify Email", MailText);
-                    
-                    return RedirectToAction("Index");
+                    ViewBag.uemail = "email already registered";
                 }
                 else
                 {
-                    ViewBag.picformat = "Invalid Format";
+                    if (username.username != null)
+                    {
+                        ViewBag.uuname = "username already registered";
+                    }
+                    else
+                    {
+                        if (userv.ImageFile == null)
+                        {
+                            ViewBag.emptyerr = "*";
+                        }
+                        else if (userv.ImageFile.ContentType == "image/jpeg" || userv.ImageFile.ContentType == "image/png" || userv.ImageFile.ContentType == "image/jpg")
+                        {
+                            string fileName = Path.GetFileNameWithoutExtension(userv.ImageFile.FileName);
+                            string extension = Path.GetExtension(userv.ImageFile.FileName);
+                            fileName = fileName + extension;
+                            userv.photo = "~/Images/User/" + fileName;
+                            fileName = Path.Combine(Server.MapPath("~/Images/User/"), fileName);
+                            userv.ImageFile.SaveAs(fileName);
+                            userv.status = "blocked";
+
+                            user user = new user();
+                            AutoMapper.Mapper.Map(userv, user);
+
+                            db.users.Add(user);
+                            db.SaveChanges();
+
+                            TempData["ucre"] = true;
+
+                            //string FilePath = "E:\\TalentHunt\\EmailTemplates\\index1.html";
+                            //StreamReader str = new StreamReader(FilePath);
+                            //String MailText = str.ReadToEnd();
+                            //str.Close();
+
+                            int id = user.userid;
+
+                            string MailText = $"<a href = 'https://localhost:44327/User/Activite/{id}'>Active Email</a>";
+
+                            email emailu = new email(user.email, "Verify Email", MailText);
+
+                            return RedirectToAction("Index");
+                        }
+                        else
+                        {
+                            ViewBag.picformat = "Invalid Format";
+                        }
+                    }
                 }
+
             }
             return View(userv);
         }
@@ -390,9 +412,9 @@ namespace TalentHunt.Controllers
                 user.status = "active";
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["everi"] = true;
             }
 
-            TempData["everi"] = true;
             return RedirectToAction("Login","User");
         }
 
