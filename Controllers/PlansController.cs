@@ -51,15 +51,22 @@ namespace TalentHunt.Controllers
                 List<plan> planTS = db.plans.Where(p => p.plantype.Contains(Search)).ToList();
                 if (planTS.Count() == 0)
                 {
-                    int s = Convert.ToInt32(Search);
-                    List<plan> planLnS = db.plans.Where(p => p.price <= s).ToList();
-                    if (planLnS.Count() == 0)
+                    try
+                    {
+                        int s = Convert.ToInt32(Search);
+                        List<plan> planLnS = db.plans.Where(p => p.price <= s).ToList();
+                        if (planLnS.Count() == 0)
+                        {
+                            TempData["pNotFound"] = "Plan Not Found";
+                        }
+                        else
+                        {
+                            return View(planLnS.ToList());
+                        }
+                    }
+                    catch(Exception e)
                     {
                         TempData["pNotFound"] = "Plan Not Found";
-                    }
-                    else
-                    {
-                        return View(planLnS.ToList());
                     }
                 }
                 else
