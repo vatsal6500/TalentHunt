@@ -133,13 +133,26 @@ namespace TalentHunt.Controllers
                 {
                     return View(db.productions.ToList());
                 }
-                List<production> productions = db.productions.Where(p => p.pname.Contains(Search) || Search == null).ToList();
-                if (productions.Count() == 0)
+
+                List<production> eventNS = db.productions.Where(p => p.pname.Contains(Search)).ToList();
+                if (eventNS.Count() == 0)
                 {
-                    TempData["NotFound"] = "Data Not Found";
+                    List<production> eventHS = db.productions.Where(p => p.phead.Contains(Search)).ToList();
+                    if (eventHS.Count() == 0)
+                    {
+                        TempData["NotFound"] = "Data Not Found";
+                    }
+                    else
+                    {
+                        return View(eventHS.ToList());
+                    }
+                }
+                else
+                {
+                    return View(eventNS.ToList());
                 }
 
-                return View(productions.ToList());
+                return View(eventNS.ToList());
             }
             else
             {
