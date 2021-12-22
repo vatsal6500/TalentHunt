@@ -70,6 +70,9 @@
                                                 <p>
                                                     @Html.DisplayFor(model => model.gender) | @Html.DisplayFor(model => model.age)
                                                 </p>
+                                                <p class="mb-0" style="border-radius:50%; border-color:lawngreen; color:green">
+                                                    @TempData["ratings"] <i class="fa fa-star" style="color:gold"></i>
+                                                </p>
                                             </div>
                                         </div>
                                         <br />
