@@ -68,6 +68,7 @@
                     <table class="table">
                         <thead>
                             <tr>
+                                <th scope="col">Profile</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Age</th>
                                 <th scope="col">Gender</th>
@@ -80,6 +81,9 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
+                                    <td>
+                                        <img src="@Url.Content(item.photo)" style="border-radius:30%;" height="100" width="100" alt="no"/>
+                                    </td>
                                     <td>@Html.DisplayFor(modelItem => item.aname)</td>
                                     <td>@Html.DisplayFor(modelItem => item.age)</td>
                                     <td>@Html.DisplayFor(modelItem => item.gender)</td>

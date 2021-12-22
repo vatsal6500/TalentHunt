@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -68,7 +69,7 @@ namespace TalentHunt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "aid,aname,age,gender,email,username,password")] adminv adminv)
+        public ActionResult Create([Bind(Include = "aid,aname,age,gender,email,username,password,ImageFile")] adminv adminv)
         {
             if (Session["aid"] != null)
             {
@@ -88,11 +89,28 @@ namespace TalentHunt.Controllers
                     }
                     else
                     {
-                        admin admin = new admin();
-                        AutoMapper.Mapper.Map(adminv,adminv);
-                        db.admins.Add(admin);
-                        db.SaveChanges();
-                        return RedirectToAction("Index");
+                        if (adminv.ImageFile == null)
+                        {
+                            ViewBag.emptyerr = "*";
+                        }
+                        else if (adminv.ImageFile.ContentType == "image/jpeg" || adminv.ImageFile.ContentType == "image/png" || adminv.ImageFile.ContentType == "image/jpg")
+                        {
+                            string fileName = Path.GetFileNameWithoutExtension(adminv.ImageFile.FileName);
+                            string extension = Path.GetExtension(adminv.ImageFile.FileName);
+                            fileName = fileName + extension;
+                            adminv.photo = "~/Images/Admin/" + fileName;
+                            fileName = Path.Combine(Server.MapPath("~/Images/Admin/"), fileName);
+                            adminv.ImageFile.SaveAs(fileName);
+                            admin admin = new admin();
+                            AutoMapper.Mapper.Map(adminv, admin);
+                            db.admins.Add(admin);
+                            db.SaveChanges();
+                            return RedirectToAction("Index");
+                        }
+                        else
+                        {
+                            ViewBag.picformat = "Invalid Format";
+                        }
                     }
                 }
 
@@ -115,15 +133,12 @@ namespace TalentHunt.Controllers
                 }
                 
                 admin admin = db.admins.Find(id);
-                
-                adminv adminv = new adminv();
-                AutoMapper.Mapper.Map(admin,adminv);
 
                 if (admin == null)
                 {
                     return HttpNotFound();
                 }
-                return View(adminv);
+                return View(admin);
             }
             else
             {
@@ -136,19 +151,17 @@ namespace TalentHunt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "aid,aname,age,gender,email,username,password")] adminv adminv)
+        public ActionResult Edit([Bind(Include = "aid,aname,age,gender,email,username,password,photo")] admin admin)
         {
             if (Session["aid"] != null)
             {
                 if (ModelState.IsValid)
                 {
-                    admin admin = new admin();
-                    AutoMapper.Mapper.Map(adminv,admin);
                     db.Entry(admin).State = EntityState.Modified;
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
-                return View(adminv);
+                return View(admin);
             }
             else
             {

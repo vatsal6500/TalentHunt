@@ -52,6 +52,7 @@ namespace TalentHunt.Controllers
                     Session["aid"] = adm.aid.ToString();
                     Session["adminemail"] = adm.email.ToString();
                     Session["name"] = adm.aname.ToString();
+                    Session["image"] = adm.photo.ToString();
                     return RedirectToAction("Dashboard");
                 }
                 else if (adminlogin.username != null && adminlogin.password != null)

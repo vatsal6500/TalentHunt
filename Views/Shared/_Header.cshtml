@@ -15,7 +15,7 @@
             <div class="dropdown mx-3">
                 <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                     <span class="user-icon">
-                        <img src="~/vendors/images/photo1.jpg" alt="">
+                        <img src="@Url.Content((string)Session["image"])" alt="">
                     </span>
                     <span class="user-name">@Session["name"]</span>
                 </a>
