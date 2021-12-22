@@ -156,9 +156,45 @@ namespace TalentHunt.Controllers
                 {
                     return View(db.productionevents.ToList());
                 }
-                List<productionevent> events = db.productionevents.Where(p => p.ename.Contains(Search) || Search == null).ToList();
+                List<productionevent> events = db.productionevents.Where(p => p.ename.Contains(Search)).ToList();
                 if (events.Count() == 0)
                 {
+                    List<productionevent> pname = db.productionevents.Where(p => p.production.pname.Contains(Search)).ToList();
+                    if (pname.Count() == 0)
+                    {
+                        List<productionevent> venue = db.productionevents.Where(p => p.evenu.Contains(Search)).ToList();
+                        if(venue.Count() == 0)
+                        {
+                            List<productionevent> sdate = db.productionevents.Where(p => p.startdate.ToString().Contains(Search)).ToList();
+                            if(sdate.Count() == 0)
+                            {
+                                List<productionevent> edate = db.productionevents.Where(p => p.enddate.ToString().Contains(Search)).ToList();
+                                if (edate.Count() == 0)
+                                {
+                                    TempData["NotFound"] = "Data Not Found";
+                                }
+                                else
+                                {
+                                    return View(edate.ToList());
+                                }
+                                TempData["NotFound"] = "Data Not Found";
+                            }
+                            else
+                            {
+                                return View(sdate.ToList());
+                            }
+                            TempData["NotFound"] = "Data Not Found";
+                        }
+                        else
+                        {
+                            return View(venue.ToList());
+                        }
+                        TempData["NotFound"] = "Data Not Found";
+                    }
+                    else
+                    {
+                        return View(pname.ToList());
+                    }
                     TempData["NotFound"] = "Data Not Found";
                 }
 
@@ -345,6 +381,17 @@ namespace TalentHunt.Controllers
                 productionevent productionevent = db.productionevents.Find(id);
                 if (productionevent != null)
                 {
+                    string msg = $"Dear {productionevent.production.pname},<br/><br/>  Your Event {productionevent.ename} has been removed by the admin due to the violation of Talent Hunt policy.<br/><br/> Sorry for the inconvenience. <br/><br/> Contact Management for further details.";
+                    email email = new email(productionevent.production.email, "Removed Event", msg);
+                    var bids = db.userapplies.Where(p => p.peid.Equals(productionevent.peid));
+                    if(bids != null)
+                    {
+                        foreach (var item in bids)
+                        {
+                            string umsg = $"Dear {item.user.fname} {item.user.lname},<br/><br/> Event {productionevent.ename} has been removed by the admin due to the violation of Talent Hunt policy.<br/><br/> Hence, your bid on this event has been withdrawn. <br/><br/> Sorry for the inconvenience.";
+                            email uemail = new email(item.user.email, "Removed Event", umsg);
+                        }
+                    }
                     db.productionevents.Remove(productionevent);
                     try
                     {

@@ -68,7 +68,6 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Age</th>
                                 <th scope="col">Gender</th>
@@ -81,7 +80,6 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>@Html.DisplayFor(modelItem => item.aid)</td>
                                     <td>@Html.DisplayFor(modelItem => item.aname)</td>
                                     <td>@Html.DisplayFor(modelItem => item.age)</td>
                                     <td>@Html.DisplayFor(modelItem => item.gender)</td>

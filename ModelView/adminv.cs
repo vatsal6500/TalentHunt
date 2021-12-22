@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.Web;
 
 namespace TalentHunt.ModelView
 {
@@ -39,6 +40,11 @@ namespace TalentHunt.ModelView
         [DisplayName("Password")]
         [DataType(DataType.Password)]
         public string password { get; set; }
+
+        [DisplayName("profile")]
+        public string photo { get; set; }
+
+        public HttpPostedFileBase ImageFile { get; set; }
 
         [DisplayName("Save credentials")]
         public bool RememberMe { get; set; }

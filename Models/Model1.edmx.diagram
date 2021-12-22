@@ -5,7 +5,6 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="034f22b76190418394972b7f39f3e21f" Name="Diagram1">
-        <EntityTypeShape EntityType="huntdbModel.admin" Width="1.5" PointX="8.75" PointY="2.25" IsExpanded="true" />
         <EntityTypeShape EntityType="huntdbModel.eventrequire" Width="1.5" PointX="9" PointY="13.375" IsExpanded="true" />
         <EntityTypeShape EntityType="huntdbModel.image" Width="1.5" PointX="3" PointY="11.25" IsExpanded="true" />
         <EntityTypeShape EntityType="huntdbModel.plan" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
@@ -44,6 +43,7 @@
         <EntityTypeShape EntityType="huntdbModel.eventrate" Width="1.5" PointX="5.25" PointY="18.625" />
         <AssociationConnector Association="huntdbModel.FK_eventrate_productionevent" />
         <AssociationConnector Association="huntdbModel.FK_eventrate_user" />
+        <EntityTypeShape EntityType="huntdbModel.admin" Width="1.5" PointX="5.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -25,7 +25,6 @@ namespace TalentHunt.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<admin> admins { get; set; }
         public virtual DbSet<eventrequire> eventrequires { get; set; }
         public virtual DbSet<image> images { get; set; }
         public virtual DbSet<plan> plans { get; set; }
@@ -41,5 +40,6 @@ namespace TalentHunt.Models
         public virtual DbSet<rating> ratings { get; set; }
         public virtual DbSet<productionevent> productionevents { get; set; }
         public virtual DbSet<eventrate> eventrates { get; set; }
+        public virtual DbSet<admin> admins { get; set; }
     }
 }

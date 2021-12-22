@@ -16,6 +16,7 @@
           <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="photo" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="eventrate">
           <Key>
@@ -593,18 +594,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="huntdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="admin">
-          <Key>
-            <PropertyRef Name="aid" />
-          </Key>
-          <Property Name="aid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="aname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="age" Type="Int32" Nullable="false" />
-          <Property Name="gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
         <EntityType Name="eventrequire">
           <Key>
             <PropertyRef Name="erid" />
@@ -961,7 +950,6 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="huntdbEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="admins" EntityType="Self.admin" />
           <EntitySet Name="eventrequires" EntityType="Self.eventrequire" />
           <EntitySet Name="images" EntityType="Self.image" />
           <EntitySet Name="plans" EntityType="Self.plan" />
@@ -1069,6 +1057,7 @@
             <End Role="user" EntitySet="users" />
             <End Role="eventrate" EntitySet="eventrates" />
           </AssociationSet>
+          <EntitySet Name="admins" EntityType="huntdbModel.admin" />
         </EntityContainer>
         <EntityType Name="rating">
           <Key>
@@ -1223,25 +1212,25 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="admin">
+          <Key>
+            <PropertyRef Name="aid" />
+          </Key>
+          <Property Name="aid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="aname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="age" Type="Int32" Nullable="false" />
+          <Property Name="gender" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="photo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="huntdbModelStoreContainer" CdmEntityContainer="huntdbEntities">
-          <EntitySetMapping Name="admins">
-            <EntityTypeMapping TypeName="huntdbModel.admin">
-              <MappingFragment StoreEntitySet="admin">
-                <ScalarProperty Name="aid" ColumnName="aid" />
-                <ScalarProperty Name="aname" ColumnName="aname" />
-                <ScalarProperty Name="age" ColumnName="age" />
-                <ScalarProperty Name="gender" ColumnName="gender" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="password" ColumnName="password" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="eventrequires">
             <EntityTypeMapping TypeName="huntdbModel.eventrequire">
               <MappingFragment StoreEntitySet="eventrequire">
@@ -1430,6 +1419,20 @@
                 <ScalarProperty Name="userid" ColumnName="userid" />
                 <ScalarProperty Name="peid" ColumnName="peid" />
                 <ScalarProperty Name="erid" ColumnName="erid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="admins">
+            <EntityTypeMapping TypeName="huntdbModel.admin">
+              <MappingFragment StoreEntitySet="admin">
+                <ScalarProperty Name="photo" ColumnName="photo" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+                <ScalarProperty Name="age" ColumnName="age" />
+                <ScalarProperty Name="aname" ColumnName="aname" />
+                <ScalarProperty Name="aid" ColumnName="aid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
