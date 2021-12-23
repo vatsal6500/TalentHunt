@@ -17,11 +17,11 @@ namespace TalentHunt.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public productionevent()
         {
+            this.eventrates = new HashSet<eventrate>();
             this.eventrequires = new HashSet<eventrequire>();
             this.ratings = new HashSet<rating>();
             this.userapplies = new HashSet<userapply>();
             this.userselects = new HashSet<userselect>();
-            this.eventrates = new HashSet<eventrate>();
         }
     
         public int peid { get; set; }
@@ -36,7 +36,10 @@ namespace TalentHunt.Models
         public System.DateTime appdeadline { get; set; }
         public string description { get; set; }
         public string image { get; set; }
+        public string status { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<eventrate> eventrates { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<eventrequire> eventrequires { get; set; }
         public virtual production production { get; set; }
@@ -46,7 +49,5 @@ namespace TalentHunt.Models
         public virtual ICollection<userapply> userapplies { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<userselect> userselects { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<eventrate> eventrates { get; set; }
     }
 }

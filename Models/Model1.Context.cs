@@ -38,8 +38,8 @@ namespace TalentHunt.Models
         public virtual DbSet<userselect> userselects { get; set; }
         public virtual DbSet<video> videos { get; set; }
         public virtual DbSet<rating> ratings { get; set; }
-        public virtual DbSet<productionevent> productionevents { get; set; }
         public virtual DbSet<eventrate> eventrates { get; set; }
         public virtual DbSet<admin> admins { get; set; }
+        public virtual DbSet<productionevent> productionevents { get; set; }
     }
 }

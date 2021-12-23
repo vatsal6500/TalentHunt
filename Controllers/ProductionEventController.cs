@@ -415,20 +415,32 @@ namespace TalentHunt.Controllers
                     return RedirectToAction("Index","ProductionEvent");
                 }
                 productionevent productionevent = db.productionevents.Find(id);
-                if(productionevent == null)
+                if(productionevent != null)
+                {
+                    var bids = db.userapplies.Where(p => p.peid.Equals(productionevent.peid));
+                    if (bids != null)
+                    {
+                        foreach (var item in bids)
+                        {
+                            string umsg = $"Dear {item.user.fname} {item.user.lname},<br/><br/> Event {productionevent.ename} has been removed by {productionevent.production.pname}.<br/><br/> Hence, your bid on this event has been withdrawn. <br/><br/> Sorry for the inconvenience.";
+                            email uemail = new email(item.user.email, "Removed Event", umsg);
+                        }
+                    }
+                    db.productionevents.Remove(productionevent);
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        TempData["fkerr"] = $"fk error {ex.Message}";
+                    }
+                    return RedirectToAction("Index", "ProductionEvent");
+                }
+                else
                 {
                     return RedirectToAction("Index", "ProductionEvent");
                 }
-                db.productionevents.Remove(productionevent);
-                try
-                {
-                    db.SaveChanges();
-                }
-                catch(Exception ex)
-                {
-                    TempData["fkerr"] = $"fk error {ex.Message}";
-                }
-                return RedirectToAction("Index","ProductionEvent");
             }
             else if(Session["pid"] == null)
             {

@@ -95,6 +95,7 @@
           <Property Name="appdeadline" Type="date" Nullable="false" />
           <Property Name="description" Type="varchar(max)" />
           <Property Name="image" Type="varchar(max)" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="ratings">
           <Key>
@@ -195,7 +196,9 @@
           <Property Name="caption" Type="varchar(max)" />
         </EntityType>
         <Association Name="FK_eventrate_productionevent">
-          <End Role="productionevent" Type="Self.productionevent" Multiplicity="1" />
+          <End Role="productionevent" Type="Self.productionevent" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="eventrate" Type="Self.eventrate" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="productionevent">
@@ -1027,7 +1030,17 @@
             <End Role="user" EntitySet="users" />
             <End Role="rating" EntitySet="ratings" />
           </AssociationSet>
+          <EntitySet Name="eventrates" EntityType="huntdbModel.eventrate" />
+          <AssociationSet Name="FK_eventrate_user" Association="huntdbModel.FK_eventrate_user">
+            <End Role="user" EntitySet="users" />
+            <End Role="eventrate" EntitySet="eventrates" />
+          </AssociationSet>
+          <EntitySet Name="admins" EntityType="huntdbModel.admin" />
           <EntitySet Name="productionevents" EntityType="huntdbModel.productionevent" />
+          <AssociationSet Name="FK_eventrate_productionevent" Association="huntdbModel.FK_eventrate_productionevent">
+            <End Role="productionevent" EntitySet="productionevents" />
+            <End Role="eventrate" EntitySet="eventrates" />
+          </AssociationSet>
           <AssociationSet Name="FK_eventrequire_productionevent" Association="huntdbModel.FK_eventrequire_productionevent">
             <End Role="productionevent" EntitySet="productionevents" />
             <End Role="eventrequire" EntitySet="eventrequires" />
@@ -1048,16 +1061,6 @@
             <End Role="productionevent" EntitySet="productionevents" />
             <End Role="userselect" EntitySet="userselects" />
           </AssociationSet>
-          <EntitySet Name="eventrates" EntityType="huntdbModel.eventrate" />
-          <AssociationSet Name="FK_eventrate_productionevent" Association="huntdbModel.FK_eventrate_productionevent">
-            <End Role="productionevent" EntitySet="productionevents" />
-            <End Role="eventrate" EntitySet="eventrates" />
-          </AssociationSet>
-          <AssociationSet Name="FK_eventrate_user" Association="huntdbModel.FK_eventrate_user">
-            <End Role="user" EntitySet="users" />
-            <End Role="eventrate" EntitySet="eventrates" />
-          </AssociationSet>
-          <EntitySet Name="admins" EntityType="huntdbModel.admin" />
         </EntityContainer>
         <EntityType Name="rating">
           <Key>
@@ -1083,6 +1086,43 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="eventrate">
+          <Key>
+            <PropertyRef Name="erid" />
+          </Key>
+          <Property Name="erid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="peid" Type="Int32" Nullable="false" />
+          <Property Name="userid" Type="Int32" Nullable="false" />
+          <Property Name="rating" Type="Double" Nullable="false" />
+          <Property Name="comment" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="user" Relationship="huntdbModel.FK_eventrate_user" FromRole="eventrate" ToRole="user" />
+          <NavigationProperty Name="productionevent" Relationship="huntdbModel.FK_eventrate_productionevent" FromRole="eventrate" ToRole="productionevent" />
+        </EntityType>
+        <Association Name="FK_eventrate_user">
+          <End Type="huntdbModel.user" Role="user" Multiplicity="1" />
+          <End Type="huntdbModel.eventrate" Role="eventrate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="eventrate">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="admin">
+          <Key>
+            <PropertyRef Name="aid" />
+          </Key>
+          <Property Name="aid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="aname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="age" Type="Int32" Nullable="false" />
+          <Property Name="gender" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="photo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="productionevent">
           <Key>
             <PropertyRef Name="peid" />
@@ -1099,13 +1139,28 @@
           <Property Name="appdeadline" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="image" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="eventrates" Relationship="huntdbModel.FK_eventrate_productionevent" FromRole="productionevent" ToRole="eventrate" />
           <NavigationProperty Name="eventrequires" Relationship="huntdbModel.FK_eventrequire_productionevent" FromRole="productionevent" ToRole="eventrequire" />
           <NavigationProperty Name="production" Relationship="huntdbModel.FK_productionevent_production" FromRole="productionevent" ToRole="production" />
           <NavigationProperty Name="ratings" Relationship="huntdbModel.FK_ratings_productionevent" FromRole="productionevent" ToRole="rating" />
           <NavigationProperty Name="userapplies" Relationship="huntdbModel.FK_userapply_productionevent" FromRole="productionevent" ToRole="userapply" />
           <NavigationProperty Name="userselects" Relationship="huntdbModel.FK_userselect_productionevent" FromRole="productionevent" ToRole="userselect" />
-          <NavigationProperty Name="eventrates" Relationship="huntdbModel.FK_eventrate_productionevent" FromRole="productionevent" ToRole="eventrate" />
         </EntityType>
+        <Association Name="FK_eventrate_productionevent">
+          <End Type="huntdbModel.productionevent" Role="productionevent" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="huntdbModel.eventrate" Role="eventrate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productionevent">
+              <PropertyRef Name="peid" />
+            </Principal>
+            <Dependent Role="eventrate">
+              <PropertyRef Name="peid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_eventrequire_productionevent">
           <End Type="huntdbModel.productionevent" Role="productionevent" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1176,55 +1231,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="eventrate">
-          <Key>
-            <PropertyRef Name="erid" />
-          </Key>
-          <Property Name="erid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="peid" Type="Int32" Nullable="false" />
-          <Property Name="userid" Type="Int32" Nullable="false" />
-          <Property Name="rating" Type="Double" Nullable="false" />
-          <Property Name="comment" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="productionevent" Relationship="huntdbModel.FK_eventrate_productionevent" FromRole="eventrate" ToRole="productionevent" />
-          <NavigationProperty Name="user" Relationship="huntdbModel.FK_eventrate_user" FromRole="eventrate" ToRole="user" />
-        </EntityType>
-        <Association Name="FK_eventrate_productionevent">
-          <End Type="huntdbModel.productionevent" Role="productionevent" Multiplicity="1" />
-          <End Type="huntdbModel.eventrate" Role="eventrate" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="productionevent">
-              <PropertyRef Name="peid" />
-            </Principal>
-            <Dependent Role="eventrate">
-              <PropertyRef Name="peid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_eventrate_user">
-          <End Type="huntdbModel.user" Role="user" Multiplicity="1" />
-          <End Type="huntdbModel.eventrate" Role="eventrate" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="user">
-              <PropertyRef Name="userid" />
-            </Principal>
-            <Dependent Role="eventrate">
-              <PropertyRef Name="userid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="admin">
-          <Key>
-            <PropertyRef Name="aid" />
-          </Key>
-          <Property Name="aid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="aname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="age" Type="Int32" Nullable="false" />
-          <Property Name="gender" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="photo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1393,24 +1399,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="productionevents">
-            <EntityTypeMapping TypeName="huntdbModel.productionevent">
-              <MappingFragment StoreEntitySet="productionevent">
-                <ScalarProperty Name="image" ColumnName="image" />
-                <ScalarProperty Name="description" ColumnName="description" />
-                <ScalarProperty Name="appdeadline" ColumnName="appdeadline" />
-                <ScalarProperty Name="evisitors" ColumnName="evisitors" />
-                <ScalarProperty Name="evenu" ColumnName="evenu" />
-                <ScalarProperty Name="enddate" ColumnName="enddate" />
-                <ScalarProperty Name="startdate" ColumnName="startdate" />
-                <ScalarProperty Name="emanager" ColumnName="emanager" />
-                <ScalarProperty Name="etype" ColumnName="etype" />
-                <ScalarProperty Name="ename" ColumnName="ename" />
-                <ScalarProperty Name="pid" ColumnName="pid" />
-                <ScalarProperty Name="peid" ColumnName="peid" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="eventrates">
             <EntityTypeMapping TypeName="huntdbModel.eventrate">
               <MappingFragment StoreEntitySet="eventrate">
@@ -1433,6 +1421,25 @@
                 <ScalarProperty Name="age" ColumnName="age" />
                 <ScalarProperty Name="aname" ColumnName="aname" />
                 <ScalarProperty Name="aid" ColumnName="aid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="productionevents">
+            <EntityTypeMapping TypeName="huntdbModel.productionevent">
+              <MappingFragment StoreEntitySet="productionevent">
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="image" ColumnName="image" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="appdeadline" ColumnName="appdeadline" />
+                <ScalarProperty Name="evisitors" ColumnName="evisitors" />
+                <ScalarProperty Name="evenu" ColumnName="evenu" />
+                <ScalarProperty Name="enddate" ColumnName="enddate" />
+                <ScalarProperty Name="startdate" ColumnName="startdate" />
+                <ScalarProperty Name="emanager" ColumnName="emanager" />
+                <ScalarProperty Name="etype" ColumnName="etype" />
+                <ScalarProperty Name="ename" ColumnName="ename" />
+                <ScalarProperty Name="pid" ColumnName="pid" />
+                <ScalarProperty Name="peid" ColumnName="peid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

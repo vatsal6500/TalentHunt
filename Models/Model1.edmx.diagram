@@ -34,16 +34,16 @@
         <AssociationConnector Association="huntdbModel.FK_videos_user" ManuallyRouted="false" />
         <EntityTypeShape EntityType="huntdbModel.rating" Width="1.5" PointX="6" PointY="11.875" />
         <AssociationConnector Association="huntdbModel.FK_ratings_user" />
-        <EntityTypeShape EntityType="huntdbModel.productionevent" Width="1.5" PointX="3" PointY="19" />
+        <EntityTypeShape EntityType="huntdbModel.eventrate" Width="1.5" PointX="5.25" PointY="18.625" />
+        <AssociationConnector Association="huntdbModel.FK_eventrate_user" />
+        <EntityTypeShape EntityType="huntdbModel.admin" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="huntdbModel.productionevent" Width="1.5" PointX="3" PointY="0.75" />
+        <AssociationConnector Association="huntdbModel.FK_eventrate_productionevent" />
         <AssociationConnector Association="huntdbModel.FK_eventrequire_productionevent" />
         <AssociationConnector Association="huntdbModel.FK_productionevent_production" />
         <AssociationConnector Association="huntdbModel.FK_ratings_productionevent" />
         <AssociationConnector Association="huntdbModel.FK_userapply_productionevent" />
         <AssociationConnector Association="huntdbModel.FK_userselect_productionevent" />
-        <EntityTypeShape EntityType="huntdbModel.eventrate" Width="1.5" PointX="5.25" PointY="18.625" />
-        <AssociationConnector Association="huntdbModel.FK_eventrate_productionevent" />
-        <AssociationConnector Association="huntdbModel.FK_eventrate_user" />
-        <EntityTypeShape EntityType="huntdbModel.admin" Width="1.5" PointX="5.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
