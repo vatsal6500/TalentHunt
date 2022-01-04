@@ -24,6 +24,7 @@ namespace TalentHunt.Models
             this.videos = new HashSet<video>();
             this.ratings = new HashSet<rating>();
             this.eventrates = new HashSet<eventrate>();
+            this.subusers = new HashSet<subuser>();
         }
     
         public int userid { get; set; }
@@ -55,5 +56,7 @@ namespace TalentHunt.Models
         public virtual ICollection<rating> ratings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<eventrate> eventrates { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<subuser> subusers { get; set; }
     }
 }

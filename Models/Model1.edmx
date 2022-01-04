@@ -123,7 +123,7 @@
           </Key>
           <Property Name="suid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="planid" Type="int" Nullable="false" />
-          <Property Name="pid" Type="int" Nullable="false" />
+          <Property Name="userid" Type="int" Nullable="false" />
           <Property Name="startdate" Type="date" Nullable="false" />
           <Property Name="enddate" Type="date" Nullable="false" />
         </EntityType>
@@ -359,15 +359,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_subuser_production">
-          <End Role="production" Type="Self.production" Multiplicity="1" />
+        <Association Name="FK_subuser_user">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
           <End Role="subuser" Type="Self.subuser" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="production">
-              <PropertyRef Name="pid" />
+            <Principal Role="user">
+              <PropertyRef Name="userid" />
             </Principal>
             <Dependent Role="subuser">
-              <PropertyRef Name="pid" />
+              <PropertyRef Name="userid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -552,8 +552,8 @@
             <End Role="plan" EntitySet="plan" />
             <End Role="subuser" EntitySet="subuser" />
           </AssociationSet>
-          <AssociationSet Name="FK_subuser_production" Association="Self.FK_subuser_production">
-            <End Role="production" EntitySet="production" />
+          <AssociationSet Name="FK_subuser_user" Association="Self.FK_subuser_user">
+            <End Role="user" EntitySet="user" />
             <End Role="subuser" EntitySet="subuser" />
           </AssociationSet>
           <AssociationSet Name="FK_userapply_production" Association="Self.FK_userapply_production">
@@ -635,9 +635,9 @@
           <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="benefits" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="subproductions" Relationship="Self.FK_subproduction_plan" FromRole="plan" ToRole="subproduction" />
-          <NavigationProperty Name="subusers" Relationship="Self.FK_subuser_plan" FromRole="plan" ToRole="subuser" />
           <Property Name="maxevents" Type="Int32" />
           <Property Name="maxbids" Type="Int32" />
+          <NavigationProperty Name="subusers" Relationship="huntdbModel.FK_subuser_plan" FromRole="plan" ToRole="subuser" />
         </EntityType>
         <EntityType Name="production">
           <Key>
@@ -655,7 +655,6 @@
           <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="eventrequires" Relationship="Self.FK_eventrequire_production" FromRole="production" ToRole="eventrequire" />
           <NavigationProperty Name="subproductions" Relationship="Self.FK_subproduction_production" FromRole="production" ToRole="subproduction" />
-          <NavigationProperty Name="subusers" Relationship="Self.FK_subuser_production" FromRole="production" ToRole="subuser" />
           <NavigationProperty Name="userapplies" Relationship="Self.FK_userapply_production" FromRole="production" ToRole="userapply" />
           <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="productionevents" Relationship="huntdbModel.FK_productionevent_production" FromRole="production" ToRole="productionevent" />
@@ -671,18 +670,6 @@
           <Property Name="enddate" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="plan" Relationship="Self.FK_subproduction_plan" FromRole="subproduction" ToRole="plan" />
           <NavigationProperty Name="production" Relationship="Self.FK_subproduction_production" FromRole="subproduction" ToRole="production" />
-        </EntityType>
-        <EntityType Name="subuser">
-          <Key>
-            <PropertyRef Name="suid" />
-          </Key>
-          <Property Name="suid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="planid" Type="Int32" Nullable="false" />
-          <Property Name="pid" Type="Int32" Nullable="false" />
-          <Property Name="startdate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="enddate" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="plan" Relationship="Self.FK_subuser_plan" FromRole="subuser" ToRole="plan" />
-          <NavigationProperty Name="production" Relationship="Self.FK_subuser_production" FromRole="subuser" ToRole="production" />
         </EntityType>
         <EntityType Name="talent">
           <Key>
@@ -720,6 +707,7 @@
           <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ratings" Relationship="huntdbModel.FK_ratings_user" FromRole="user" ToRole="rating" />
           <NavigationProperty Name="eventrates" Relationship="huntdbModel.FK_eventrate_user" FromRole="user" ToRole="eventrate" />
+          <NavigationProperty Name="subusers" Relationship="huntdbModel.FK_subuser_user" FromRole="user" ToRole="subuser" />
         </EntityType>
         <EntityType Name="userapply">
           <Key>
@@ -832,18 +820,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_subuser_plan">
-          <End Role="plan" Type="Self.plan" Multiplicity="1" />
-          <End Role="subuser" Type="Self.subuser" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="plan">
-              <PropertyRef Name="planid" />
-            </Principal>
-            <Dependent Role="subuser">
-              <PropertyRef Name="planid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_subproduction_production">
           <End Role="production" Type="Self.production" Multiplicity="1" />
           <End Role="subproduction" Type="Self.subproduction" Multiplicity="*" />
@@ -852,18 +828,6 @@
               <PropertyRef Name="pid" />
             </Principal>
             <Dependent Role="subproduction">
-              <PropertyRef Name="pid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_subuser_production">
-          <End Role="production" Type="Self.production" Multiplicity="1" />
-          <End Role="subuser" Type="Self.subuser" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="production">
-              <PropertyRef Name="pid" />
-            </Principal>
-            <Dependent Role="subuser">
               <PropertyRef Name="pid" />
             </Dependent>
           </ReferentialConstraint>
@@ -958,7 +922,6 @@
           <EntitySet Name="plans" EntityType="Self.plan" />
           <EntitySet Name="productions" EntityType="Self.production" />
           <EntitySet Name="subproductions" EntityType="Self.subproduction" />
-          <EntitySet Name="subusers" EntityType="Self.subuser" />
           <EntitySet Name="talents" EntityType="Self.talent" />
           <EntitySet Name="users" EntityType="Self.user" />
           <EntitySet Name="userapplies" EntityType="Self.userapply" />
@@ -985,17 +948,9 @@
             <End Role="plan" EntitySet="plans" />
             <End Role="subproduction" EntitySet="subproductions" />
           </AssociationSet>
-          <AssociationSet Name="FK_subuser_plan" Association="Self.FK_subuser_plan">
-            <End Role="plan" EntitySet="plans" />
-            <End Role="subuser" EntitySet="subusers" />
-          </AssociationSet>
           <AssociationSet Name="FK_subproduction_production" Association="Self.FK_subproduction_production">
             <End Role="production" EntitySet="productions" />
             <End Role="subproduction" EntitySet="subproductions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_subuser_production" Association="Self.FK_subuser_production">
-            <End Role="production" EntitySet="productions" />
-            <End Role="subuser" EntitySet="subusers" />
           </AssociationSet>
           <AssociationSet Name="FK_userapply_production" Association="Self.FK_userapply_production">
             <End Role="production" EntitySet="productions" />
@@ -1060,6 +1015,15 @@
           <AssociationSet Name="FK_userselect_productionevent" Association="huntdbModel.FK_userselect_productionevent">
             <End Role="productionevent" EntitySet="productionevents" />
             <End Role="userselect" EntitySet="userselects" />
+          </AssociationSet>
+          <EntitySet Name="subusers" EntityType="huntdbModel.subuser" />
+          <AssociationSet Name="FK_subuser_plan" Association="huntdbModel.FK_subuser_plan">
+            <End Role="plan" EntitySet="plans" />
+            <End Role="subuser" EntitySet="subusers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_subuser_user" Association="huntdbModel.FK_subuser_user">
+            <End Role="user" EntitySet="users" />
+            <End Role="subuser" EntitySet="subusers" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="rating">
@@ -1231,6 +1195,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="subuser">
+          <Key>
+            <PropertyRef Name="suid" />
+          </Key>
+          <Property Name="suid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="planid" Type="Int32" Nullable="false" />
+          <Property Name="userid" Type="Int32" Nullable="false" />
+          <Property Name="startdate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="enddate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="plan" Relationship="huntdbModel.FK_subuser_plan" FromRole="subuser" ToRole="plan" />
+          <NavigationProperty Name="user" Relationship="huntdbModel.FK_subuser_user" FromRole="subuser" ToRole="user" />
+        </EntityType>
+        <Association Name="FK_subuser_plan">
+          <End Type="huntdbModel.plan" Role="plan" Multiplicity="1" />
+          <End Type="huntdbModel.subuser" Role="subuser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="plan">
+              <PropertyRef Name="planid" />
+            </Principal>
+            <Dependent Role="subuser">
+              <PropertyRef Name="planid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_subuser_user">
+          <End Type="huntdbModel.user" Role="user" Multiplicity="1" />
+          <End Type="huntdbModel.subuser" Role="subuser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="subuser">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1296,17 +1296,6 @@
             <EntityTypeMapping TypeName="huntdbModel.subproduction">
               <MappingFragment StoreEntitySet="subproduction">
                 <ScalarProperty Name="spid" ColumnName="spid" />
-                <ScalarProperty Name="planid" ColumnName="planid" />
-                <ScalarProperty Name="pid" ColumnName="pid" />
-                <ScalarProperty Name="startdate" ColumnName="startdate" />
-                <ScalarProperty Name="enddate" ColumnName="enddate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="subusers">
-            <EntityTypeMapping TypeName="huntdbModel.subuser">
-              <MappingFragment StoreEntitySet="subuser">
-                <ScalarProperty Name="suid" ColumnName="suid" />
                 <ScalarProperty Name="planid" ColumnName="planid" />
                 <ScalarProperty Name="pid" ColumnName="pid" />
                 <ScalarProperty Name="startdate" ColumnName="startdate" />
@@ -1440,6 +1429,17 @@
                 <ScalarProperty Name="ename" ColumnName="ename" />
                 <ScalarProperty Name="pid" ColumnName="pid" />
                 <ScalarProperty Name="peid" ColumnName="peid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subusers">
+            <EntityTypeMapping TypeName="huntdbModel.subuser">
+              <MappingFragment StoreEntitySet="subuser">
+                <ScalarProperty Name="enddate" ColumnName="enddate" />
+                <ScalarProperty Name="startdate" ColumnName="startdate" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="planid" ColumnName="planid" />
+                <ScalarProperty Name="suid" ColumnName="suid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

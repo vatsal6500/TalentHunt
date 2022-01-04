@@ -30,7 +30,6 @@ namespace TalentHunt.Models
         public virtual DbSet<plan> plans { get; set; }
         public virtual DbSet<production> productions { get; set; }
         public virtual DbSet<subproduction> subproductions { get; set; }
-        public virtual DbSet<subuser> subusers { get; set; }
         public virtual DbSet<talent> talents { get; set; }
         public virtual DbSet<user> users { get; set; }
         public virtual DbSet<userapply> userapplies { get; set; }
@@ -41,5 +40,6 @@ namespace TalentHunt.Models
         public virtual DbSet<eventrate> eventrates { get; set; }
         public virtual DbSet<admin> admins { get; set; }
         public virtual DbSet<productionevent> productionevents { get; set; }
+        public virtual DbSet<subuser> subusers { get; set; }
     }
 }

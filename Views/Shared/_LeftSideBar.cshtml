@@ -74,6 +74,26 @@
 
                 <li class="dropdown">
                     <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon dw dw-star"></span><span class="mtext">Ratings</span>
+                    </a>
+                    <ul class="submenu">
+                        <li>@Html.ActionLink("Expert Ratings", "UrateView", "Rating", new { @area = "" }, new { @class = "" })</li>
+                        <li>@Html.ActionLink("Event Ratings", "ErateView", "EventRate", new { @area = "" }, new { @class = "" })</li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon dw dw-money"></span><span class="mtext">Subscriptions</span>
+                    </a>
+                    <ul class="submenu">
+                        <li>@Html.ActionLink("Expert Subscriptions", "UserSub", "SubUser", new { @area = "" }, new { @class = "" })</li>
+                        <li>@Html.ActionLink("Production Subscriptions", "ProSub", "SubProduction", new { @area = "" }, new { @class = "" })</li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle">
                         <span class="micon dw dw-user"></span><span class="mtext">Admin</span>
                     </a>
                     <ul class="submenu">

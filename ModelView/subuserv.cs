@@ -8,8 +8,8 @@ namespace TalentHunt.ModelView
     {
         public int suid { get; set; }
         public int planid { get; set; }
-        public int pid { get; set; }
-        
+        public int userid { get; set; }
+
         [Required(ErrorMessage = "*")]
         [DisplayName("Start Date")]
         [DataType(DataType.Date)]
@@ -19,6 +19,5 @@ namespace TalentHunt.ModelView
         [DisplayName("End Date")]
         [DataType(DataType.Date)]
         public DateTime enddate { get; set; }
-
     }
 }

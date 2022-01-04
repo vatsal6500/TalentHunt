@@ -93,15 +93,32 @@ namespace TalentHunt.Controllers
                 var videolists = db.videos.Where(p => p.userid.Equals(usrid));
                 TempData["videolists"] = videolists;
 
+                var rates = db.ratings.Where(p => p.userid.Equals(usrid));
+                if (rates.Count() != 0)
+                {
+                    double sum = 0;
+                    double finalrate = 0;
+                    double total = rates.Count();
+                    foreach (var rt in rates)
+                    {
+                        sum += rt.rating1;
+                    }
+                    finalrate = sum / total;
+                    TempData["ratings"] = finalrate;
+                }
+                else
+                {
+                    TempData["ratings"] = 0;
+                }
 
                 var usr = db.users.Where(p => p.userid.Equals(usrid)).FirstOrDefault();
                 if (result != null)
                 {
                     TempData["fname"] = usr.fname.ToString();
                     TempData["lname"] = usr.lname.ToString();
-                    TempData["mail"] = usr.email.ToString();
-                    TempData["gender"] = usr.gender.ToString();
                     TempData["age"] = usr.age.ToString();
+                    TempData["gender"] = usr.gender.ToString();
+                    TempData["mail"] = usr.email.ToString();
                 }
                 return View(db.users.ToList());
             }

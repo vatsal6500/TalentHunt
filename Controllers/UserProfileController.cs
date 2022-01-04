@@ -88,6 +88,9 @@ namespace TalentHunt.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.upid = id;
+            ViewBag.ttid = userprofilev.tid;
+            ViewBag.uuserid = userprofilev.userid;
             ViewBag.tid = new SelectList(db.talents, "tid", "ttype", userprofilev.tid);
             ViewBag.userid = new SelectList(db.users, "userid", "fname", userprofilev.userid);
             return View(userprofilev);
@@ -103,11 +106,14 @@ namespace TalentHunt.Controllers
             if (ModelState.IsValid)
             {
                 userprofile userprofile = new userprofile();
-                AutoMapper.Mapper.Map(userprofilev, userprofile);
-
+                userprofile.upid = userprofilev.upid;
+                userprofile.userid = userprofilev.userid;
+                userprofile.tid = userprofilev.tid;
+                userprofile.experience = userprofilev.experience;
+                userprofile.portfolio = userprofilev.portfolio;
                 db.Entry(userprofile).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "User");
             }
             ViewBag.tid = new SelectList(db.talents, "tid", "ttype", userprofilev.tid);
             ViewBag.userid = new SelectList(db.users, "userid", "fname", userprofilev.userid);

@@ -16,11 +16,11 @@ namespace TalentHunt.Models
     {
         public int suid { get; set; }
         public int planid { get; set; }
-        public int pid { get; set; }
+        public int userid { get; set; }
         public System.DateTime startdate { get; set; }
         public System.DateTime enddate { get; set; }
     
         public virtual plan plan { get; set; }
-        public virtual production production { get; set; }
+        public virtual user user { get; set; }
     }
 }

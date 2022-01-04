@@ -135,13 +135,16 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AdminLoginController.cs" />
+    <Compile Include="Controllers\EventRateController.cs" />
     <Compile Include="Controllers\EventRequireController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
     <Compile Include="Controllers\PlansController.cs" />
     <Compile Include="Controllers\ProductionController.cs" />
     <Compile Include="Controllers\ProductionEventController.cs" />
-    <Compile Include="Controllers\SubProductionsController.cs" />
+    <Compile Include="Controllers\RatingController.cs" />
+    <Compile Include="Controllers\SubProductionController.cs" />
+    <Compile Include="Controllers\SubUserController.cs" />
     <Compile Include="Controllers\TalentsController.cs" />
     <Compile Include="Controllers\UserApplyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -221,6 +224,7 @@
     <Compile Include="ModelView\CloneObjects.cs" />
     <Compile Include="ModelView\email.cs" />
     <Compile Include="ModelView\emailcheck.cs" />
+    <Compile Include="ModelView\eventratev.cs" />
     <Compile Include="ModelView\eventrequirev.cs" />
     <Compile Include="ModelView\planv.cs" />
     <Compile Include="ModelView\productioneventv.cs" />
@@ -1888,11 +1892,6 @@
     <Content Include="Views\Production\Edit.cshtml" />
     <Content Include="Views\Production\Index.cshtml" />
     <Content Include="Views\plans\PlanSelect.cshtml" />
-    <Content Include="Views\SubProductions\Create.cshtml" />
-    <Content Include="Views\SubProductions\Delete.cshtml" />
-    <Content Include="Views\SubProductions\Details.cshtml" />
-    <Content Include="Views\SubProductions\Edit.cshtml" />
-    <Content Include="Views\SubProductions\Index.cshtml" />
     <Content Include="Views\Shared\_Navbar.cshtml" />
     <Content Include="Views\UserProfile\Create.cshtml" />
     <Content Include="Views\UserProfile\Delete.cshtml" />
@@ -1938,6 +1937,30 @@
     <Content Include="Views\User\Reset.cshtml" />
     <Content Include="Views\Production\Reset.cshtml" />
     <Content Include="Views\ProductionEvent\RequestUser.cshtml" />
+    <Content Include="Views\EventRate\Create.cshtml" />
+    <Content Include="Views\EventRate\Delete.cshtml" />
+    <Content Include="Views\EventRate\Details.cshtml" />
+    <Content Include="Views\EventRate\Edit.cshtml" />
+    <Content Include="Views\EventRate\Index.cshtml" />
+    <Content Include="Views\Rating\Create.cshtml" />
+    <Content Include="Views\Rating\Delete.cshtml" />
+    <Content Include="Views\Rating\Details.cshtml" />
+    <Content Include="Views\Rating\Edit.cshtml" />
+    <Content Include="Views\Rating\Index.cshtml" />
+    <Content Include="Views\SubUser\Create.cshtml" />
+    <Content Include="Views\SubUser\Delete.cshtml" />
+    <Content Include="Views\SubUser\Details.cshtml" />
+    <Content Include="Views\SubUser\Edit.cshtml" />
+    <Content Include="Views\SubUser\Index.cshtml" />
+    <Content Include="Views\EventRate\ErateView.cshtml" />
+    <Content Include="Views\Rating\UrateView.cshtml" />
+    <Content Include="Views\SubUser\UserSub.cshtml" />
+    <Content Include="Views\SubProduction\Create.cshtml" />
+    <Content Include="Views\SubProduction\Delete.cshtml" />
+    <Content Include="Views\SubProduction\Details.cshtml" />
+    <Content Include="Views\SubProduction\Edit.cshtml" />
+    <Content Include="Views\SubProduction\Index.cshtml" />
+    <Content Include="Views\SubProduction\ProSub.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2092,13 +2115,13 @@
     </PropertyGroup>
     <Error Condition="!Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
-	<Target Name="CopyRoslynFiles" AfterTargets="AfterBuild" Condition="!$(Disable_CopyWebApplication) And '$(OutDir)' != '$(OutputPath)'">
+  <Target Name="CopyRoslynFiles" AfterTargets="AfterBuild" Condition="!$(Disable_CopyWebApplication) And '$(OutDir)' != '$(OutputPath)'">
     <ItemGroup>
       <RoslynFiles Include="$(CscToolPath)\*" />
     </ItemGroup>
     <MakeDir Directories="$(WebProjectOutputDir)\bin\roslyn" />
     <Copy SourceFiles="@(RoslynFiles)" DestinationFolder="$(WebProjectOutputDir)\bin\roslyn" SkipUnchangedFiles="true" Retries="$(CopyRetryCount)" RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)" />
-</Target>
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
