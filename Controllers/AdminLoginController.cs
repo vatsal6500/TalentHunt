@@ -18,37 +18,41 @@ namespace TalentHunt.Controllers
         // GET: Admin
         public ActionResult Login()
         {
-            //HttpCookie cookie = Request.Cookies["RememberMe"];
-            //if(cookie != null)
-            //{
-            //    ViewBag.username = cookie["username"].ToString();
-            //    ViewBag.password = cookie["password"].ToString();
-            //}
+            HttpCookie cookie = Request.Cookies["rememberme"];
+            if (cookie != null)
+            {
+                adminlogin adminlogin = new adminlogin();
+                adminlogin.username = cookie["username"].ToString();
+                adminlogin.password = cookie["password"].ToString();
+                adminlogin.rememberme = Convert.ToBoolean(cookie["rememberme"]);
+                return View(adminlogin);
+            }
             return View();
         }
 
         [HttpPost]
         public ActionResult Login(adminlogin adminlogin)
         {
-            //HttpCookie cookie = new HttpCookie("RememberMe");
-            //if (admins.RememberMe == true)
-            //{
-            //    cookie["username"] = admins.username;
-            //    cookie["password"] = admins.password;
-            //    cookie.Expires = DateTime.Now.AddDays(2);
-            //    Response.Cookies.Add(cookie);
-            //}
-            //else
-            //{
-            //    cookie.Expires = DateTime.Now.AddDays(-1);
-            //    HttpContext.Response.Cookies.Add(cookie);
-            //}
-
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 admin adm = db.admins.Where(a => a.username.Equals(adminlogin.username) && a.password.Equals(adminlogin.password)).FirstOrDefault();
                 if (adm != null)
                 {
+                    HttpCookie cookie = new HttpCookie("RememberMe");
+                    if (adminlogin.rememberme == true)
+                    {
+                        cookie["username"] = adminlogin.username;
+                        cookie["password"] = adminlogin.password;
+                        cookie["rememberme"] = adminlogin.rememberme.ToString();
+                        cookie.Expires = DateTime.Now.AddDays(20);
+                        Response.Cookies.Add(cookie);
+                    }
+                    else
+                    {
+                        cookie.Expires = DateTime.Now.AddDays(-1);
+                        HttpContext.Response.Cookies.Add(cookie);
+                    }
+
                     Session["aid"] = adm.aid.ToString();
                     Session["adminemail"] = adm.email.ToString();
                     Session["name"] = adm.aname.ToString();

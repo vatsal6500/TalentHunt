@@ -16,5 +16,7 @@ namespace TalentHunt.ModelView
         [DisplayName("Password")]
         [DataType(DataType.Password)]
         public string password { get; set; }
+
+        public bool rememberme { get; set; }
     }
 }
