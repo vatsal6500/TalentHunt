@@ -84,9 +84,9 @@
                             <img class="card-img-top" src="@Url.Content(plists.image)" alt="Card image cap">
                             <div class="card-body">
                                 <p class="card-text" style="color:indianred"><strong>@Html.DisplayFor(modelItem => plists.ename)</strong></p>
-                                <p class="card-text">Start Date : @Html.DisplayFor(modelItem => plists.startdate) </p>
-                                <p class="card-text">End Date : @Html.DisplayFor(modelItem => plists.enddate) </p>
-                                <p class="card-text">Deadline : @Html.DisplayFor(modelItem => plists.appdeadline)</p>
+                                <p class="card-text">Start Date : @plists.startdate.ToString("dd/MM/yyyy") </p>
+                                <p class="card-text">End Date : @plists.enddate.ToString("dd/MM/yyyy") </p>
+                                <p class="card-text">Deadline : @plists.appdeadline.ToString("dd/MM/yyyy")</p>
                                 <p class="card-text">@Html.DisplayFor(modelItem => plists.description)</p>
                             </div>
                             @Html.ActionLink("View More", "Details", "ProductionEvent", new { id = plists.peid }, new { @class = "btn btn-outline-primary my-3 mx-2" })

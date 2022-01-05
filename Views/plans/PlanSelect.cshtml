@@ -55,7 +55,14 @@
                                 <p class="card-text">Price : @Html.DisplayFor(modelItem => item.price)</p>
                                 <p class="card-text">Description : @Html.DisplayFor(modelItem => item.description)</p>
                             </div>
-                            @Html.ActionLink("Select", "Create", "Production", new { id = item.planid }, new { @class = "btn btn-primary my-3 mx-2" })
+                            @if (Session["uid"] != null)
+                            {
+                                @Html.ActionLink("Proceed", "Create", "SubUser", new { id = item.planid }, new { @class = "btn btn-outline-primary my-3 mx-2" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Proceed", "Create", "SubProduction", new { id = item.planid }, new { @class = "btn btn-outline-primary my-3 mx-2" })
+                            }
                         </div>
                     }
                     <span class="text-danger">@Html.Raw(ViewData["pidnull"])</span>

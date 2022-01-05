@@ -103,10 +103,18 @@ namespace TalentHunt.Controllers
             if (ModelState.IsValid)
             {
                 eventrequire eventrequire = new eventrequire();
-                AutoMapper.Mapper.Map(eventrequirev, eventrequire);
+                eventrequire.erid = eventrequirev.erid;
+                eventrequire.pid = eventrequirev.pid;
+                eventrequire.peid = eventrequirev.peid;
+                eventrequire.tid = eventrequirev.tid;
+                eventrequire.agerange = eventrequirev.agerange;
+                eventrequire.gender = eventrequirev.gender;
+                eventrequire.payrange = eventrequirev.payrange;
+
+
                 db.Entry(eventrequire).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "ProductionEvent", new { id = eventrequirev.peid });
             }
             ViewBag.pid = new SelectList(db.productions, "pid", "pname", eventrequirev.pid);
             ViewBag.peid = new SelectList(db.productionevents, "peid", "ename", eventrequirev.peid);

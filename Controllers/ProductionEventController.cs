@@ -218,12 +218,15 @@ namespace TalentHunt.Controllers
             {
                 string pname = "";
                 int pid = Convert.ToInt32(id);
-                var result = db.productionevents.Where(p => p.peid.Equals(pid));
+                var result = db.productionevents.Where(p => p.peid.Equals(pid) && p.status.Equals("active"));
                 var reqs = db.eventrequires.Where(p => p.peid.Equals(pid));
                 TempData["reqs"] = reqs;
+                TempData["erates"] = "No";
+                TempData["erated"] = "No";
 
                 if (Session["uid"] != null)
                 {
+                    //DISPLAY ALL BIDS
                     int uid = Convert.ToInt32(HttpContext.Session["uid"]);
                     var userbids = db.userapplies.Where(x => x.peid.Equals(pid));
                     if (userbids.Count() == 0)
@@ -232,6 +235,7 @@ namespace TalentHunt.Controllers
                     }
                     TempData["bids"] = userbids;
 
+                    //STATUS VERIFY
                     var applybid = db.userapplies.Where(x => x.peid.Equals(pid) && x.userid.Equals(uid));
                     TempData["status"] = applybid;
                     if (applybid.Count() == 0)
@@ -242,8 +246,92 @@ namespace TalentHunt.Controllers
                     {
                         TempData["bidded"] = "Yes";
                     }
+
+                    //VERIFY APPLICATION DEADLINE
+                    foreach (var ed in result)
+                    {
+                        var today = DateTime.Today;
+                        if (today > ed.appdeadline)
+                        {
+                            TempData["deadline"] = "Past";
+                        }
+                        else
+                        {
+                            TempData["deadline"] = "Future";
+                        }
+                    }
+
+
+                    //EVENT RATINGS BY USER
+                    var sel = db.userselects.Where(p => p.userid.Equals(uid) && p.peid.Equals(pid));
+                    var er = db.eventrates.Where(p => p.peid.Equals(pid));
+                    if (sel.Count() == 0)
+                    {
+                        TempData["erates"] = "No";
+                        TempData["erated"] = "No";
+                    }
+                    else
+                    {
+                        foreach (var end in result)
+                        {
+                            var today = DateTime.Today;
+                            if (today > end.enddate)
+                            {
+                                if (er.Count() == 0)
+                                {
+                                    TempData["erated"] = "No";
+                                    TempData["erates"] = "Yes";
+                                }
+                                else
+                                {
+                                    TempData["erated"] = "Yes";
+                                    TempData["erates"] = "No";
+                                    TempData["rate"] = er;
+                                }
+                            }
+                            else
+                            {
+                                TempData["erates"] = "No";
+                                TempData["erated"] = "No";
+                            }
+
+                        }
+                    }
+
+                    //PLAN VALIDITY
+                    var maxbid = db.userapplies.Where(p => p.userid.Equals(uid));
+                    var usrplan = db.subusers.Where(p => p.userid.Equals(uid));
+                    var datenow = DateTime.Today;
+                    if (usrplan.Count() == 0)
+                    {
+                        if (maxbid.Count() >= 5)
+                        {
+                            TempData["max"] = "Yes";
+                        }
+                        else
+                        {
+                            TempData["max"] = "No";
+                        }
+                    }
+                    else
+                    {
+                        foreach (var pl in usrplan)
+                        {
+                            if (maxbid.Count() >= pl.plan.maxbids && datenow > pl.enddate)
+                            {
+                                TempData["max"] = "Yes";
+                                TempData["expire"] = "Yes";
+                            }
+                            else
+                            {
+                                TempData["max"] = "No";
+                                TempData["expire"] = "No";
+                            }
+                        }
+                    }
                 }
 
+                //DISPLAY SELECTED EXPERT
                 var selects = db.userselects.Where(x => x.peid.Equals(pid));
                 TempData["userselected"] = selects;
                 if (selects.Count() == 0)
@@ -253,22 +341,46 @@ namespace TalentHunt.Controllers
                 else
                 {
                     TempData["selected"] = "Yes";
-
                 }
 
                 if (Session["pid"] != null)
                 {
+                    int eid = Convert.ToInt32(id);
                     int prid = Convert.ToInt32(HttpContext.Session["pid"]);
-                    var bids = db.userapplies.Where(x => x.pid.Equals(prid) && x.peid.Equals(pid));
-                    if (bids.Count() == 0)
+                    var bids = db.userapplies.Where(x => x.peid.Equals(eid));
+                    if (bids == null)
                     {
                         TempData["NotFound"] = "No one has bid on this event";
                     }
                     TempData["pdata"] = bids;
 
+                    //RATE AFTER EVENT FINISH 
+                    var evdate = db.productionevents.Where(p => p.peid.Equals(eid));
+                    foreach (var ed in evdate)
+                    {
+                        var datenow = DateTime.Today;
+                        if (datenow > ed.enddate)
+                        {
+                            TempData["eventend"] = "Yes";
+                        }
+                        else
+                        {
+                            TempData["eventend"] = "No";
+                        }
+                    }
 
+                    //CHECK IF RATED OR NOT
+                    var rate = db.ratings.Where(p => p.peid.Equals(eid));
+                    TempData["rating"] = rate;
+                    if (rate.Count() == 0)
+                    {
+                        TempData["rated"] = "No";
+                    }
+                    else
+                    {
+                        TempData["rated"] = "Yes";
+                    }
                 }
-
                 foreach (productionevent pe in result)
                 {
                     var pdata = db.productions.Where(p => p.pid.Equals(pe.pid)).SingleOrDefault();
@@ -278,6 +390,8 @@ namespace TalentHunt.Controllers
                 TempData["name"] = pname;
             }
             productionevent productionevent = db.productionevents.Find(id);
+
+
             if (productionevent == null)
             {
                 return HttpNotFound();
@@ -297,7 +411,7 @@ namespace TalentHunt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "peid,pid,ename,etype,emanager,startdate,enddate,evenu,evisitors,appdeadline,description,image,ImageFile")] productioneventv productioneventv,int pid)
+        public ActionResult Create([Bind(Include = "peid,pid,ename,etype,emanager,startdate,enddate,evenu,evisitors,appdeadline,description,image,ImageFile,status")] productioneventv productioneventv,int pid)
         {
             if (ModelState.IsValid)
             {
@@ -315,12 +429,36 @@ namespace TalentHunt.Controllers
                     productioneventv.ImageFile.SaveAs(fileName);
 
                     productioneventv.pid = pid;
+                    productioneventv.status = "active";
 
                     productionevent productionevent = new productionevent();
                     AutoMapper.Mapper.Map(productioneventv, productionevent);
 
                     db.productionevents.Add(productionevent);
-                    db.SaveChanges();
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    //catch(System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                    catch (Exception ex)
+                    {
+                        TempData["ex"] = ex;
+                        return View(productioneventv);
+                        //Exception raise = dbEx;
+                        //foreach (var validationErrors in dbEx.EntityValidationErrors)
+                        //{
+                        //    foreach (var validationError in validationErrors.ValidationErrors)
+                        //    {
+                        //        string message = string.Format("{0}:{1}",
+                        //            validationErrors.Entry.Entity.ToString(),
+                        //            validationError.ErrorMessage);
+                        //        // raise a new exception nesting  
+                        //        // the current instance as InnerException  
+                        //        raise = new InvalidOperationException(message, raise);
+                        //    }
+                        //}
+                        //throw raise;
+                    }
                     return RedirectToAction("Create", "EventRequire", new { peid = productionevent.peid });
                 }
                 else
@@ -356,11 +494,25 @@ namespace TalentHunt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "peid,pid,ename,etype,emanager,startdate,enddate,evenu,evisitors,appdeadline,description,image")] productioneventv productioneventv)
+        public ActionResult Edit([Bind(Include = "peid,pid,ename,etype,emanager,startdate,enddate,evenu,evisitors,appdeadline,description,image,status")] productioneventv productioneventv)
         {
             if (ModelState.IsValid)
             {
                 productionevent productionevent = new productionevent();
+                productionevent.peid = productioneventv.peid;
+                productionevent.pid = productioneventv.pid;
+                productionevent.ename = productioneventv.ename;
+                productionevent.etype = productioneventv.etype;
+                productionevent.emanager = productioneventv.emanager;
+                productionevent.startdate = productioneventv.startdate;
+                productionevent.enddate = productioneventv.enddate;
+                productionevent.evenu = productioneventv.evenu;
+                productionevent.evisitors = productioneventv.evisitors;
+                productionevent.appdeadline = productioneventv.appdeadline;
+                productionevent.description = productioneventv.description;
+                productionevent.image = productioneventv.image;
+                productionevent.status = productioneventv.status;
+
                 db.Entry(productionevent).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

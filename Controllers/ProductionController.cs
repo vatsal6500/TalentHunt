@@ -166,65 +166,23 @@ namespace TalentHunt.Controllers
         {
             if (id == null)
             {
-
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            if (id != null)
+
+            int pid = Convert.ToInt32(id);
+            var result = db.productionevents.Where(p => p.pid.Equals(pid) && p.status.Equals("active"));
+            if (result.Count() == 0)
             {
-                string pname = "";
-                int pid = Convert.ToInt32(id);
-                var result = db.productionevents.Where(p => p.peid.Equals(pid));
-                var reqs = db.eventrequires.Where(p => p.peid.Equals(pid));
-                TempData["reqs"] = reqs;
-
-                if (Session["uid"] != null)
-                {
-                    var userbids = db.userapplies.Where(x => x.peid.Equals(pid));
-                    if (userbids.Count() == 0)
-                    {
-                        TempData["NotFoundUserBids"] = "No one has bid on this event";
-                    }
-                    TempData["bids"] = userbids;
-                }
-
-                var selects = db.userselects.Where(x => x.peid.Equals(pid));
-                if (selects.Count() == 0)
-                {
-                    TempData["selected"] = "No";
-                }
-                else
-                {
-                    TempData["selected"] = "Yes";
-                    TempData["userselected"] = selects;
-                }
-
-                if (Session["pid"] != null)
-                {
-                    int prid = Convert.ToInt32(HttpContext.Session["pid"]);
-                    var bids = db.userapplies.Where(x => x.pid.Equals(prid) && x.peid.Equals(pid));
-                    if (bids.Count() == 0)
-                    {
-                        TempData["NotFound"] = "No one has bid on this event";
-                    }
-                    TempData["pdata"] = bids;
-
-
-                }
-
-                foreach (productionevent pe in result)
-                {
-                    var pdata = db.productions.Where(p => p.pid.Equals(pe.pid)).SingleOrDefault();
-                    pname += pdata.pname.ToString();
-                }
-
-                TempData["name"] = pname;
+                TempData["NotFound"] = "No events registered from this production";
             }
-            productionevent productionevent = db.productionevents.Find(id);
-            if (productionevent == null)
+            TempData["events"] = result;
+
+            production production = db.productions.Find(id);
+            if (production == null)
             {
                 return HttpNotFound();
             }
-            return View(productionevent);
+            return View(production);
         }
 
         // GET: Production/Create
@@ -307,7 +265,7 @@ namespace TalentHunt.Controllers
             return View(productionv);
         }
 
-        // GET: Production/Edit/5
+
         public ActionResult EditStatus(int? id,string status)
         {
             if (id == null || status == null)
@@ -339,20 +297,47 @@ namespace TalentHunt.Controllers
             }
         }
 
+        // GET: Production/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            production production = db.productions.Find(id);
+            productionv productionv = new productionv();
+            AutoMapper.Mapper.Map(production, productionv);
+            if (production == null)
+            {
+                return HttpNotFound();
+            }
+            return View(productionv);
+        }
+
         // POST: Production/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "pid,pname,pimage,phead,address,contactno,email,username,password,description")] productionv productionv)
+        public ActionResult Edit([Bind(Include = "pid,pname,pimage,phead,address,contactno,email,username,password,description,status")] productionv productionv)
         {
             if (ModelState.IsValid)
             {
                 production production = new production();
-                AutoMapper.Mapper.Map(productionv,production);
+                production.pid = productionv.pid;
+                production.pname = productionv.pname;
+                production.pimage = productionv.pimage;
+                production.phead = productionv.phead;
+                production.address = productionv.address;
+                production.contactno = productionv.contactno;
+                production.email = productionv.email;
+                production.username = productionv.username;
+                production.password = productionv.password;
+                production.description = productionv.description;
+                production.status = productionv.status;
                 db.Entry(production).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Proinfo");
             }
             return View(productionv);
         }

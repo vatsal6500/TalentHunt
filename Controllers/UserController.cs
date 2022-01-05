@@ -369,7 +369,25 @@ namespace TalentHunt.Controllers
             TempData["videolists"] = videolists;
 
             //int id = db.productionevents.
-            
+
+            var rates = db.ratings.Where(p => p.userid.Equals(usrid));
+            if (rates.Count() != 0)
+            {
+                double sum = 0;
+                double finalrate = 0;
+                double total = rates.Count();
+                foreach (var rt in rates)
+                {
+                    sum += rt.rating1;
+                }
+                finalrate = sum / total;
+                TempData["ratings"] = finalrate;
+            }
+            else
+            {
+                TempData["ratings"] = 0;
+            }
+
 
             user user = db.users.Find(id);
             if (user == null)

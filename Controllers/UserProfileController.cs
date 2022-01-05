@@ -45,7 +45,19 @@ namespace TalentHunt.Controllers
                 return RedirectToAction("Index", "User");
             }
             ViewBag.uid = id;
-            ViewBag.tid = new SelectList(db.talents, "tid", "ttype");
+            List<userprofile> talentCreated = db.userprofiles.Where(p => p.userid==id).ToList();
+            if (talentCreated.Count() == 0)
+            {
+                ViewBag.tid = new SelectList(db.talents, "tid", "ttype");
+            }
+            else
+            {
+                List<talent> talent = db.talents.ToList();
+
+                List<talent> talentRemain = talent.Where(t => talentCreated.All(p => p.tid!=t.tid)).ToList();
+
+                ViewBag.tid = new SelectList(talentRemain, "tid", "ttype");
+            }
             //ViewBag.userid = new SelectList(db.users, "userid", "fname");
             return View();
         }

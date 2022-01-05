@@ -25,12 +25,10 @@ namespace TalentHunt.ModelView
 
         [Required(ErrorMessage = "*")]
         [DisplayName("Start Date")]
-        [DataType(DataType.Date)]
         public DateTime startdate { get; set; }
 
         [Required(ErrorMessage = "*")]
         [DisplayName("End Date")]
-        [DataType(DataType.Date)]
         public DateTime enddate { get; set; }
 
         [Required(ErrorMessage = "*")]
@@ -43,7 +41,6 @@ namespace TalentHunt.ModelView
 
         [Required(ErrorMessage = "*")]
         [DisplayName("DeadLine")]
-        [DataType(DataType.Date)]
         public DateTime appdeadline { get; set; }
 
         [Required(ErrorMessage = "*")]
@@ -53,6 +50,8 @@ namespace TalentHunt.ModelView
 
         [DisplayName("Image")]
         public string image { get; set; }
+
+        public string status { get; set; }
 
         public HttpPostedFileBase ImageFile { get; set; }
 

@@ -185,6 +185,7 @@ namespace TalentHunt.Controllers
         }
 
         // GET: UserApply/Delete/5
+        //EMAIL BAKI
         public ActionResult Delete(int? id)
         {
             if(Session["uid"] != null)

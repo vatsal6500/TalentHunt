@@ -12,7 +12,8 @@
                 <p class="noti-head m-b-5 mx-4 mb-0">@Html.ActionLink("Profile", "Index", "User")</p>
                 <p class="noti-head m-b-5 mx-4 mb-0">@Html.ActionLink("Events", "Index", "ProductionEvent")</p>
                 <p class="noti-head m-b-5 mx-4 mb-0">@Html.ActionLink("Productions", "ProductionView", "Production")</p>
-                <p class="noti-head m-b-5 mx-4 mb-0">@Html.ActionLink("Biddings", "Index", "UserApply")</p> }
+                <p class="noti-head m-b-5 mx-4 mb-0">@Html.ActionLink("Biddings", "Index", "UserApply")</p> 
+            }
             if (Session["pid"] != null)
             {
                 <p class="noti-head m-b-5 mx-4 mb-0">@Html.ActionLink("Profile", "Index", "Production")</p>
@@ -31,12 +32,16 @@
                         <ul class="pro-body">
                             @if (Session["uid"] != null)
                             {
-                                <li><a href="@Url.Action("Edit","User",new { id = Session["uid"]})" class="dropdown-item"><i class="feather icon-user"></i> Profile</a></li>
+                                <li><a href="@Url.Action("Edit","User",new { id = Session["uid"]})" class="dropdown-item"><i class="feather icon-user"></i>Edit Profile</a></li>
+                                <li><a href="@Url.Action("Index","Rating")" class="dropdown-item"><i class="feather icon-star-on text-warning"></i>Ratings</a></li>
+                                <li><a href="@Url.Action("Index","SubUser")" class="dropdown-item"><i class="feather icon-monitor text-success"></i>Subscriptions</a></li>
                                 <li><a href="@Url.Action("Reset","User",new { id = Session["uid"]})" class="dropdown-item"><i class="feather icon-rewind"></i> Reset Password</a></li>
                             }
                             @if (Session["pid"] != null)
                             {
                                 <li><a href="@Url.Action("Edit","Production",new { id = Session["pid"]})" class="dropdown-item"><i class="feather icon-user"></i> Profile</a></li>
+                                <li><a href="@Url.Action("Index","EventRate")" class="dropdown-item"><i class="feather icon-star-on text-warning"></i>Ratings</a></li>
+                                <li><a href="@Url.Action("Index","SubProduction")" class="dropdown-item"><i class="feather icon-monitor text-success"></i>Subscriptions</a></li>
                                 <li><a href="@Url.Action("Reset","Production",new { id = Session["pid"]})" class="dropdown-item"><i class="feather icon-rewind"></i> Reset Password</a></li>
                             }
                             <li><a href="@Url.Action("Logout","User")" class="dropdown-item"><i class="feather icon-power text-danger"></i> Logout</a></li>

@@ -1,20 +1,20 @@
-﻿@model TalentHunt.Models.productionevent
+﻿@model TalentHunt.Models.production
 @using TalentHunt.Models
-@{ 
-    Layout = null; 
+@{
+    Layout = null;
 }
 
 <!DOCTYPE html>
 
 <html lang="en">
+
+
+
 <head>
     <title>TalentHunt</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="description" content="Dasho Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
-    <meta name="keywords" content="admin templates, bootstrap admin templates, bootstrap 4, dashboard, dashboard templets, sass admin templets, html admin templates, responsive, bootstrap admin templates free download,premium bootstrap admin templates, Dasho, Dasho bootstrap admin template">
-    <meta name="author" content="Phoenixcoded" />
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- CSS -->
@@ -36,305 +36,100 @@
 
 <body class="">
 
-    @{ 
-        Html.RenderPartial("_Navbar"); 
+    @{
+        Html.RenderPartial("_Navbar");
     }
     <!-- [ Main Content ] start -->
-    <!-- [ Main Content ] start -->
-    <div class="row pcoded-main-container2">
-        <div class="col-sm-12">
-            <div class="card user-card user-card-2 shape-right">
-                <div class="card-header border-0 p-2 pb-0">
-                    <div class="clearfix mb-1">
-                        <div class="pull-left">
-                            <h4 class="text-blue h4 mx-3 my-3">Event Details</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="row align-items-center mx-4">
-                    <div class="col-auto col pr-0">
-                        <div class="change-profile">
-                            <div class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <div class="profile-dp">
-                                        <img class="img-radius img-fluid wid-100" src="@Url.Content(Model.image)" alt="User image">
+    <div class="pcoded-main-container2">
+        <div class="pcoded-wrapper">
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- [ Main Content ] start -->
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="card user-card user-card-2 shape-right">
+                                        <div class="card-header border-0 p-2 pb-0">
+                                            <div class="clearfix mb-1">
+                                                <div class="pull-left">
+                                                    <h4 class="text-blue h4 mx-3 my-3">Production Details</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-center mx-4">
+                                            <div class="col-auto col pr-0">
+                                                <div class="change-profile">
+                                                    <div class="dropdown">
+                                                        <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <div class="profile-dp">
+                                                                <img class="img-radius img-fluid wid-100" src="@Url.Content(Model.pimage)" alt="User image">
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <h6 class="mb-1" style="color:indianred">@Html.DisplayFor(model => model.pname)</h6>
+                                                <p>
+                                                    Run By @Html.DisplayFor(model => model.phead)
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <p class="mx-4">
+                                            Description : @Html.DisplayFor(model => model.description)
+                                        </p>
+                                        <br />
+                                        <div class="card-body pt-0">
+                                            <div class="user-about-block">
+                                                <div class="row align-items-center">
+                                                    <div class="col">
+                                                        <div class="col align-items-center my-3">
+                                                        </div>
+
+                                                        <table border="0" class="table">
+                                                            <tr>
+                                                                <th>Address</th>
+                                                                <td>@Html.DisplayFor(model => model.address)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Contact No</th>
+                                                                <td>@Html.DisplayFor(model => model.contactno)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Email</th>
+                                                                <td>@Html.DisplayFor(model => model.email)</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <h6 class="mb-1">@Html.DisplayFor(model => model.ename)</h6>
-                        <p>
-                            By @TempData["name"]
-                        </p>
-                    </div>
-                </div>
-                <br /><br />
-                <div class="card-body pt-0">
-                    <div class="user-about-block">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <div class="col align-items-center my-3">
-                                </div>
-
-                                <table border="0" class="table">
-                                    <tr>
-                                        <th>Event Type</th>
-                                        <td>@Html.DisplayFor(model => model.etype)</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Event Manager</th>
-                                        <td>@Html.DisplayFor(model => model.emanager)</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Event Start Date</th>
-                                        <td>@Html.DisplayFor(model => model.startdate)</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Event End Date</th>
-                                        <td>@Html.DisplayFor(model => model.enddate)</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Venue</th>
-                                        <td>@Html.DisplayFor(model => model.evenu)</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Visitors Count</th>
-                                        <td>@Html.DisplayFor(model => model.evisitors)</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Application Deadline</th>
-                                        <td>@Html.DisplayFor(model => model.appdeadline)</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Description</th>
-                                        <td>@Html.DisplayFor(model => model.description)</td>
-                                    </tr>
-                                    <tr>
-                                    </tr>
-                                    <tr style="color:indianred">
-                                        <td colspan="2" style="font-size:20px">
-                                            Event Requirements
-                                        </td>
-                                    </tr>
-                                    @foreach (var reqs in (IEnumerable<eventrequire>)TempData["reqs"])
+                                    <h4 class="h4 text-blue mb-30">All Events</h4>
+                                    @if(TempData["NotFound"]!=null)
                                     {
-                                        <tr>
-                                            <th>Talent</th>
-                                            <td>@Html.DisplayFor(modelItem => reqs.talent.ttype)</td>
-                                        </tr>
-
-                                        <tr>
-                                            <th>Age Range</th>
-                                            <td>@Html.DisplayFor(modelItem => reqs.agerange)</td>
-                                        </tr>
-
-                                         <tr>
-                                            <th>Gender</th>
-                                            <td>@Html.DisplayFor(modelItem => reqs.gender)</td>
-                                         </tr>
-
-                                         <tr>
-                                            <th>Payment Range</th>
-                                            <td>@Html.DisplayFor(modelItem => reqs.payrange)</td>
-                                         </tr>}
-                                </table>
-                                @{ 
-                                    if (Session["uid"] != null)
-                                    {
-                                        <center>
-                                            @Html.ActionLink("Apply", "Create", "UserApply", new { id = Model.peid }, new { @class = "btn btn-primary" })
-                                        </center> 
-                                    } 
-                                }
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- [ Main Content ] start -->
-    <div class="row pcoded-main-container2 mt-0">
-        <div class="col-sm-12">
-            <div class="card user-card user-card-2 shape-right">
-
-                @if (TempData["selected"].Equals("Yes"))
-                {
-                    <div class="card-header border-0 p-2 pb-0">
-                        <div class="clearfix mb-1">
-                            <div class="pull-left">
-                                <h4 class="text-blue h4 mx-3 my-3">Selected Expert</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <br /><br />
-                    <div class="card-body pt-0">
-                        <div class="user-about-block">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <div class="col align-items-center my-3">
+                                        <p style="color:indianred">@TempData["NotFound"]</p>
+                                    }
+                                    <div class="mb-20 d-inline-flex">
+                                        @foreach (var plists in (IEnumerable<productionevent>)TempData["events"])
+                                        {
+                                            <div class="card mx-2" style="width: 18rem;">
+                                                <img class="card-img-top" src="@Url.Content(plists.image)" alt="Card image cap">
+                                                <div class="card-body">
+                                                    <p class="card-text"><strong>@Html.DisplayFor(modelItem => plists.ename)</strong></p>
+                                                    <p class="card-text">Start Date : @Html.DisplayFor(modelItem => plists.startdate) </p>
+                                                    <p class="card-text">End Date : @Html.DisplayFor(modelItem => plists.enddate) </p>
+                                                    <p class="card-text">Deadline : @Html.DisplayFor(modelItem => plists.appdeadline)</p>
+                                                    <p class="card-text">@Html.DisplayFor(modelItem => plists.description)</p>
+                                                </div>
+                                                @Html.ActionLink("View More", "Details", "ProductionEvent", new { id = plists.peid }, new { @class = "btn btn-outline-primary my-3 mx-2" })
+                                            </div>
+                                        }
                                     </div>
-
-                                    <table class="table">
-                                        <tr>
-                                            <th>
-                                                Event Name
-                                            </th>
-                                            <th>
-                                                User Name
-                                            </th>
-                                            <th>
-                                                Gender
-                                            </th>
-                                            <th>
-                                                Age
-                                            </th>
-                                            <th>
-                                                FinalPay
-                                            </th>
-                                        </tr>
-                                        @foreach (var pdata in (IEnumerable<userselect>)TempData["userselected"])
-                                        {
-
-                                            <tr>
-                                                <td style="color:indianred">
-                                                    @Html.DisplayFor(modelItem => pdata.productionevent.ename)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => pdata.user.fname)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => pdata.user.gender)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => pdata.user.age)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => pdata.finalpay)
-                                                </td>
-                                            </tr>
-                                        }
-                                    </table>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                 }
-
-                <div class="card-header border-0 p-2 pb-0">
-                    <div class="clearfix mb-1">
-                        <div class="pull-left">
-                            <h4 class="text-blue h4 mx-3 my-3">Biddings on this event</h4>
-                        </div>
-                    </div>
-                </div>
-                <br /><br />
-                <div class="card-body pt-0">
-                    <div class="user-about-block">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <div class="col align-items-center my-3">
-                                </div>
-
-                                <table class="table">
-                                    <tr>
-                                        <th>
-                                            Event Name
-                                        </th>
-                                        <th>
-                                            User Name
-                                        </th>
-                                        <th>
-                                            Application Date
-                                        </th>
-                                        <th>
-                                            Expected Payment
-                                        </th>
-                                        <th>
-                                            Message
-                                        </th>
-                                        @if (TempData["selected"].Equals("No") && Session["pid"] != null)
-                                        {
-                                            <th>
-                                                Action
-                                            </th>
-                                        }
-                                    </tr>
-
-                                    @if (Session["uid"] != null && TempData["NotFoundUserBids"] != null)
-                                    {
-                                        <tr>
-                                            <td style="color:indianred" colspan="5"><center>@TempData["NotFoundUserBids"]</center></td>
-                                        </tr>
-                                    }
-                                    @if (Session["pid"] != null && TempData["NotFound"] != null)
-                                    {
-                                        <tr>
-                                            <td style="color:indianred" colspan="5"><center>@TempData["NotFound"]</center></td>
-                                        </tr>
-                                    }
-
-                                    @if (@Session["pid"] != null)
-                                    {
-                                        foreach (var pdata in (IEnumerable<userapply>)TempData["pdata"])
-                                        {
-
-                                            <tr>
-                                                <td style="color:indianred">
-                                                    @Html.DisplayFor(modelItem => pdata.productionevent.ename)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => pdata.user.fname)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => pdata.appdate)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => pdata.expay)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => pdata.message)
-                                                </td>
-                                                @if (TempData["selected"].Equals("No"))
-                                                {
-                                                    <td>
-                                                        @Html.ActionLink("Select", "Create", "UserSelect", new { uid = pdata.user.userid, eid = pdata.productionevent.peid, pay = pdata.expay }, new { @class = "btn btn-outline-success" })
-                                                    </td>
-                                                }
-                                            </tr>
-                                        }
-                                    }
-
-                                    @if (@Session["uid"] != null)
-                                    {
-                                        foreach (var pdata in (IEnumerable<userapply>)TempData["bids"])
-                                        {
-
-                                            <tr>
-                                                <td style="color:indianred">
-                                                    @Html.DisplayFor(modelItem => pdata.productionevent.ename)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => pdata.user.fname)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => pdata.appdate)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => pdata.expay)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => pdata.message)
-                                                </td>
-                                            </tr>
-                                        }
-                                    }
-                                </table>
                             </div>
                         </div>
                     </div>
