@@ -129,13 +129,15 @@
                             <div class="select-role">
                                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                     <label class="btn">
-                                        <input type="radio" name="options" id="user" value="user">
+                                        @Html.EditorFor(model => model.expert, new { htmlAttributes = new { @type="radio", value=Model.expert} })
+                                        @*<input type="radio" name="options" id="user" value="user">*@
                                         <div class="icon"><img src="~/vendors/images/person.svg" class="svg"></div>
                                         <span>I'm</span>
                                         Expert
                                     </label>
                                     <label class="btn">
-                                        <input type="radio" name="options" id="production" value="production">
+                                        @Html.EditorFor(model => model.production, new { htmlAttributes = new { @type = "radio", value=Model.production } })
+                                        @*<input type="radio" name="options" id="production" value="production">*@
                                         <div class="icon"><img src="~/vendors/images/briefcase.svg" class="svg"></div>
                                         <span>I'm</span>
                                         Production

@@ -333,104 +333,122 @@
                                             @foreach (var pdata in (IEnumerable<userselect>)TempData["userselected"])
                                             {
 
-                                        <tr>
-                                            <td style="color:indianred">
-                                                @Html.DisplayFor(modelItem => pdata.productionevent.ename)
-                                            </td>
-                                            <td>
-                                                <a href="@Url.Action("Details","User",new { id=pdata.userid})">@Html.DisplayFor(modelItem => pdata.user.fname)</a>
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => pdata.user.gender)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => pdata.user.age)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => pdata.finalpay)
-                                            </td>
-                                            @if (Session["pid"] != null)
-                                            {
-                                                if (TempData["eventend"].Equals("Yes"))
-                                                {
-                                                    if (TempData["rated"].Equals("Yes"))
+                                                <tr>
+                                                    <td style="color:indianred">
+                                                        @Html.DisplayFor(modelItem => pdata.productionevent.ename)
+                                                    </td>
+                                                    <td>
+                                                        <a href="@Url.Action("Details","User",new { id=pdata.userid})">@Html.DisplayFor(modelItem => pdata.user.fname)</a>
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => pdata.user.gender)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => pdata.user.age)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => pdata.finalpay)
+                                                    </td>
+                                                    @if (Session["pid"] != null)
                                                     {
-                                                        foreach (var rt in (IEnumerable<rating>)TempData["rating"])
+                                                        if (TempData["eventend"].Equals("Yes"))
                                                         {
-                                                            if (rt.rating1 == 1)
+                                                            if (TempData["rated"].Equals("Yes"))
                                                             {
-                                                                <i class="fa fa-star" style="color:gold"></i>
+                                                                foreach (var rt in (IEnumerable<rating>)TempData["rating"])
+                                                                {
+                                                                    if (rt.rating1 == 1)
+                                                                    {
+                                                                        <td>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                        </td>
+                                                                    }
+                                                                    else if (rt.rating1 == 1.5)
+                                                                    {
+                                                                        <td>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star-half-empty" style="color:gold"></i>
+                                                                        </td>
+                                                                    }
+                                                                    else if (rt.rating1 == 2)
+                                                                    {
+                                                                        <td>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                        </td>
+                                                                    }
+                                                                    else if (rt.rating1 == 2.5)
+                                                                    {
+                                                                        <td>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star-half-empty" style="color:gold"></i>
+                                                                        </td>
+                                                                    }
+                                                                    else if (rt.rating1 == 3)
+                                                                    {
+                                                                        <td>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                        </td>
+                                                                    }
+                                                                    else if (rt.rating1 == 3.5)
+                                                                    {
+                                                                        <td>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star-half-empty" style="color:gold"></i>
+                                                                        </td>
+                                                                    }
+                                                                    else if (rt.rating1 == 4)
+                                                                    {
+                                                                        <td>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                        </td>
+                                                                    }
+                                                                    else if (rt.rating1 == 4.5)
+                                                                    {
+                                                                        <td>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star-half-empty" style="color:gold"></i>
+                                                                        </td>
+                                                                    }
+                                                                    else if (rt.rating1 == 5)
+                                                                    {
+                                                                        <td>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                        </td>
+                                                                    }
+                                                                }
                                                             }
-                                                            else if (rt.rating1 == 1.5)
+                                                            else
                                                             {
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star-half-empty" style="color:gold"></i>
+                                                                <td>
+                                                                    @Html.ActionLink("Rate expert", "Create", "Rating", new { uid = pdata.user.userid, eid = Model.peid }, new { @class = "btn btn-outline-success" })
+                                                                </td>
                                                             }
-                                                            else if (rt.rating1 == 2)
-                                                            {
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                            }
-                                                            else if (rt.rating1 == 2.5)
-                                                            {
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star-half-empty" style="color:gold"></i>
-                                                            }
-                                                            else if (rt.rating1 == 3)
-                                                            {
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                            }
-                                                            else if (rt.rating1 == 3.5)
-                                                            {
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star-half-empty" style="color:gold"></i>
-                                                            }
-                                                            else if (rt.rating1 == 4)
-                                                            {
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                            }
-                                                            else if (rt.rating1 == 4.5)
-                                                            {
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star-half-empty" style="color:gold"></i>
-                                                            }
-                                                            else if (rt.rating1 == 5)
-                                                            {
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                                <i class="fa fa-star" style="color:gold"></i>
-                                                            }
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>
+                                                                @Html.ActionLink("Remove", "", "", new { @class = "btn btn-outline-danger" })
+                                                            </td>
                                                         }
                                                     }
-                                                    else
-                                                    {
-                                                        <td>
-                                                            @Html.ActionLink("Rate expert", "Create", "Rating", new { uid = pdata.user.userid, eid = Model.peid }, new { @class = "btn btn-outline-success" })
-                                                        </td>
-                                                    }
-
-                                                }
-                                                else
-                                                {
-                                                    <td>
-                                                        @Html.ActionLink("Remove", "", "", new { @class = "btn btn-outline-danger" })
-                                                    </td>
-                                                }
-                                            }
-                                        </tr>
+                                                </tr>
                                             }
                                         </table>
                                     </div>

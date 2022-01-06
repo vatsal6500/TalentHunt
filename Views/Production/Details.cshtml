@@ -113,10 +113,10 @@
                                     {
                                         <p style="color:indianred">@TempData["NotFound"]</p>
                                     }
-                                    <div class="mb-20 d-inline-flex">
+                                    <div class="mb-20">
                                         @foreach (var plists in (IEnumerable<productionevent>)TempData["events"])
                                         {
-                                            <div class="card mx-2" style="width: 18rem;">
+                                            <div class="card mx-2 d-inline-flex" style="width: 18rem;">
                                                 <img class="card-img-top" src="@Url.Content(plists.image)" alt="Card image cap">
                                                 <div class="card-body">
                                                     <p class="card-text"><strong>@Html.DisplayFor(modelItem => plists.ename)</strong></p>

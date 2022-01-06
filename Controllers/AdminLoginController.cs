@@ -18,16 +18,16 @@ namespace TalentHunt.Controllers
         // GET: Admin
         public ActionResult Login()
         {
-            HttpCookie cookie = Request.Cookies["rememberme"];
+            HttpCookie cookie = Request.Cookies["rememberAdmin"];
+            adminlogin adminlogin = new adminlogin();
             if (cookie != null)
             {
-                adminlogin adminlogin = new adminlogin();
-                adminlogin.username = cookie["username"].ToString();
-                adminlogin.password = cookie["password"].ToString();
-                adminlogin.rememberme = Convert.ToBoolean(cookie["rememberme"]);
+                adminlogin.username = cookie["ausername"].ToString();
+                adminlogin.password = cookie["apassword"].ToString();
+                adminlogin.rememberme = Convert.ToBoolean(cookie["arememberme"]);
                 return View(adminlogin);
             }
-            return View();
+            return View(adminlogin);
         }
 
         [HttpPost]
@@ -38,12 +38,12 @@ namespace TalentHunt.Controllers
                 admin adm = db.admins.Where(a => a.username.Equals(adminlogin.username) && a.password.Equals(adminlogin.password)).FirstOrDefault();
                 if (adm != null)
                 {
-                    HttpCookie cookie = new HttpCookie("RememberMe");
+                    HttpCookie cookie = new HttpCookie("RememberAdmin");
                     if (adminlogin.rememberme == true)
                     {
-                        cookie["username"] = adminlogin.username;
-                        cookie["password"] = adminlogin.password;
-                        cookie["rememberme"] = adminlogin.rememberme.ToString();
+                        cookie["ausername"] = adminlogin.username;
+                        cookie["apassword"] = adminlogin.password;
+                        cookie["arememberme"] = adminlogin.rememberme.ToString();
                         cookie.Expires = DateTime.Now.AddDays(20);
                         Response.Cookies.Add(cookie);
                     }
@@ -64,7 +64,7 @@ namespace TalentHunt.Controllers
                     ViewBag.errmsg = "Invalid Credentials";
                 }
             }
-            return View();
+            return View(adminlogin);
         }
 
         public ActionResult Dashboard()

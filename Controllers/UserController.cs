@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 using TalentHunt.Models;
 using TalentHunt.ModelView;
@@ -280,20 +281,49 @@ namespace TalentHunt.Controllers
 
         public ActionResult Login()
         {
-            return View();
+            login login = new login();
+            login.expert = "expert";
+            login.production = "production";
+
+            HttpCookie cookie = Request.Cookies["rememberExpert"];
+            adminlogin adminlogin = new adminlogin();
+            if (cookie != null)
+            {
+                adminlogin.username = cookie["eusername"].ToString();
+                adminlogin.password = cookie["epassword"].ToString();
+                adminlogin.rememberme = Convert.ToBoolean(cookie["erememberme"]);
+                return View(login);
+            }
+
+            return View(login);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(login login,string options)
+        public ActionResult Login(login login)
         {
             try
             {
-                if (options == "user")
+                if (login.expert == "expert")
                 {
                     user usr = db.users.Where(p => p.username.Equals(login.username) && p.password.Equals(login.password)).FirstOrDefault();
                     if (usr != null)
                     {
+                        HttpCookie cookie = new HttpCookie("RememberExpert");
+                        if (login.rememberme == true)
+                        {
+                            cookie["eusername"] = login.username;
+                            cookie["epassword"] = login.password;
+                            cookie["erememberme"] = login.rememberme.ToString();
+                            cookie.Expires = DateTime.Now.AddDays(20);
+                            Response.Cookies.Add(cookie);
+                        }
+                        else
+                        {
+                            cookie.Expires = DateTime.Now.AddDays(-1);
+                            HttpContext.Response.Cookies.Add(cookie);
+                        }
+
                         if (usr.status == "active")
                         {
                             Session["uid"] = usr.userid.ToString();
@@ -314,7 +344,7 @@ namespace TalentHunt.Controllers
                         TempData["register"] = "<div class='font-16 weight-600 pt-10 pb-10 text-center' data-color='#707373'>OR</div><div class='input-group mb-0'><a class='btn btn-outline-primary btn-lg btn-block' href='/User/Create'>Register To Create User Account</a></div>";
                     }
                 }
-                else if (options == "production")
+                else if (login.production == "production")
                 {
                     production pro = db.productions.Where(p => p.username.Equals(login.username) && p.password.Equals(login.password)).FirstOrDefault();
                     if (pro != null)
@@ -346,8 +376,9 @@ namespace TalentHunt.Controllers
             {
                 ViewBag.err = "There is Some problem try after some time";
             }
-            
-            return View();
+            login.expert = "expert";
+            login.production = "production";
+            return View(login);
         }
 
         // GET: User/Details/5
