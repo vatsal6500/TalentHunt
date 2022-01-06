@@ -25,10 +25,12 @@ namespace TalentHunt.ModelView
 
         [Required(ErrorMessage = "*")]
         [DisplayName("Start Date")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime startdate { get; set; }
 
         [Required(ErrorMessage = "*")]
         [DisplayName("End Date")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime enddate { get; set; }
 
         [Required(ErrorMessage = "*")]
@@ -41,6 +43,7 @@ namespace TalentHunt.ModelView
 
         [Required(ErrorMessage = "*")]
         [DisplayName("DeadLine")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime appdeadline { get; set; }
 
         [Required(ErrorMessage = "*")]

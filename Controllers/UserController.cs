@@ -285,13 +285,13 @@ namespace TalentHunt.Controllers
             login.expert = "expert";
             login.production = "production";
 
-            HttpCookie cookie = Request.Cookies["rememberExpert"];
+            HttpCookie cookie = Request.Cookies["Rememberme"];
             adminlogin adminlogin = new adminlogin();
             if (cookie != null)
             {
-                adminlogin.username = cookie["eusername"].ToString();
-                adminlogin.password = cookie["epassword"].ToString();
-                adminlogin.rememberme = Convert.ToBoolean(cookie["erememberme"]);
+                adminlogin.username = cookie["username"].ToString();
+                adminlogin.password = cookie["password"].ToString();
+                adminlogin.rememberme = Convert.ToBoolean(cookie["rememberme"]);
                 return View(login);
             }
 
@@ -309,12 +309,12 @@ namespace TalentHunt.Controllers
                     user usr = db.users.Where(p => p.username.Equals(login.username) && p.password.Equals(login.password)).FirstOrDefault();
                     if (usr != null)
                     {
-                        HttpCookie cookie = new HttpCookie("RememberExpert");
+                        HttpCookie cookie = new HttpCookie("Rememberme");
                         if (login.rememberme == true)
                         {
-                            cookie["eusername"] = login.username;
-                            cookie["epassword"] = login.password;
-                            cookie["erememberme"] = login.rememberme.ToString();
+                            cookie["username"] = login.username;
+                            cookie["password"] = login.password;
+                            cookie["rememberme"] = login.rememberme.ToString();
                             cookie.Expires = DateTime.Now.AddDays(20);
                             Response.Cookies.Add(cookie);
                         }
@@ -349,6 +349,21 @@ namespace TalentHunt.Controllers
                     production pro = db.productions.Where(p => p.username.Equals(login.username) && p.password.Equals(login.password)).FirstOrDefault();
                     if (pro != null)
                     {
+                        HttpCookie cookie = new HttpCookie("Rememberme");
+                        if (login.rememberme == true)
+                        {
+                            cookie["username"] = login.username;
+                            cookie["password"] = login.password;
+                            cookie["rememberme"] = login.rememberme.ToString();
+                            cookie.Expires = DateTime.Now.AddDays(20);
+                            Response.Cookies.Add(cookie);
+                        }
+                        else
+                        {
+                            cookie.Expires = DateTime.Now.AddDays(-1);
+                            HttpContext.Response.Cookies.Add(cookie);
+                        }
+
                         if (pro.status == "active")
                         {
                             Session["pid"] = pro.pid.ToString();
