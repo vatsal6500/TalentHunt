@@ -229,6 +229,7 @@
     <Compile Include="ModelView\planv.cs" />
     <Compile Include="ModelView\productioneventv.cs" />
     <Compile Include="ModelView\productionv.cs" />
+    <Compile Include="ModelView\ProEdit.cs" />
     <Compile Include="ModelView\ratingv.cs" />
     <Compile Include="ModelView\reset.cs" />
     <Compile Include="ModelView\subproductionv.cs" />

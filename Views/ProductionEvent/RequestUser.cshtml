@@ -75,7 +75,7 @@
                             <label class="col-sm-12 col-md-2 col-form-label">Talent</label>
                             <div class="col-md-10">
                                 <select class="form-control" id="ename" name="ename">
-                                    <option selected="selected" value="0" id="tid">-- Select Talent --</option>
+                                    <option selected="selected" value="0" id="tid">-- Select Event --</option>
                                     @foreach (var data in (IEnumerable<productionevent>)TempData["EventList"])
                                     {
                                         <option value="@data.ename">@Html.DisplayFor(modelItem => data.ename)</option>

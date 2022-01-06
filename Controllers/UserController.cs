@@ -282,19 +282,27 @@ namespace TalentHunt.Controllers
         public ActionResult Login()
         {
             login login = new login();
-            login.expert = "expert";
-            login.production = "production";
 
             HttpCookie cookie = Request.Cookies["Rememberme"];
-            adminlogin adminlogin = new adminlogin();
             if (cookie != null)
             {
-                adminlogin.username = cookie["username"].ToString();
-                adminlogin.password = cookie["password"].ToString();
-                adminlogin.rememberme = Convert.ToBoolean(cookie["rememberme"]);
+                login.username = cookie["username"].ToString();
+                login.password = cookie["password"].ToString();
+                if(cookie["expert"].ToString()==null)
+                {
+                    login.production = cookie["production"].ToString();
+                }
+                else
+                {
+                    login.expert = cookie["expert"].ToString();
+                }
+                //login.expert = cookie["expert"].ToString();
+                //login.production = cookie["production"].ToString();
+                login.rememberme = Convert.ToBoolean(cookie["rememberme"]);
                 return View(login);
             }
-
+            login.expert = "expert";
+            login.production = "production";
             return View(login);
         }
 
@@ -314,6 +322,7 @@ namespace TalentHunt.Controllers
                         {
                             cookie["username"] = login.username;
                             cookie["password"] = login.password;
+                            cookie["expert"] = login.expert;
                             cookie["rememberme"] = login.rememberme.ToString();
                             cookie.Expires = DateTime.Now.AddDays(20);
                             Response.Cookies.Add(cookie);
@@ -354,6 +363,7 @@ namespace TalentHunt.Controllers
                         {
                             cookie["username"] = login.username;
                             cookie["password"] = login.password;
+                            cookie["production"] = login.production;
                             cookie["rememberme"] = login.rememberme.ToString();
                             cookie.Expires = DateTime.Now.AddDays(20);
                             Response.Cookies.Add(cookie);
@@ -460,18 +470,18 @@ namespace TalentHunt.Controllers
             {
                 user email = db.users.Where(p => p.email.Equals(userv.email)).FirstOrDefault();
                 user username = db.users.Where(p => p.username.Equals(userv.username)).FirstOrDefault();
-                if(email.email != null && username.username != null)
+                if(email != null && username != null)
                 {
                     ViewBag.uemail = "email already registered";
                     ViewBag.uuname = "username already registered";
                 }
-                else if (email.email != null)
+                else if (email != null)
                 {
                     ViewBag.uemail = "email already registered";
                 }
                 else
                 {
-                    if (username.username != null)
+                    if (username != null)
                     {
                         ViewBag.uuname = "username already registered";
                     }
@@ -498,11 +508,6 @@ namespace TalentHunt.Controllers
                             db.SaveChanges();
 
                             TempData["ucre"] = true;
-
-                            //string FilePath = "E:\\TalentHunt\\EmailTemplates\\index1.html";
-                            //StreamReader str = new StreamReader(FilePath);
-                            //String MailText = str.ReadToEnd();
-                            //str.Close();
 
                             int id = user.userid;
 

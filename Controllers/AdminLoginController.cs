@@ -151,7 +151,7 @@ namespace TalentHunt.Controllers
                 }
                 
                 string subject = "OTP";
-                string message = "One Time <a href='www.google.com'>Password:</a> " + otp + ". Don't share it with anyone.";
+                string message = "One Time Password: " + otp + ".<br/><br/> Don't share it with anyone.";
 
                 email email = new email(admin.email, subject, message);
 

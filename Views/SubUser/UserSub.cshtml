@@ -81,6 +81,7 @@
                                 <th scope="col">Price</th>
                                 <th scope="col">Start Date</th>
                                 <th scope="col">End date</th>
+                                <th scope="col">Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -91,8 +92,16 @@
                                     <td>@Html.DisplayFor(modelItem => item.user.fname) </td>
                                     <td>@Html.DisplayFor(modelItem => item.plan.plantype)</td>
                                     <td>@Html.DisplayFor(modelItem => item.plan.price) </td>
-                                    <td>@Html.DisplayFor(modelItem => item.startdate)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.enddate)</td>
+                                    <td>@item.startdate.ToString("dd/MM/yyyy")</td>
+                                    <td>@item.startdate.ToString("dd/MM/yyyy")</td>
+                                    @if(item.enddate < ViewBag.date)
+                                    {
+                                        <th class="text-danger">Expired</th>
+                                    }
+                                    else
+                                    {
+                                        <th class="text-success">Active</th>
+                                    }
                                 </tr>
                             }
                         </tbody>

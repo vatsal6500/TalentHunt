@@ -85,7 +85,7 @@
                             <p class="card-text">@Html.DisplayFor(modelItem => item.user.gender) | @Html.DisplayFor(modelItem => item.user.age)</p>
                             <p class="card-text" style="color:indianred">@Html.DisplayFor(modelItem => item.talent.ttype)</p>
                         </div>
-                        @Html.ActionLink("View Talent", "Details", "User", new { id = item.userid }, new { @class = "btn btn-outline-primary my-3 mx-2" })
+                        @Html.ActionLink("View Details", "Details", "User", new { id = item.userid }, new { @class = "btn btn-outline-primary my-3 mx-2" })
                     </div>           
                 }
             </div>

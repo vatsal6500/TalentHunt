@@ -80,6 +80,7 @@
                                 <th scope="col">Expert</th>
                                 <th scope="col">Apply Date</th>
                                 <th scope="col">Expected Pay</th>
+                                <th scope="col">Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -95,6 +96,16 @@
                                     <td>@Html.DisplayFor(modelItem => item.user.fname) @Html.DisplayFor(modelItem => item.user.lname)</td>
                                     <td>@Html.DisplayFor(modelItem => item.appdate)</td>
                                     <td>@Html.DisplayFor(modelItem => item.expay)</td>
+                                    @if (item.status.Equals("selected"))
+                                    {
+                                        <td style="color:green">@Html.DisplayFor(modelItem => item.status)</td>
+
+                                    }
+                                    @if (item.status.Equals("applied"))
+                                    {
+                                        <td style="color:orange">@Html.DisplayFor(modelItem => item.status)</td>
+
+                                    }
                                 </tr>
                             }
                         </tbody>

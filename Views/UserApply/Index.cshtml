@@ -103,6 +103,9 @@
                                                                                 Status
                                                                             </th>
                                                                             <th>
+                                                                                Ratings
+                                                                            </th>
+                                                                            <th>
                                                                                 Action
                                                                             </th>
                                                                         </tr>
@@ -124,7 +127,7 @@
                                                                                 @Html.DisplayFor(modelItem => pdata.production.pname)
                                                                             </td>
                                                                             <td>
-                                                                                @Html.DisplayFor(modelItem => pdata.appdate)
+                                                                                @pdata.appdate.ToString("dd/MM/yyyy")
                                                                             </td>
                                                                             <td>
                                                                                 @Html.DisplayFor(modelItem => pdata.expay)
@@ -142,9 +145,110 @@
                                                                                     <p class="text-warning">@Html.DisplayFor(modelItem => pdata.status)</p>
                                                                                 }
                                                                             </td>
-                                                                            <td>
-                                                                                @Html.ActionLink("Withdraw","Delete","UserApply",new { id = pdata.uaid },new { @class = "btn btn-outline-danger", onclick = $"return confirm('Are you sure you want to withdraw your {pdata.productionevent.ename} event Bid?')"})
-                                                                            </td>
+                                                                            @foreach (var rt in (IEnumerable<rating>)TempData["rates"])
+                                                                            {
+                                                                                if (pdata.peid == rt.peid)
+                                                                                {
+                                                                                    if (rt.rating1 == 1)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if (rt.rating1 == 1.5)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star-half-empty" style="color:gold"></i>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if (rt.rating1 == 2)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if (rt.rating1 == 2.5)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star-half-empty" style="color:gold"></i>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if (rt.rating1 == 3)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if (rt.rating1 == 3.5)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star-half-empty" style="color:gold"></i>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if (rt.rating1 == 4)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if (rt.rating1 == 4.5)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star-half-empty" style="color:gold"></i>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if (rt.rating1 == 5)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                            <i class="fa fa-star" style="color:gold"></i>
+                                                                                        </td>
+                                                                                    }
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <td style="color:red">
+                                                                                        -----
+                                                                                    </td>
+                                                                                }
+                                                                            }
+                                                                            @if (TempData["nrates"].Equals("No"))
+                                                                            {
+                                                                                <td style="color:red">
+                                                                                    -----
+                                                                                </td>
+                                                                            }
+                                                                            @if(pdata.productionevent.enddate > ViewBag.date)
+                                                                            {
+                                                                                <td>
+                                                                                    @Html.ActionLink("Withdraw","Delete","UserApply",new { id = pdata.uaid },new { @class = "btn btn-outline-danger", onclick = $"return confirm('Are you sure you want to withdraw your {pdata.productionevent.ename} event Bid?')"})
+                                                                                </td>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <td class="text-success">
+                                                                                    Event Completed
+                                                                                </td>
+                                                                            }
                                                                         </tr>
                                                                     }
                                                                 </table>
@@ -208,6 +312,9 @@
                                                                         <th>
                                                                             Message
                                                                         </th>
+                                                                        <th>
+                                                                            Status
+                                                                        </th>
                                                                     </tr>
                                                                     @if (TempData["NotFound"] != null)
                                                                     {
@@ -225,13 +332,23 @@
                                                                                 @Html.DisplayFor(modelItem => pdata.user.fname)
                                                                             </td>
                                                                             <td>
-                                                                                @Html.DisplayFor(modelItem => pdata.appdate)
+                                                                                @pdata.appdate.ToString("dd/MM/yyyy")
                                                                             </td>
                                                                             <td>
                                                                                 @Html.DisplayFor(modelItem => pdata.expay)
                                                                             </td>
                                                                             <td>
                                                                                 @Html.DisplayFor(modelItem => pdata.message)
+                                                                            </td>
+                                                                            <td>
+                                                                                @if (pdata.status.Equals("selected"))
+                                                                                {
+                                                                                    <p class="text-success">@Html.DisplayFor(modelItem => pdata.status)</p>
+                                                                                }
+                                                                                @if (pdata.status.Equals("applied"))
+                                                                                {
+                                                                                    <p class="text-warning">@Html.DisplayFor(modelItem => pdata.status)</p>
+                                                                                }
                                                                             </td>
                                                                         </tr>
                                                                     }

@@ -57,20 +57,22 @@ namespace TalentHunt.Controllers
 
         public ActionResult ProductionView()
         {
-            return View(db.productions.ToList());
+            List<production> result = db.productions.Where(p => p.status == "active").ToList();
+            return View(result);
         }
         [HttpPost]
         public ActionResult ProductionView(string Search)
         {
             if (Session["uid"] != null)
             {
+                List<production> result = db.productions.Where(p => p.status == "active").ToList();
                 if (Search == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
                 if (Search.ToLower() == "all" || Search == "")
                 {
-                    return View(db.productions.ToList());
+                    return View(result);
                 }
 
 
@@ -84,23 +86,25 @@ namespace TalentHunt.Controllers
                         if(eventHS.Count() == 0)
                         {
                             TempData["NotFound"] = "Data Not Found";
+                            return View(result);
                         }
                         else
                         {
-                            return View(eventHS.ToList());
+                            List<production> ehs = eventHS.Where(p => p.status == "active").ToList();
+                            return View(ehs);
                         }
                     }
                     else
                     {
-                        return View(eventDS.ToList());
+                        List<production> eds = eventDS.Where(p => p.status == "active").ToList();
+                        return View(eds);
                     }
                 }
                 else
                 {
-                    return View(eventNS.ToList());
+                    List<production> ens = eventNS.Where(p => p.status == "active").ToList();
+                    return View(ens);
                 }
-
-                return View(eventNS.ToList());
             }
             else
             {
@@ -305,13 +309,13 @@ namespace TalentHunt.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             production production = db.productions.Find(id);
-            productionv productionv = new productionv();
-            AutoMapper.Mapper.Map(production, productionv);
+            ProEdit productionedit = new ProEdit();
+            AutoMapper.Mapper.Map(production, productionedit);
             if (production == null)
             {
                 return HttpNotFound();
             }
-            return View(productionv);
+            return View(productionedit);
         }
 
         // POST: Production/Edit/5
@@ -319,7 +323,7 @@ namespace TalentHunt.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "pid,pname,pimage,phead,address,contactno,email,username,password,description,status")] productionv productionv)
+        public ActionResult Edit([Bind(Include = "pid,pname,pimage,phead,address,contactno,email,username,password,description,status")] ProEdit productionv)
         {
             if (ModelState.IsValid)
             {
@@ -337,7 +341,7 @@ namespace TalentHunt.Controllers
                 production.status = productionv.status;
                 db.Entry(production).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Proinfo");
+                return RedirectToAction("Index");
             }
             return View(productionv);
         }

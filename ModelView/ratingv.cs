@@ -11,7 +11,7 @@ namespace TalentHunt.ModelView
 
         [DisplayName("Rating")]
         [Range(0,5,ErrorMessage = "Invalid Rating")]
-        public int rating1 { get; set; }
+        public float rating1 { get; set; }
 
         [DisplayName("Comment")]
         public string comment { get; set; }

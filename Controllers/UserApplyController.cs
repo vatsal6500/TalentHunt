@@ -20,6 +20,8 @@ namespace TalentHunt.Controllers
         {
             if (Session["uid"] != null)
             {
+                DateTime date = DateTime.Today;
+                ViewBag.date = date;
                 int uid = Convert.ToInt32(HttpContext.Session["uid"]);
                 var result = db.userapplies.Where(x => x.userid.Equals(uid));
                 if (result.Count() == 0)
@@ -27,13 +29,24 @@ namespace TalentHunt.Controllers
                     TempData["NotFound"] = "No biddings yet";
                 }
                 TempData["pdata"] = result;
+                List<rating> rates = db.ratings.Where(p => p.userid.Equals(uid)).ToList();
+                if (rates.Count() == 0)
+                {
+                    TempData["nrates"] = "No";
+                    TempData["rates"] = rates;
+                }
+                else
+                {
+                    TempData["rates"] = rates;
+                    TempData["nrates"] = "Yes";
+                }
                 return View(db.userapplies.ToList());
             }
 
             if (Session["pid"] != null)
             {
                 int pid = Convert.ToInt32(HttpContext.Session["pid"]);
-                var result = db.userapplies.Where(x => x.pid.Equals(pid));
+                var result = db.userapplies.Where(x => x.pid.Equals(pid) && x.productionevent.status == "active");
                 if (result.Count() == 0)
                 {
                     TempData["NotFound"] = "No biddings yet";
@@ -198,16 +211,31 @@ namespace TalentHunt.Controllers
                 if (userapply != null)
                 {
                     userselect userselect = db.userselects.Where(p => p.peid.Equals(userapply.peid) && p.userid.Equals(userapply.userid)).SingleOrDefault();
-                    if(userselect == null)
+                    if(userselect != null)
                     {
+                        string msg = $"{userapply.user.fname} {userapply.user.lname} has withdrawn from your {userapply.production.pname} Event.";
+                        string sub = "Expert Withdraw";
+                        email email = new email(userapply.production.email, sub, msg);
+                        db.userselects.Remove(userselect);
+                        db.userapplies.Remove(userapply);
+                        db.SaveChanges();
+
                         return RedirectToAction("Index", "UserApply");
                     }
+                    userapply userappply = db.userapplies.Where(p => p.peid.Equals(userapply.peid) && p.userid.Equals(userapply.userid)).SingleOrDefault();
+                    if(userappply != null)
+                    {
+                        string msg = $"{userapply.user.fname} {userapply.user.lname} has withdrawn from your {userapply.production.pname} Event.";
+                        string sub = "Expert Withdraw";
+                        email email = new email(userapply.production.email, sub, msg);
+                        db.userapplies.Remove(userappply);
+                        db.userapplies.Remove(userapply);
+                        db.SaveChanges();
 
-                    db.userselects.Remove(userselect);
-                    db.userapplies.Remove(userapply);
-                    db.SaveChanges();
-
+                        return RedirectToAction("Index", "UserApply");
+                    }
                     return RedirectToAction("Index", "UserApply");
+
                 }
                 else
                 {

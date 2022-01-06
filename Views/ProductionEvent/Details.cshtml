@@ -83,7 +83,7 @@
                                     else if (rt.rating == 1.5)
                                     {
                                         <i class="fa fa-star" style="color:gold"></i>
-                                        <i class="fa fa-star-half-empty" style="color:gold"></i>
+                                        <i class="fa fa-star-half" style="color:gold"></i>
                                     }
                                     else if (rt.rating == 2)
                                     {
@@ -94,7 +94,7 @@
                                     {
                                         <i class="fa fa-star" style="color:gold"></i>
                                         <i class="fa fa-star" style="color:gold"></i>
-                                        <i class="fa fa-star-half-empty" style="color:gold"></i>
+                                        <i class="fa fa-star-half" style="color:gold"></i>
                                     }
                                     else if (rt.rating == 3)
                                     {
@@ -107,7 +107,7 @@
                                         <i class="fa fa-star" style="color:gold"></i>
                                         <i class="fa fa-star" style="color:gold"></i>
                                         <i class="fa fa-star" style="color:gold"></i>
-                                        <i class="fa fa-star-half-empty" style="color:gold"></i>
+                                        <i class="fa fa-star-half" style="color:gold"></i>
                                     }
                                     else if (rt.rating == 4)
                                     {
@@ -122,7 +122,7 @@
                                         <i class="fa fa-star" style="color:gold"></i>
                                         <i class="fa fa-star" style="color:gold"></i>
                                         <i class="fa fa-star" style="color:gold"></i>
-                                        <i class="fa fa-star-half-empty" style="color:gold"></i>
+                                        <i class="fa fa-star-half" style="color:gold"></i>
                                     }
                                     else if (rt.rating == 5)
                                     {
@@ -367,7 +367,7 @@
                                                                     {
                                                                         <td>
                                                                             <i class="fa fa-star" style="color:gold"></i>
-                                                                            <i class="fa fa-star-half-empty" style="color:gold"></i>
+                                                                            <i class="fa fa-star-half" style="color:gold"></i>
                                                                         </td>
                                                                     }
                                                                     else if (rt.rating1 == 2)
@@ -382,7 +382,7 @@
                                                                         <td>
                                                                             <i class="fa fa-star" style="color:gold"></i>
                                                                             <i class="fa fa-star" style="color:gold"></i>
-                                                                            <i class="fa fa-star-half-empty" style="color:gold"></i>
+                                                                            <i class="fa fa-star-half" style="color:gold"></i>
                                                                         </td>
                                                                     }
                                                                     else if (rt.rating1 == 3)
@@ -399,7 +399,7 @@
                                                                             <i class="fa fa-star" style="color:gold"></i>
                                                                             <i class="fa fa-star" style="color:gold"></i>
                                                                             <i class="fa fa-star" style="color:gold"></i>
-                                                                            <i class="fa fa-star-half-empty" style="color:gold"></i>
+                                                                            <i class="fa fa-star-half" style="color:gold"></i>
                                                                         </td>
                                                                     }
                                                                     else if (rt.rating1 == 4)
@@ -418,7 +418,7 @@
                                                                             <i class="fa fa-star" style="color:gold"></i>
                                                                             <i class="fa fa-star" style="color:gold"></i>
                                                                             <i class="fa fa-star" style="color:gold"></i>
-                                                                            <i class="fa fa-star-half-empty" style="color:gold"></i>
+                                                                            <i class="fa fa-star-half" style="color:gold"></i>
                                                                         </td>
                                                                     }
                                                                     else if (rt.rating1 == 5)
@@ -444,7 +444,7 @@
                                                         else
                                                         {
                                                             <td>
-                                                                @Html.ActionLink("Remove", "", "", new { @class = "btn btn-outline-danger" })
+                                                                @Html.ActionLink("Remove", "Delete", "UserSelect", new { id=pdata.user.userid, peid=pdata.productionevent.peid}, new { @class = "btn btn-outline-danger", onclick = $"return confirm('Are you sure?') " })
                                                             </td>
                                                         }
                                                     }
@@ -567,13 +567,8 @@
                                                 </tr>
                                             }
                                         }
-
-
-
                                     </table>
-
                                 </div>
-
                             </div>
                         </div>
                     </div>

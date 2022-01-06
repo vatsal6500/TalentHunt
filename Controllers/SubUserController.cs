@@ -39,6 +39,8 @@ namespace TalentHunt.Controllers
         {
             if (Session["aid"] != null)
             {
+                DateTime date = DateTime.Today;
+                ViewBag.date = date;
                 return View(db.subusers.ToList());
             }
             else
@@ -52,6 +54,8 @@ namespace TalentHunt.Controllers
         {
             if (Session["aid"] != null)
             {
+                DateTime date = DateTime.Today;
+                ViewBag.date = date;
                 if (Search == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

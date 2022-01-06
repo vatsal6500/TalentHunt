@@ -22,14 +22,14 @@ namespace TalentHunt.Controllers
             if (Session["pid"] != null)
             {
                 int pid = Convert.ToInt32(HttpContext.Session["pid"]);
-                var result = db.productionevents.Where(x => x.pid.Equals(pid));
+                var result = db.productionevents.Where(x => x.pid.Equals(pid) && x.status.Equals("active"));
                 TempData["pdata"] = result;
                 return View(db.productionevents.ToList());
             }
             if (Session["uid"] != null)
             {
 
-                var productionevents = db.productionevents.Include(p => p.production);
+                var productionevents = db.productionevents.Where(p => p.status=="active");
 
                 return View(productionevents.ToList());
             }
@@ -45,13 +45,14 @@ namespace TalentHunt.Controllers
         {
             if (Session["uid"] != null)
             {
+                var results = db.productionevents.Where(x => x.status.Equals("active"));
                 if (Search == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
                 if (Search.ToLower() == "all" || Search == "")
                 {
-                    return View(db.productionevents.ToList());
+                    return View(results);
                 }
 
                 List<productionevent> eventNS = db.productionevents.Where(p => p.ename.Contains(Search)).ToList();
@@ -80,28 +81,28 @@ namespace TalentHunt.Controllers
                     return View(eventNS.ToList());
                 }
 
-                return View(eventNS.ToList());
+                return View(results);
             }
             else if (Session["pid"] != null)
             {
                 int pid = Convert.ToInt32(HttpContext.Session["pid"]);
+                var results = db.productionevents.Where(x => x.pid.Equals(pid) && x.status == "active");
                 if (Search == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
                 if (Search.ToLower() == "all" || Search == "")
                 {
-                    var results = db.productionevents.Where(x => x.pid.Equals(pid));
                     TempData["pdata"] = results;
                     return View();
                 }
-                List<productionevent> eventNS = db.productionevents.Where(p => p.ename.Contains(Search) && p.pid.Equals(pid)).ToList();
+                List<productionevent> eventNS = db.productionevents.Where(p => p.ename.Contains(Search) && p.pid.Equals(pid) && p.status=="active").ToList();
                 if (eventNS.Count() == 0)
                 {
-                    List<productionevent> eventDS = db.productionevents.Where(p => p.description.Contains(Search) && p.pid.Equals(pid)).ToList();
+                    List<productionevent> eventDS = db.productionevents.Where(p => p.description.Contains(Search) && p.pid.Equals(pid) && p.status == "active").ToList();
                     if(eventDS.Count() == 0)
                     {
-                        List<productionevent> eventDaS = db.productionevents.Where(p => p.startdate.ToString().Contains(Search) && p.pid.Equals(pid)).ToList();
+                        List<productionevent> eventDaS = db.productionevents.Where(p => p.startdate.ToString().Contains(Search) && p.pid.Equals(pid) && p.status == "active").ToList();
                         if(eventDaS.Count() == 0)
                         {
                             TempData["NotFoundp"] = "No such registered event";
@@ -123,6 +124,7 @@ namespace TalentHunt.Controllers
                     TempData["pdata"] = eventNS;
                     return View(eventNS.ToList());
                 }
+                TempData["pdata"] = results;
                 return View();
             }
             else
@@ -522,9 +524,9 @@ namespace TalentHunt.Controllers
         }
 
         // GET: ProductionEvent/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Block(int? id)
         {
-            if(Session["aid"] != null)
+            if (Session["aid"] != null)
             {
                 if (id == null)
                 {
@@ -536,7 +538,7 @@ namespace TalentHunt.Controllers
                     string msg = $"Dear {productionevent.production.pname},<br/><br/>  Your Event {productionevent.ename} has been removed by the admin due to the violation of Talent Hunt policy.<br/><br/> Sorry for the inconvenience. <br/><br/> Contact Management for further details.";
                     email email = new email(productionevent.production.email, "Removed Event", msg);
                     var bids = db.userapplies.Where(p => p.peid.Equals(productionevent.peid));
-                    if(bids != null)
+                    if (bids != null)
                     {
                         foreach (var item in bids)
                         {
@@ -544,14 +546,15 @@ namespace TalentHunt.Controllers
                             email uemail = new email(item.user.email, "Removed Event", umsg);
                         }
                     }
-                    db.productionevents.Remove(productionevent);
+                    productionevent.status = "blocked";
+                    db.Entry(productionevent).State = EntityState.Modified;
                     try
                     {
                         db.SaveChanges();
                     }
                     catch (Exception e)
                     {
-                        TempData["deleteerr"] = "Event cannot be deleted because bidders has applied on this event";
+                        TempData["deleteerr"] = e.Message;
                     }
                     return RedirectToAction("EventView");
                 }
@@ -560,25 +563,26 @@ namespace TalentHunt.Controllers
                     return RedirectToAction("EventView");
                 }
             }
-            else if(Session["pid"] != null)
+            else if (Session["pid"] != null)
             {
-                if(id == null)
+                if (id == null)
                 {
-                    return RedirectToAction("Index","ProductionEvent");
+                    return RedirectToAction("Index", "ProductionEvent");
                 }
                 productionevent productionevent = db.productionevents.Find(id);
-                if(productionevent != null)
+                if (productionevent != null)
                 {
                     var bids = db.userapplies.Where(p => p.peid.Equals(productionevent.peid));
                     if (bids != null)
                     {
                         foreach (var item in bids)
                         {
-                            string umsg = $"Dear {item.user.fname} {item.user.lname},<br/><br/> Event {productionevent.ename} has been removed by {productionevent.production.pname}.<br/><br/> Hence, your bid on this event has been withdrawn. <br/><br/> Sorry for the inconvenience.";
+                            string umsg = $"Dear {item.user.fname} {item.user.lname},<br/><br/> Event {productionevent.ename} has been removed by {productionevent.production.pname} .<br/><br/> Hence, your bid on this event has been withdrawn. <br/><br/> Sorry for the inconvenience.";
                             email uemail = new email(item.user.email, "Removed Event", umsg);
                         }
                     }
-                    db.productionevents.Remove(productionevent);
+                    productionevent.status = "blocked";
+                    db.Entry(productionevent).State = EntityState.Modified;
                     try
                     {
                         db.SaveChanges();
@@ -594,9 +598,95 @@ namespace TalentHunt.Controllers
                     return RedirectToAction("Index", "ProductionEvent");
                 }
             }
-            else if(Session["pid"] == null)
+            else if (Session["pid"] == null)
             {
-                return RedirectToAction("Login","User");
+                return RedirectToAction("Login", "User");
+            }
+            else
+            {
+                return RedirectToAction("Login", "AdminLogin");
+            }
+        }
+
+        public ActionResult Approve(int? id)
+        {
+            if (Session["aid"] != null)
+            {
+                if (id == null)
+                {
+                    return RedirectToAction("EventView");
+                }
+                productionevent productionevent = db.productionevents.Find(id);
+                if (productionevent != null)
+                {
+                    productionevent.status = "active";
+                    db.Entry(productionevent).State = EntityState.Modified;
+                    //db.productionevents.Remove(productionevent);
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        TempData["deleteerr"] = "Event cannot be deleted because bidders has applied on this event";
+                    }
+                    string msg = $"Dear {productionevent.production.pname},<br/><br/>  Your Event {productionevent.ename} was removed by Talent Hunt due to missunderstanding and added again.<br/><br/> If event is already completed then ignore this message";
+                    email email = new email(productionevent.production.email, "Removed Event", msg);
+                    var bids = db.userapplies.Where(p => p.peid.Equals(productionevent.peid));
+                    if (bids != null)
+                    {
+                        foreach (var item in bids)
+                        {
+                            string umsg = $"Dear {item.user.fname} {item.user.lname},<br/><br/> Event {productionevent.ename} was removed by Talent Hunt due to missunderstanding and added again.<br/><br/> Hence, your bid on this event has been Updated. <br/><br/> If event is already completed then ignore this message.";
+                            email uemail = new email(item.user.email, "Removed Event", umsg);
+                        }
+                    }
+                    return RedirectToAction("EventView");
+                }
+                else
+                {
+                    return RedirectToAction("EventView");
+                }
+            }
+            else if (Session["pid"] != null)
+            {
+                if (id == null)
+                {
+                    return RedirectToAction("Index", "ProductionEvent");
+                }
+                productionevent productionevent = db.productionevents.Find(id);
+                if (productionevent != null)
+                {
+                    productionevent.status = "blocked";
+                    db.Entry(productionevent).State = EntityState.Modified;
+                    //db.productionevents.Remove(productionevent);
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        TempData["fkerr"] = $"fk error {ex.Message}";
+                    }
+                    var bids = db.userapplies.Where(p => p.peid.Equals(productionevent.peid));
+                    if (bids != null)
+                    {
+                        foreach (var item in bids)
+                        {
+                            string umsg = $"Dear {item.user.fname} {item.user.lname},<br/><br/> Event {productionevent.ename} was removed by Talent Hunt due to missunderstanding and added again.<br/><br/> Hence, your bid on this event has been Updated. <br/><br/> If event is already completed then ignore this message.";
+                            email uemail = new email(item.user.email, "Removed Event", umsg);
+                        }
+                    }
+                    return RedirectToAction("Index", "ProductionEvent");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "ProductionEvent");
+                }
+            }
+            else if (Session["pid"] == null)
+            {
+                return RedirectToAction("Login", "User");
             }
             else
             {
@@ -653,18 +743,6 @@ namespace TalentHunt.Controllers
 
             return View();
         }
-
-
-        //// POST: ProductionEvent/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteConfirmed(int id)
-        //{
-        //    productionevent productionevent = db.productionevents.Find(id);
-        //    db.productionevents.Remove(productionevent);
-        //    db.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
 
         protected override void Dispose(bool disposing)
         {

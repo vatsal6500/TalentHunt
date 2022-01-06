@@ -129,14 +129,27 @@
                             <div class="select-role">
                                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                     <label class="btn">
-                                        @Html.EditorFor(model => model.expert, new { htmlAttributes = new { @type="radio", value=Model.expert} })
-                                        @*<input type="radio" name="options" id="user" value="user">*@
+                                        @if (Model.rememberme == true && Model.expert == "expert")
+                                        {
+                                            @Html.EditorFor(model => model.expert, new { htmlAttributes = new { @type = "radio", value = Model.expert, @checked = "checked" } })
+                                        }
+                                        else
+                                        {
+                                            @Html.EditorFor(model => model.expert, new { htmlAttributes = new { @type = "radio", value = Model.expert } })
+                                        }
                                         <div class="icon"><img src="~/vendors/images/person.svg" class="svg"></div>
                                         <span>I'm</span>
                                         Expert
                                     </label>
                                     <label class="btn">
-                                        @Html.EditorFor(model => model.production, new { htmlAttributes = new { @type = "radio", value=Model.production } })
+                                        @if (Model.rememberme == true && Model.production == "production")
+                                        {
+                                            @Html.EditorFor(model => model.production, new { htmlAttributes = new { @type = "radio", value = Model.production, @checked="checked" } })
+                                        }
+                                        else
+                                        {
+                                            @Html.EditorFor(model => model.production, new { htmlAttributes = new { @type = "radio", value = Model.production } })
+                                        }
                                         @*<input type="radio" name="options" id="production" value="production">*@
                                         <div class="icon"><img src="~/vendors/images/briefcase.svg" class="svg"></div>
                                         <span>I'm</span>
@@ -146,31 +159,38 @@
                             </div>
                             @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
                             <div class="input-group custom">
-                                @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter UserName", @value = ViewBag.uUsername } })
+                                @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter UserName", @value = Model.username } })
                                 <div class="input-group-append custom">
                                     <span class="input-group-text"><i class="icon-copy dw dw-user1"></i></span>
                                 </div>
                             </div>
                             @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
                             <div class="input-group custom">
-                                @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Password", @value = ViewBag.uPassword } })
+                                @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Password", @value = Model.password } })
                                 <div class="input-group-append custom">
                                     <span class="input-group-text"><i class="dw dw-padlock1"></i></span>
                                 </div>
                             </div>
                             <span class="text-danger">@ViewBag.err</span>
                             <span class="text-danger">@ViewBag.select</span>
-                            <div class="row pb-30 my-2">
+                            @*<div class="row pb-30 my-2">
                                 <div class="col-6">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="RememberMe" name="RememberMe" value="true">
+                                        @if (Model.rememberme == true)
+                                        {
+                                            <input type="checkbox" class="custom-control-input" id="RememberMe" name="RememberMe" value="true" checked>
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" class="custom-control-input" id="RememberMe" name="RememberMe" value="true">
+                                        }
                                         <label class="custom-control-label" for="RememberMe">Remember Me</label>
                                     </div>
-                                </div>
-                                <div class="col-6">
+                                </div>*@
+                                @*<div class="col-6">
                                     <div class="forgot-password"><a href="forgot-password.html">Forgot Password</a></div>
-                                </div>
-                            </div>
+                                </div>*@
+                            @*</div>*@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="input-group mb-0">

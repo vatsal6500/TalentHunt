@@ -16,11 +16,6 @@ namespace TalentHunt.ModelView
             var receiverEmail = new MailAddress(receiver, "receiver");
             var password = "talent.hunt";
 
-            //string FilePath = "E:\\TalentHunt\\EmailTemplates\\index.html";
-            //StreamReader str = new StreamReader(FilePath);
-            //String MailText = str.ReadToEnd();
-            //str.Close();
-
             var sub = subject;
             var body = message;
 
