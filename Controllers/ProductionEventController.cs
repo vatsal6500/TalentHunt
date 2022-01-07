@@ -319,7 +319,7 @@ namespace TalentHunt.Controllers
                     {
                         foreach (var pl in usrplan)
                         {
-                            if (maxbid.Count() >= pl.plan.maxbids && datenow > pl.enddate)
+                            if (maxbid.Count() >= pl.plan.maxbids)
                             {
                                 TempData["max"] = "Yes";
                                 TempData["expire"] = "Yes";

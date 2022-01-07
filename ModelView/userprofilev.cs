@@ -13,7 +13,7 @@ namespace TalentHunt.ModelView
         [DisplayName("Experience")]
         [DataType(DataType.Text)]
         [Range(0,90,ErrorMessage = "Invalid")]
-        [RegularExpression(@"^[0-9]$",ErrorMessage = "Invalid")]
+        [RegularExpression(@"^[0-9]*$",ErrorMessage = "Invalid")]
         public int experience { get; set; }
 
         [Required(ErrorMessage = "*")]

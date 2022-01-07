@@ -162,34 +162,11 @@ namespace TalentHunt.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             userapply userapply = db.userapplies.Find(id);
-
             userapplyv userapplyv = new userapplyv();
             AutoMapper.Mapper.Map(userapply, userapplyv);
-
             if (userapply == null)
             {
                 return HttpNotFound();
-            }
-            ViewBag.pid = new SelectList(db.productions, "pid", "pname", userapply.pid);
-            ViewBag.peid = new SelectList(db.productionevents, "peid", "ename", userapply.peid);
-            ViewBag.userid = new SelectList(db.users, "userid", "fname", userapply.userid);
-            return View(userapply);
-        }
-
-        // POST: UserApply/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "uaid,pid,peid,userid,appdate,expay,message")] userapplyv userapplyv)
-        {
-            if (ModelState.IsValid)
-            {
-                userapply userapply = new userapply();
-                AutoMapper.Mapper.Map(userapplyv,userapply);
-                db.Entry(userapply).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
             }
             ViewBag.pid = new SelectList(db.productions, "pid", "pname", userapplyv.pid);
             ViewBag.peid = new SelectList(db.productionevents, "peid", "ename", userapplyv.peid);
@@ -197,6 +174,35 @@ namespace TalentHunt.Controllers
             return View(userapplyv);
         }
 
+        // POST: UserApply/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "uaid,pid,peid,userid,appdate,expay,message,status")] userapplyv userapplyv)
+        {
+            if (ModelState.IsValid)
+            {
+                userapply userapply = new userapply();
+                userapply.uaid = userapplyv.uaid;
+                userapply.pid = userapplyv.pid;
+                userapply.peid = userapplyv.peid;
+                userapply.userid = userapplyv.userid;
+                userapply.appdate = userapplyv.appdate;
+                userapply.expay = userapplyv.expay;
+                userapply.message = userapplyv.message;
+                userapply.status = userapplyv.status;
+
+
+                db.Entry(userapply).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Details", "ProductionEvent", new { id = userapplyv.peid });
+            }
+            ViewBag.pid = new SelectList(db.productions, "pid", "pname", userapplyv.pid);
+            ViewBag.peid = new SelectList(db.productionevents, "peid", "ename", userapplyv.peid);
+            ViewBag.userid = new SelectList(db.users, "userid", "fname", userapplyv.userid);
+            return View(userapplyv);
+        }
         // GET: UserApply/Delete/5
         //EMAIL BAKI
         public ActionResult Delete(int? id)
@@ -247,17 +253,6 @@ namespace TalentHunt.Controllers
                 return RedirectToAction("Login","User");
             }
         }
-
-        // POST: UserApply/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteConfirmed(int id)
-        //{
-        //    userapply userapply = db.userapplies.Find(id);
-        //    db.userapplies.Remove(userapply);
-        //    db.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
 
         protected override void Dispose(bool disposing)
         {
