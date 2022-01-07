@@ -125,9 +125,9 @@
                               <img class="card-img-top" src="@Url.Content(item.image)" alt="Card image cap">
                               <div class="card-body">
                                   <p class="card-text" style="color:indianred"><strong>@Html.DisplayFor(modelItem => item.ename)</strong></p>
-                                  <p class="card-text">Start Date : @Html.DisplayFor(modelItem => item.startdate) </p>
-                                  <p class="card-text">End Date : @Html.DisplayFor(modelItem => item.enddate) </p>
-                                  <p class="card-text">Deadline : @Html.DisplayFor(modelItem => item.appdeadline)</p>
+                                  <p class="card-text">Start Date : @item.startdate.ToString("dd/MM/yyyy") </p>
+                                  <p class="card-text">End Date : @item.enddate.ToString("dd/MM/yyyy") </p>
+                                  <p class="card-text">Deadline : @item.appdeadline.ToString("dd/MM/yyyy")</p>
                                   <p class="card-text">@Html.DisplayFor(modelItem => item.description)</p>
                               </div>
                               @Html.ActionLink("View More", "Details", "ProductionEvent", new { id = item.peid }, new { @class = "btn btn-outline-primary my-3 mx-2" })
